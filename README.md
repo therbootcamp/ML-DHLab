@@ -1,2 +1,5 @@
-# ML-DHLab
-Machine learning with R at Digital Humanities lab
+# Applied ML @ Basel January 2019
+
+Notes (aka todo):
+
+Everything!
