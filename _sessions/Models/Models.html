@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Modelle</title>
+    <title>Models</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Maschinelles Lernen mit R   The R Bootcamp" />
+    <meta name="author" content="Machine Learning with R   The R Bootcamp @ DHLab" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="baselrbootcamp.css" type="text/css" />
   </head>
@@ -11,9 +11,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Modelle
-### Maschinelles Lernen mit R<br> <a href='https://therbootcamp.github.io'> The R Bootcamp </a> <br> <a href='https://therbootcamp.github.io/ML_2020Oct/'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
-### Oktober 2020
+# Models
+### Machine Learning with R<br> <a href='https://therbootcamp.github.io'> The R Bootcamp @ DHLab </a> <br> <a href='https://therbootcamp.github.io/ML-DHLab/'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
+### November 2020
 
 ---
 
@@ -34,7 +34,7 @@ layout: true
     &lt;/a&gt;
     &lt;a href="https://therbootcamp.github.io/"&gt;
       &lt;font color="#7E7E7E"&gt;
-      Maschinelles Lernen mit R | Oktober 2020
+       Machine Learning with R | November 2020
       &lt;/font&gt;
     &lt;/a&gt;
     &lt;/span&gt;
@@ -69,6 +69,8 @@ under consideration."&lt;/i&gt;
   &lt;font style="font-size:10px"&gt;from &lt;a href="http://christianfunnypictures.com/2016/02/theres-no-such-thing-as-a-free-lunch-or-is-there.html"&gt;christianfunnypictures.com&lt;/a&gt;&lt;/font&gt;
 &lt;/p&gt;
 
+
+
 ]
 
 ---
@@ -79,21 +81,19 @@ under consideration."&lt;/i&gt;
 
 &lt;br&gt;
 
-`$$\large Error = Bias + Variance\;(+ Noise)$$`
-
-
+`$$\large Error = Bias + Variance\;(+Noise)$$`
 &lt;ul style="margin-top:40px"&gt;
   &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Bias&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Ensteht, wenn &lt;high&gt;Modellannahmen&lt;/high&gt; nicht mit dem Problem übereinstimmen.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Arises from strong &lt;high&gt;model assumptions&lt;/high&gt; not being met by the environment.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
   &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Variance&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Ensteht, wenn &lt;high&gt;Modellflexibilität&lt;/high&gt; zu hoch ist.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;arises from high &lt;high&gt;model flexibility&lt;/high&gt; fitting the noise in the data (i.e., overfitting).&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
   &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Noise&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;(Absolut) zufälliges Rauschen.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Fully random noise.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/ul&gt;
 
@@ -112,24 +112,24 @@ under consideration."&lt;/i&gt;
 
 class: center, middle
 
-&lt;h1&gt;&lt;a&gt;Kenne dein Problem&lt;/a&gt;&lt;/h1&gt;
+&lt;h1&gt;&lt;a&gt;Know your Problem&lt;/a&gt;&lt;/h1&gt;
+
 
 ---
 
 .pull-left4[
-# Linear oder Nicht-linear
+# Linear or non-linear
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Lineare Modelle&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Linear models&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Machen die Annahme, dass die Welt linear ist. Stimmt selten, führt jedoch zu &lt;high&gt;weniger overfitting&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Linear models make strong model assumptions. They are more often wrong, but also &lt;high&gt;less prone to overfitting&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Nicht-lineare Modelle&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Non-linear models&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Beinhaltet (meist) lineare Modelle als Spezialfall und neigen damit zu &lt;high&gt;mehr overfitting&lt;/high&gt;. Lohnt sich i.A. nur, wenn lineare Modelle das Problem schlecht approximieren. &lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Non-linear models make weaker model assumptions, leaving the exact relationship (more) open. They are are closer to the truth, but also &lt;high&gt;more prone to overfitting&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/ul&gt;
-
 
 ]
 
@@ -144,20 +144,18 @@ class: center, middle
 ]
 
 
-
-
 ---
 
 .pull-left45[
 
-# Kernel Trick
+# Kernel trick
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Transformiert ursprünglichen Featurespace in einen neuen, der damit z.B. das Trennen von Klassen ermöglicht.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Verwendet z.B. in &lt;high&gt;Support Vector Machines&lt;/high&gt; (z.B. &lt;mono&gt;method = "svmRadial"&lt;/mono&gt;) meist unter Verwendung einer &lt;high&gt;radial basis function&lt;/high&gt; (rdf).&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;high&gt;Transforms "input space"&lt;/high&gt; into new "feature space" to allows for object separation..&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Used in &lt;high&gt;Support Vector Machines&lt;/high&gt; (e.g., &lt;mono&gt;method = "svmRadial"&lt;/mono&gt;) often using a &lt;high&gt;radial basis function&lt;/high&gt; (rbf).&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;br&gt;
+
 
 &lt;p align="center"&gt;
   &lt;img src="image/kernel_bw.png" height=160px&gt;
@@ -179,16 +177,17 @@ class: center, middle
 
 ---
 
-# Automatische Featureentwicklung
+# Automatic feature engineering
 
 .pull-left3[
 
 &lt;br&gt;
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;high&gt;Deep learning&lt;/high&gt; (insbesondere Convolutional Neural Networks) sind besonders gut darin, &lt;high&gt;Features selber zu entwickeln&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Das &lt;mono&gt;tensorflow&lt;/mono&gt; Paket bietet Zugang zu Google's mächtiger &lt;high&gt;Tensorflow&lt;/high&gt; Library für Deep Learning.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;high&gt;Deep learning&lt;/high&gt; aka neural networks and, especially, &lt;high&gt;convolutional neural networks&lt;/high&gt;, excel because they generate their features.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Neural networks are not the focus of &lt;mono&gt;caret&lt;/mono&gt; and this course. Powerful implementations based on &lt;high&gt;Google's Tensorflow&lt;/high&gt; library are provided by &lt;mono&gt;tensorflow&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
+
 
 ]
 
@@ -204,27 +203,29 @@ class: center, middle
 
 ]
 
-
 ---
 
 class: center, middle
 
-&lt;h1&gt;&lt;a&gt;Bleibe robust&lt;/a&gt;&lt;/h1&gt;
+&lt;h1&gt;&lt;a&gt;Keep it robust&lt;/a&gt;&lt;/h1&gt;
+
 
 ---
 
-# Robustheit
+# Robustness
 
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Es gibt eine Reihe von &lt;high&gt;Tricks&lt;/high&gt; um Modelle robuster zu machen, d.h. um den &lt;i&gt;Variance&lt;/i&gt; Fehler zu minimieren.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;To produce &lt;high&gt;robust predictions&lt;/high&gt; that suffer less from variance ML models use a variety of &lt;high&gt;tricks&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
+
 
 &lt;p align = "center"&gt;
   &lt;img src="image/robustness_sel.png" width=350px&gt;&lt;br&gt;
   &lt;font style="font-size:10px"&gt;from &lt;a href="https://www.istockphoto.com/ch/grafiken/kraftathlet?sort=mostpopular&amp;mediatype=illustration&amp;assetfiletype=eps&amp;phrase=kraftathlet"&gt;istockphoto.com&lt;/a&gt;&lt;/font&gt;
 &lt;/p&gt;
+
 
 ]
 
@@ -242,12 +243,12 @@ class: center, middle
 &lt;/tr&gt;
 &lt;tr style="background-color:#ffffff"&gt;
   &lt;td align="center"&gt;&lt;i&gt;Tolerance&lt;/i&gt;&lt;/td&gt;
-  &lt;td align="center"&gt;Vergrössert Fehlertoleranz&lt;/td&gt;
+  &lt;td align="center"&gt;Decrease error tolerance&lt;/td&gt;
   &lt;td align="center"&gt;&lt;mono&gt;svmRadial&lt;/mono&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr style="background-color:#ffffff"&gt;
   &lt;td align="center"&gt;&lt;i&gt;Regularization&lt;/i&gt;&lt;/td&gt;
-  &lt;td align="center"&gt;Strafe für Komplexität&lt;/td&gt;
+  &lt;td align="center"&gt;Penalize for complexity&lt;/td&gt;
   &lt;td align="center"&gt;&lt;mono&gt;lasso&lt;/mono&gt;, &lt;mono&gt;ridge&lt;/mono&gt;, &lt;mono&gt;elasticnet&lt;/mono&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr style="background-color:#ffffff"&gt;
@@ -282,8 +283,9 @@ class: center, middle
 
 .pull-left45[
 
+
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Regularisierung bestraft den Fit für die &lt;high&gt; modell-spezifische Komplexität&lt;/&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Regularization adds &lt;high&gt;penalties for complexity&lt;/high&gt; to prevent overfitting.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
 
 &lt;br2&gt;
@@ -338,13 +340,13 @@ class: center, middle
 # Bagging
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;high&gt;Aggregieren&lt;/high&gt; der Vorhersagen multipler Modelle, die auf Basis von &lt;high&gt;Stichproben&lt;/high&gt; aus den Daten gefitted werden.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Besonders nützlich bei Modellen mit moderat guter, varierender Performanz.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Algorithmus&lt;/b&gt;:&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;high&gt;Aggregate&lt;/high&gt; predictions from multiple fits to &lt;high&gt;resampled&lt;/high&gt; data..&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Especially beneficial for models that produce relatively&lt;high&gt;unrobust fits&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;:&lt;/span&gt;&lt;/li&gt;
   &lt;ol&gt;
-      &lt;li&gt;&lt;span&gt;&lt;high&gt;Stichprobe&lt;/high&gt; aus den Daten mit zurücklegen&lt;/span&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;span&gt;&lt;high&gt;Fitte&lt;/high&gt; Modelle zu Stichproben&lt;/span&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;span&gt;&lt;high&gt;Mittele&lt;/high&gt; die Vorhersage&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;&lt;high&gt;Resample&lt;/high&gt; data (with replacement).&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;&lt;high&gt;Fit&lt;/high&gt; model to resampled data.&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;&lt;high&gt;Average&lt;/high&gt; predictions.&lt;/span&gt;&lt;/li&gt;
   &lt;/ol&gt;
 &lt;/ul&gt;
 
@@ -358,8 +360,6 @@ class: center, middle
 &lt;/p&gt;
 
 
-
-
 ]
 
 ---
@@ -369,17 +369,18 @@ class: center, middle
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Eine Art iteratives Bagging auf Basis einer &lt;high&gt;adaptiven Gewichtung&lt;/high&gt; der Daten.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Variante Extreme Gradient Boosting &lt;mono&gt;xgbTree&lt;/mono&gt; zählt zu den &lt;high&gt;besten verfügbaren Modellen&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Algorithmus&lt;/b&gt;:&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Boosting &lt;high&gt;adaptively re-weights&lt;/high&gt; samples based on performance.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;adaboost&lt;/mono&gt; and &lt;mono&gt;xgbTree&lt;/mono&gt; are some of the &lt;high&gt;best ML models out there&lt;/high&gt;. &lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;:&lt;/span&gt;&lt;/li&gt;
   &lt;ol&gt;
-      &lt;li&gt;&lt;span&gt;&lt;high&gt;Gewichte&lt;/high&gt; alle Datenpunkte gleich.&lt;/span&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;span&gt;&lt;high&gt;Fitte&lt;/high&gt; ein moderat flexibles Modell.&lt;/span&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;span&gt;&lt;high&gt;Erhöhe&lt;/high&gt; Gewicht schlecht vorhergesagter Punkte.&lt;/span&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;span&gt;&lt;high&gt;Wiederhole&lt;/high&gt; iterativ.&lt;/span&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;span&gt;&lt;high&gt;Mittele&lt;/high&gt; Vorhersage proportional zum Modellfit.&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt; Assign &lt;high&gt;equal weight&lt;/high&gt; to all cases..&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;&lt;high&gt;Fit&lt;/high&gt; simple model.&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;&lt;high&gt;Increase weight of misfit cases&lt;/high&gt; by model misfit for next iteration.&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;&lt;high&gt;Repeat&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;span&gt;&lt;high&gt;Average&lt;/high&gt; predictions weighted by model misfit.&lt;/span&gt;&lt;/li&gt;
   &lt;/ol&gt;
 &lt;/ul&gt;
+
 
 ]
 
@@ -395,18 +396,18 @@ class: center, middle
 
 ---
 
-# Automatische Featureselektion
+# Automatic feature selection
 
 .pull-left45[
 
 &lt;ul&gt;
   &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;LASSO&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;span&gt;Schätzt oft &lt;high&gt;&lt;mono&gt;beta = 0&lt;/mono&gt;&lt;/high&gt;, was effektiv das Feature aus dem Modell eliminiert.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Regularization can &lt;high&gt;estimate &lt;mono&gt;beta = 0&lt;/mono&gt;&lt;/high&gt; and, thus, essentially deselects that feature.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;&lt;br&gt;
   &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Decision Tree / Random forests&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;span&gt;Features müssen nicht für die Vorhersage verwendet werden (bei hohem &lt;mono&gt;mtry&lt;/mono&gt;).&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Trees reuse features so that &lt;high&gt;unpredictive features may never come to action&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
   &lt;ul&gt;
 &lt;/ul&gt;
 
@@ -433,7 +434,7 @@ class: center, middle
 
 ---
 
-# Erinnere
+# Remember
 
 .pull-left45[
 
@@ -466,7 +467,7 @@ class: center, middle
 
 class: middle, center
 
-&lt;h1&gt;&lt;a href="https://therbootcamp.github.io/ML_2020Oct/_sessions/Models/Models_practical.html"&gt;Practical&lt;/a&gt;&lt;/h1&gt;
+&lt;h1&gt;&lt;a href="https://therbootcamp.github.io/ML-DHLab/_sessions/Models/Models_practical.html"&gt;Practical&lt;/a&gt;&lt;/h1&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

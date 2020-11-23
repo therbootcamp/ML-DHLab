@@ -1,11 +1,11 @@
 ---
 title: "Unsupervised learning"
-author: "Maschinelles Lernen mit R<br>
+author: "Machine Learning with R<br>
   <a href='https://therbootcamp.github.io'>
-    The R Bootcamp
+    The R Bootcamp @ DHLab
   </a>
   <br>
-  <a href='https://therbootcamp.github.io/ML_2020Oct/'>
+  <a href='https://therbootcamp.github.io/ML-DHLab'>
     <i class='fas fa-clock' style='font-size:.9em;'></i>
   </a>&#8239; 
   <a href='https://therbootcamp.github.io'>
@@ -17,7 +17,7 @@ author: "Maschinelles Lernen mit R<br>
   <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
     <i class='fab fa-linkedin' style='font-size: .9em;'></i>
   </a>"
-date: "Oktober 2020"
+date: "November 2020"
 output:
   xaringan::moon_reader:
     css: ["default", "baselrbootcamp.css"]
@@ -45,7 +45,7 @@ layout: true
     </a>
     <a href="https://therbootcamp.github.io/">
       <font color="#7E7E7E">
-      Maschinelles Lernen mit R | Oktober 2020
+      Machine Learning with R | November 2020
       </font>
     </a>
     </span>
@@ -91,6 +91,11 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
   <li class="m2"><span>Man unterscheidet zwei Unterbereiche: <high>Clusteranalyse</high> und <high>Dimensionsreduktion</high>.</span></li><br>
 </ul>
 
+<ul>
+  <li class="m1"><span>The gaol of Unsupervised learning is the identifikation of <high>hidden structure</high> in the <high>similarities</high> of cases or features.</span></li><br>
+  <li class="m2"><span>There are two domains: <high>cluster analysis</high> and <high>dimensionality reduction</high>.</span></li><br>
+</ul>
+
 ]
 
 
@@ -110,15 +115,15 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 # Zwei Kernbereiche des UL
 
 <ul>
-  <li class="m1"><span><b>Dimensionsreduktion</b></span></li>
+  <li class="m1"><span><b>Dimensionality reduction</b></span></li>
   <ul>
-    <li><span>Basiert auf den Ähnlichkeiten der <high>Features</high>.</span></li>
-    <li><span>Dient der <high>Identifikation der relevanten Dimensionen</high> in den Daten und ist ein Kernbestandteil des Deep Learnings.</span></li>
+    <li><span>Focuses on the similarities of <high>features</high>.</span></li>
+    <li><span>Aims to <high>identify relevant dimensions</high> in the data and is the basis of deep learning.</span></li>
   </ul><br>
-  <li class="m2"><span><b>Clusteranalyse</b></span></li>
+  <li class="m2"><span><b>Cluster analysis</b></span></li>
   <ul>
-    <li><span>Basiert auf den Ähnlichkeiten der <high>Cases</high>.</span></li>
-    <li><span>Dient der <high>Identifikation von Gruppen und Ausreissern</high> in den Daten.</span></li>
+    <li><span>Focuses on the similarities of <high>cases</high>.</span></li>
+    <li><span>ims to <high>identify groups and outliers</high> in the data.</span></li>
   </ul>  
 </ul>
 
@@ -136,7 +141,6 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 ]
 
 
-
 ---
 
 .pull-left4[
@@ -144,8 +148,8 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 # Gapminder
 
 <ul>
-  <li class="m1"><span>Hans Rosling's Gapminder Projekt kartographiert die <high>gesundheitliche und ökonomische Entwicklung in den Ländern</high> der Welt.</span></li>
-  <li class="m2"><span>Gibt es klar abgrenzbare Klassen von Ländern</high>: z.B. <high>Entwickelte versus Entwicklungsländer</high>.</span></li>
+  <li class="m1"><span>Hans Rosling's Gapminder project maps the <high>health and economic development of countries</high> in the world.</span></li>
+  <li class="m2"><span>Are there clearly separable classes of countries</high>: e.g. <high>Developed versus Devloping</high> countries.</span></li>
 </ul>
 
 <p align = "center" style="margin-top:55px">
@@ -172,8 +176,8 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 # Gapminder
 
 <ul>
-  <li class="m1"><span>Hans Rosling's Gapminder Projekt kartographiert die <high>gesundheitlichz und ökonomische Entwicklung in den Ländern</high> der Welt.</span></li>
-  <li class="m2"><span>Gibt es klar abgrenzbare Klassen von Ländern</high>: z.B. <high>Entwickelte versus Entwicklungsländer</high>.</span></li>
+  <li class="m1"><span>Hans Rosling's Gapminder project maps the <high>health and economic development of countries</high> in the world.</span></li>
+  <li class="m2"><span>Are there clearly separable classes of countries</high>: e.g. <high>Developed versus Devloping</high> countries.</span></li>
 </ul>
 
 <p align = "center" style="margin-top:55px">
@@ -200,8 +204,8 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 # Gap in 1952
 
 <ul>
-  <li class="m1"><span>Gibt es <high>in 1952 Klassen von Ländern</high> gemäss Lebenserwartung und BIP pro Kopf in 1952?</span></li><br>
-  <li class="m2"><span>Verfahren:</span></li><br>
+  <li class="m1"><span>In 1952, are there <high>Klassen von Ländern</high> concerning life expectancy and GDP per capita?</span></li><br>
+  <li class="m2"><span>Algorithms:</span></li><br>
   <ul>
     <li><span><high><i>k</i>-means</high></span></li><br>
     <li><span><high>DBSCAN</high></span></li><br>
@@ -228,12 +232,12 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 # <i>k</i>-means
 
 <ul>
-  <li class="m1"><span>Das Standardverfahren für Clusteranalyse.</span></li><br>
-  <li class="m2"><span><b>Algorithmus</b></span></li><br>
+  <li class="m1"><span>Maybe the most frequently employed algorithms for cluster analysis.</span></li><br>
+  <li class="m2"><span><b>Algorithm</b></span></li><br>
   <ol class="">
-    <li><span>Zufällige <high>Startpunkte</high> für die Clusterzentroide wählen.</span></li><br>
-    <li><span>Cases dem nächstgelegenen <high>Klassenzentroid zuweisen</high>.</span></li><br>
-    <li><span><high>Neue Clusterzentroide</high> als Mittel aller Cases eines Clusters berechnen.</span></li>
+    <li><span>Random <high>start points</high> for cluster centroids.</span></li><br>
+    <li><span>Assign cases to <high>closest centroids</high>.</span></li><br>
+    <li><span>Calculate <high>new cluster centroids</high> as average of all points.</span></li>
   </ol>
 </ul>
 
@@ -255,12 +259,12 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 # <i>k</i>-means
 
 <ul>
-  <li class="m1"><span>Das Standardverfahren für Clusteranalyse.</span></li><br>
-  <li class="m2"><span><b>Algorithmus</b></span></li><br>
+  <li class="m1"><span>Maybe the most frequently employed algorithms for cluster analysis.</span></li><br>
+  <li class="m2"><span><b>Algorithm</b></span></li><br>
   <ol class="">
-    <li><span>Zufällige <high>Startpunkte</high> für die Clusterzentroide wählen.</span></li><br>
-    <li><span>Cases dem nächstgelegenen <high>Klassenzentroid zuweisen</high>.</span></li><br>
-    <li><span><high>Neue Clusterzentroide</high> als Mittel aller Cases eines Clusters berechnen.</span></li>
+    <li><span>Random <high>start points</high> for cluster centroids.</span></li><br>
+    <li><span>Assign cases to <high>closest centroids</high>.</span></li><br>
+    <li><span>Calculate <high>new cluster centroids</high> as average of all points.</span></li>
   </ol>
 </ul>
 
@@ -276,14 +280,14 @@ options(width=50)
 
 ```{r}
 
-# berechne k-means
+# calculate k-means
 gap_kmeans <- kmeans(gap1952, 
                      centers = 3)
 
-# zeige Inhalte
+# show content
 names(gap_kmeans)
 
-# zeige Cluster
+# show clusters
 gap_kmeans$cluster
 
 ```
@@ -299,18 +303,18 @@ gap_kmeans$cluster
 # <i>k</i>-selection
 
 <ul>
-  <li class="m1"><span>Es gibt <high>kein richtiges <i>k</i></high>!.</span></li><br>
-  <li class="m2"><span>Durch Abwägung folgender zwei Aspekte können <high>angemessene <i>k</i></high> identifziert werden:</span></li>
+  <li class="m1"><span>There is <high>no correct <i>k</i></high>!.</span></li><br>
+  <li class="m2"><span>Comparing two aspects <high>reasonable <i>k</i></high> can be identified:</span></li>
   <ul>
-    <li><span><i>k</i> sollte <high>möglichst klein</high> sein.</span></li>
-    <li><span>Mit <i>k</i> sollte das Modell die <high>Daten möglichst gut beschreiben</high>.</span></li>
+    <li><span><i>k</i> should be <high>as small as possible</high>.</span></li>
+    <li><span>The <i>k</i> clusters should describe the data <high>as accurately as possible</high>.</span></li>
   </ul><br>
-  <li class="m3"><span><b>Ansätze</b></span></li>
+  <li class="m3"><span><b>Approaches</b></span></li>
   <ul>
-    <li><span>Ellbogen der <high>Binnenvarianz</high>.</span></li>
-    <li><span>Gap-Statistik.</span></li>
-    <li><span>Slope-Statistik.</span></li>
-    <li><span>Cluster-Instabilität.</span></li>
+    <li><span>Elbow of the <high>within variance</high>.</span></li>
+    <li><span>Gap-statistic.</span></li>
+    <li><span>Slope-statistic.</span></li>
+    <li><span>Cluster-instability.</span></li>
     <li><span>etc.</span></li>
   </ul>
   </ul>
@@ -336,18 +340,18 @@ gap_kmeans$cluster
 # <i>k</i>-selection
 
 <ul>
-  <li class="m1"><span>Es gibt <high>kein richtiges <i>k</i></high>!.</span></li><br>
-  <li class="m2"><span>Durch Abwägung folgender zwei Aspekte können <high>angemessene <i>k</i></high> identifziert werden:</span></li>
+  <li class="m1"><span>There is <high>no correct <i>k</i></high>!.</span></li><br>
+  <li class="m2"><span>Comparing two aspects <high>reasonable <i>k</i></high> can be identified:</span></li>
   <ul>
-    <li><span><i>k</i> sollte <high>möglichst klein</high> sein.</span></li>
-    <li><span>Mit <i>k</i> sollte das Modell die <high>Daten möglichst gut beschreiben</high>.</span></li>
+    <li><span><i>k</i> should be <high>as small as possible</high>.</span></li>
+    <li><span>The <i>k</i> clusters should describe the data <high>as accurately as possible</high>.</span></li>
   </ul><br>
-  <li class="m3"><span><b>Ansätze</b></span></li>
+  <li class="m3"><span><b>Approaches</b></span></li>
   <ul>
-    <li><span>Ellbogen der <high>Binnenvarianz</high>.</span></li>
-    <li><span>Gap-Statistik.</span></li>
-    <li><span>Slope-Statistik.</span></li>
-    <li><span>Cluster-Instabilität.</span></li>
+    <li><span>Elbow of the <high>within variance</high>.</span></li>
+    <li><span>Gap-statistic.</span></li>
+    <li><span>Slope-statistic.</span></li>
+    <li><span>Cluster-instability.</span></li>
     <li><span>etc.</span></li>
   </ul>
   </ul>
@@ -365,15 +369,15 @@ options(width=50)
 
 ```{r, message = F}
 
-# lade cstab
+# load cstab
 library(cstab)
 
-# berechne k-sel
+# calculate k-sel
 gap_ksel <- cDistance(as.matrix(gap1952), 
                       kseq = 2:10,
                       method = "kmeans")
 
-# zeige geschätze Clusteranzahl
+# show estimated cluster number
 gap_ksel$k_Gap
 gap_ksel$k_Slope
 
@@ -387,18 +391,18 @@ gap_ksel$k_Slope
 # <i>k</i>-selection
 
 <ul>
-  <li class="m1"><span>Es gibt <high>kein richtiges <i>k</i></high>!.</span></li><br>
-  <li class="m2"><span>Durch Abwägung folgender zwei Aspekte können <high>angemessene <i>k</i></high> identifziert werden:</span></li>
+  <li class="m1"><span>There is <high>no correct <i>k</i></high>!.</span></li><br>
+  <li class="m2"><span>Comparing two aspects <high>reasonable <i>k</i></high> can be identified:</span></li>
   <ul>
-    <li><span><i>k</i> sollte <high>möglichst klein</high> sein.</span></li>
-    <li><span>Mit <i>k</i> sollte das Modell die <high>Daten möglichst gut beschreiben</high>.</span></li>
+    <li><span><i>k</i> should be <high>as small as possible</high>.</span></li>
+    <li><span>The <i>k</i> clusters should describe the data <high>as accurately as possible</high>.</span></li>
   </ul><br>
-  <li class="m3"><span><b>Ansätze</b></span></li>
+  <li class="m3"><span><b>Approaches</b></span></li>
   <ul>
-    <li><span>Ellbogen der <high>Binnenvarianz</high>.</span></li>
-    <li><span>Gap-Statistik.</span></li>
-    <li><span>Slope-Statistik.</span></li>
-    <li><span>Cluster-Instabilität.</span></li>
+    <li><span>Elbow of the <high>within variance</high>.</span></li>
+    <li><span>Gap-statistic.</span></li>
+    <li><span>Slope-statistic.</span></li>
+    <li><span>Cluster-instability.</span></li>
     <li><span>etc.</span></li>
   </ul>
   </ul>
@@ -421,17 +425,17 @@ gap_ksel <- cStability(as.matrix(gap1952),
 
 ```{r, eval = F, message = F}
 
-# lade cstab
+# load cstab
 library(cstab)
 
-# berechne k-sel
+# calculate k-sel
 gap_ksel <- cStability(as.matrix(gap1952), 
                       kseq = 2:10,
                       method = "kmeans")
 ```
 
 ```{r, message = F}
-# zeige geschätze Clusteranzahl
+# show estimated cluster number
 gap_ksel$k_instab
 
 ```
@@ -450,11 +454,11 @@ gap_ksel$k_instab
 
 <ul>
   <li class="m1"><span>DBSCAN = Density-Based Spatial Clustering of Applications with Noise.</span></li><br>
-  <li class="m2"><span><b>Algorithmus</b></span></li><br>
+  <li class="m2"><span><b>Algorithm</b></span></li><br>
   <ol>
-    <li><span>Für jeden Punkt Anzahl anderer <high>Punkte im Abstand von <b>&epsilon;</b></high> überprüfen:<br>a. N = 0 <b>&rarr;</b> <high>Ausreisser</high><br>b. N &ge; <i>minPts</i> <b>&rarr;</b> <high>Kernpunkt</high><br>c. <i>minPts</i> &gt; N &gt; 0 <b>&rarr;</b> <high>unbestimmt</high></span></li><br>
-    <li><span><high>Kernpunkte</high> mit Abstand &lt <b>&epsilon;</b>; zueinander zu Clustern verbinden.</span></li><br>
-    <li><span><high>Unbestimmte Punkte</high> mit Abstand &lt <b>&epsilon;</b>; zu Kernpunkten dem Cluster hinzufügen, sonst Ausreisser.</span></li>
+    <li><span>For every point, check other <high>points with distance <b>&epsilon;</b></high>:<br>a. N = 0 <b>&rarr;</b> <high>outlier</high><br>b. N &ge; <i>minPts</i> <b>&rarr;</b> <high>core point</high><br>c. <i>minPts</i> &gt; N &gt; 0 <b>&rarr;</b> <high>undetermined</high></span></li><br>
+    <li><span>Join <high>core points</high> with distance &lt <b>&epsilon;</b>; to clusters.</span></li><br>
+    <li><span>Add <high>Undetermined points</high> with distance &lt <b>&epsilon;</b>; to core points to cluster, otherwise outlier.</span></li>
   </ol>
 </ul>
 
@@ -478,11 +482,11 @@ gap_ksel$k_instab
 
 <ul>
   <li class="m1"><span>DBSCAN = Density-Based Spatial Clustering of Applications with Noise.</span></li><br>
-  <li class="m2"><span><b>Algorithmus</b></span></li><br>
+  <li class="m2"><span><b>Algorithm</b></span></li><br>
   <ol>
-    <li><span>Für jeden Punkt Anzahl anderer <high>Punkte im Abstand von <b>&epsilon;</b></high> überprüfen:<br>a. N = 0 <b>&rarr;</b> <high>Ausreisser</high><br>b. N &ge; <i>minPts</i> <b>&rarr;</b> <high>Kernpunkt</high><br>c. <i>minPts</i> &gt; N &gt; 0 <b>&rarr;</b> <high>unbestimmt</high></span></li><br>
-    <li><span><high>Kernpunkte</high> mit Abstand &lt <b>&epsilon;</b>; zueinander zu Clustern verbinden.</span></li><br>
-    <li><span><high>Unbestimmte Punkte</high> mit Abstand &lt <b>&epsilon;</b>; zu Kernpunkten dem Cluster hinzufügen, sonst Ausreisser.</span></li>
+    <li><span>For every point, check other <high>points with distance <b>&epsilon;</b></high>:<br>a. N = 0 <b>&rarr;</b> <high>outlier</high><br>b. N &ge; <i>minPts</i> <b>&rarr;</b> <high>core point</high><br>c. <i>minPts</i> &gt; N &gt; 0 <b>&rarr;</b> <high>undetermined</high></span></li><br>
+    <li><span>Join <high>core points</high> with distance &lt <b>&epsilon;</b>; to clusters.</span></li><br>
+    <li><span>Add <high>Undetermined points</high> with distance &lt <b>&epsilon;</b>; to core points to cluster, otherwise outlier.</span></li>
   </ol>
 </ul>
 
@@ -506,11 +510,11 @@ gap_ksel$k_instab
 
 <ul>
   <li class="m1"><span>DBSCAN = Density-Based Spatial Clustering of Applications with Noise.</span></li><br>
-  <li class="m2"><span><b>Algorithmus</b></span></li><br>
+  <li class="m2"><span><b>Algorithm</b></span></li><br>
   <ol>
-    <li><span>Für jeden Punkt Anzahl anderer <high>Punkte im Abstand von <b>&epsilon;</b></high> überprüfen:<br>a. N = 0 <b>&rarr;</b> <high>Ausreisser</high><br>b. N &ge; <i>minPts</i> <b>&rarr;</b> <high>Kernpunkt</high><br>c. <i>minPts</i> &gt; N &gt; 0 <b>&rarr;</b> <high>unbestimmt</high></span></li><br>
-    <li><span><high>Kernpunkte</high> mit Abstand &lt <b>&epsilon;</b>; zueinander zu Clustern verbinden.</span></li><br>
-    <li><span><high>Unbestimmte Punkte</high> mit Abstand &lt <b>&epsilon;</b>; zu Kernpunkten dem Cluster hinzufügen, sonst Ausreisser.</span></li>
+    <li><span>For every point, check other <high>points with distance <b>&epsilon;</b></high>:<br>a. N = 0 <b>&rarr;</b> <high>outlier</high><br>b. N &ge; <i>minPts</i> <b>&rarr;</b> <high>core point</high><br>c. <i>minPts</i> &gt; N &gt; 0 <b>&rarr;</b> <high>undetermined</high></span></li><br>
+    <li><span>Join <high>core points</high> with distance &lt <b>&epsilon;</b>; to clusters.</span></li><br>
+    <li><span>Add <high>Undetermined points</high> with distance &lt <b>&epsilon;</b>; to core points to cluster, otherwise outlier.</span></li>
   </ol>
 </ul>
 
@@ -526,14 +530,14 @@ options(width=50)
 
 ```{r, eval = T, message = F}
 
-# lade dbscan
+# load dbscan
 library(dbscan)
 
-# berechne dbscan
+# calculate dbscan
 gap_dbscan <- dbscan(scale(gap1952), 
                      eps = .2)
 
-# zeige Ergebnis
+# show results
 gap_dbscan
 
 ```
@@ -547,16 +551,16 @@ gap_dbscan
 # Eigenschaften von DBSCAN
 
 <ul>
-  <li class="m1"><span><b>Vorteile</b></span></li>
+  <li class="m1"><span><b>Advantages</b></span></li>
   <ul>
-    <li><span><high>Identifiziert <i>k</i></high> eigenständig.</span></li>
-    <li><span>Kann <high>"komplexe" Cluster</high> identifizieren.</span></li>
-    <li><span>Eignet sich für die Erkennung von <high>Anomalien</high>.</span></li>
+    <li><span><high>Identifies <i>k</i></high> automatically.</span></li>
+    <li><span>Can identify <high>"complex" clusters</high>.</span></li>
+    <li><span>Can identify <high>outliers</high>.</span></li>
   </ul>
-<li class="m2"><span><b>Nachteile</b>.</span></li>
+<li class="m2"><span><b>Disadvantages</b>.</span></li>
   <ul>
-    <li><span>Reagiert <high>sehr sensibel</high> auf Änderungen der Parameter.</span></li>
-    <li><span>Schwierigkeiten mit <high>Clustern ungleicher Dichte</high>.</span></li>
+    <li><span><high>Very sensitive</high> to parameter settings.</span></li>
+    <li><span>Hard time with <high>clusters of different density</high>.</span></li>
   </ul>
 </ul>
 
@@ -578,16 +582,16 @@ gap_dbscan
 # Eigenschaften von DBSCAN
 
 <ul>
-  <li class="m1"><span><b>Vorteile</b></span></li>
+  <li class="m1"><span><b>Advantages</b></span></li>
   <ul>
-    <li><span><high>Identifiziert <i>k</i></high> eigenständig.</span></li>
-    <li><span>Kann <high>"komplexe" Cluster</high> identifizieren.</span></li>
-    <li><span>Eignet sich für die Erkennung von <high>Anomalien</high>.</span></li>
-  </ul><br>
-<li class="m2"><span><b>Nachteile</b>.</span></li>
+    <li><span><high>Identifies <i>k</i></high> automatically.</span></li>
+    <li><span>Can identify <high>"complex" clusters</high>.</span></li>
+    <li><span>Can identify <high>outliers</high>.</span></li>
+  </ul>
+<li class="m2"><span><b>Disadvantages</b>.</span></li>
   <ul>
-    <li><span>Reagiert <high>sehr sensibel</high> auf Änderungen der Parameter.</span></li>
-    <li><span>Schwierigkeiten mit <high>Clustern ungleicher Dichte</high>.</span></li>
+    <li><span><high>Very sensitive</high> to parameter settings.</span></li>
+    <li><span>Hard time with <high>clusters of different density</high>.</span></li>
   </ul>
 </ul>
 
@@ -610,16 +614,16 @@ gap_dbscan
 # Eigenschaften von DBSCAN
 
 <ul>
-  <li class="m1"><span><b>Vorteile</b></span></li>
+  <li class="m1"><span><b>Advantages</b></span></li>
   <ul>
-    <li><span><high>Identifiziert <i>k</i></high> eigenständig.</span></li>
-    <li><span>Kann <high>"komplexe" Cluster</high> identifizieren.</span></li>
-    <li><span>Eignet sich für die Erkennung von <high>Anomalien</high>.</span></li>
-  </ul><br>
-<li class="m2"><span><b>Nachteile</b>.</span></li>
+    <li><span><high>Identifies <i>k</i></high> automatically.</span></li>
+    <li><span>Can identify <high>"complex" clusters</high>.</span></li>
+    <li><span>Can identify <high>outliers</high>.</span></li>
+  </ul>
+<li class="m2"><span><b>Disadvantages</b>.</span></li>
   <ul>
-    <li><span>Reagiert <high>sehr sensibel</high> auf Änderungen der Parameter.</span></li>
-    <li><span>Schwierigkeiten mit <high>Clustern ungleicher Dichte</high>.</span></li>
+    <li><span><high>Very sensitive</high> to parameter settings.</span></li>
+    <li><span>Hard time with <high>clusters of different density</high>.</span></li>
   </ul>
 </ul>
 
@@ -641,10 +645,10 @@ gap_dbscan
 # Gaussian mixtures
 
 <ul>
-  <li class="m1"><span>Eine probabilistische <high>Erweiterung des <i>k</i>-means Algorithmus</high> auf Basis multivariater Normalverteilungen</span></li>
-  <li class="m2"><span>Guter Umgang mit Clustern verschiedener <high>Orientierungen und Dichten</high></span></li>
-    <li class="m3"><span>Einfache Schätzung <i>k</i> über <high>Modellvergleiche</high></span></li>
-    <li class="m4"><span><high>Komplexe Topologien</high> bereiten Gaussian mixtures jedoch Schwierigkeiten</span></li>
+  <li class="m1"><span>A probabilistic <high>extension of <i>k</i>-means algorithm</high> on the basis of multi-variate normal distributions</span></li>
+  <li class="m2"><span>Works well with clusters of different <high>orientation and density</high></span></li>
+    <li class="m3"><span>Straighforward estimation of <i>k</i> via <high>model comparison</high></span></li>
+    <li class="m4"><span>Difficulties with <high>complex topologies</high>.</span></li>
 </ul>
 
 ]
@@ -666,10 +670,10 @@ gap_dbscan
 # Gaussian mixtures
 
 <ul>
-  <li class="m1"><span>Eine probabilistische <high>Erweiterung des <i>k</i>-means Algorithmus</high> auf Basis multivariater Normalverteilungen</span></li>
-  <li class="m2"><span>Guter Umgang mit Clustern verschiedener <high>Orientierungen und Dichten</high></span></li>
-    <li class="m3"><span>Einfache Schätzung <i>k</i> über <high>Modellvergleiche</high></span></li>
-    <li class="m4"><span><high>Komplexe Topologien</high> bereiten Gaussian mixtures jedoch Schwierigkeiten</span></li>
+  <li class="m1"><span>A probabilistic <high>extension of <i>k</i>-means algorithm</high> on the basis of multi-variate normal distributions</span></li>
+  <li class="m2"><span>Works well with clusters of different <high>orientation and density</high></span></li>
+    <li class="m3"><span>Straighforward estimation of <i>k</i> via <high>model comparison</high></span></li>
+    <li class="m4"><span>Difficulties with <high>complex topologies</high>.</span></li>
 </ul>
 
 ]
@@ -691,10 +695,10 @@ gap_dbscan
 # Gaussian mixtures
 
 <ul>
-  <li class="m1"><span>Eine probabilistische <high>Erweiterung des <i>k</i>-means Algorithmus</high> auf Basis multivariater Normalverteilungen</span></li>
-  <li class="m2"><span>Guter Umgang mit Clustern verschiedener <high>Orientierungen und Dichten</high></span></li>
-    <li class="m3"><span>Einfache Schätzung <i>k</i> über <high>Modellvergleiche</high></span></li>
-    <li class="m4"><span><high>Komplexe Topologien</high> bereiten Gaussian mixtures jedoch Schwierigkeiten</span></li>
+  <li class="m1"><span>A probabilistic <high>extension of <i>k</i>-means algorithm</high> on the basis of multi-variate normal distributions</span></li>
+  <li class="m2"><span>Works well with clusters of different <high>orientation and density</high></span></li>
+    <li class="m3"><span>Straighforward estimation of <i>k</i> via <high>model comparison</high></span></li>
+    <li class="m4"><span>Difficulties with <high>complex topologies</high>.</span></li>
 </ul>
 
 ]
@@ -709,13 +713,13 @@ options(width=50)
 
 ```{r, eval = T, message = F}
 
-# lade gaussian mixture
+# load gaussian mixture package
 library(mclust)
 
-# berechne gaussian mixture
+# calculate gaussian mixture
 gap_mclust <- Mclust(gap1952)
 
-# zeige Ergebnis
+# show results
 gap_mclust
 
 ```
@@ -729,10 +733,10 @@ gap_mclust
 # Gaussian mixtures
 
 <ul>
-  <li class="m1"><span>Eine probabilistische <high>Erweiterung des <i>k</i>-means Algorithmus</high> auf Basis multivariater Normalverteilungen</span></li>
-  <li class="m2"><span>Guter Umgang mit Clustern verschiedener <high>Orientierungen und Dichten</high></span></li>
-    <li class="m3"><span>Einfache Schätzung <i>k</i> über <high>Modellvergleiche</high></span></li>
-    <li class="m4"><span><high>Komplexe Topologien</high> bereiten Gaussian mixtures jedoch Schwierigkeiten</span></li>
+  <li class="m1"><span>A probabilistic <high>extension of <i>k</i>-means algorithm</high> on the basis of multi-variate normal distributions</span></li>
+  <li class="m2"><span>Works well with clusters of different <high>orientation and density</high></span></li>
+    <li class="m3"><span>Straighforward estimation of <i>k</i> via <high>model comparison</high></span></li>
+    <li class="m4"><span>Difficulties with <high>complex topologies</high>.</span></li>
 </ul>
 
 ]
@@ -764,4 +768,4 @@ gap_mclust$classification
 ---
 class: middle, center
 
-<h1><a href=https://therbootcamp.github.io/ML_2020Oct/_sessions/Unsupervised/Unsupervised_practical.html>Practical</a></h1>
+<h1><a href=https://therbootcamp.github.io/ML-DHLab/_sessions/Unsupervised/Unsupervised_practical.html>Practical</a></h1>

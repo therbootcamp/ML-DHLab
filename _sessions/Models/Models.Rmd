@@ -1,11 +1,11 @@
 ---
-title: "Modelle"
-author: "Maschinelles Lernen mit R<br>
+title: "Models"
+author: "Machine Learning with R<br>
   <a href='https://therbootcamp.github.io'>
-    The R Bootcamp
+    The R Bootcamp @ DHLab
   </a>
   <br>
-  <a href='https://therbootcamp.github.io/ML_2020Oct/'>
+  <a href='https://therbootcamp.github.io/ML-DHLab/'>
     <i class='fas fa-clock' style='font-size:.9em;'></i>
   </a>&#8239; 
   <a href='https://therbootcamp.github.io'>
@@ -17,7 +17,7 @@ author: "Maschinelles Lernen mit R<br>
   <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
     <i class='fab fa-linkedin' style='font-size: .9em;'></i>
   </a>"
-date: "Oktober 2020"
+date: "November 2020"
 output:
   xaringan::moon_reader:
     css: ["default", "baselrbootcamp.css"]
@@ -45,7 +45,7 @@ layout: true
     </a>
     <a href="https://therbootcamp.github.io/">
       <font color="#7E7E7E">
-      Maschinelles Lernen mit R | Oktober 2020
+       Machine Learning with R | November 2020
       </font>
     </a>
     </span>
@@ -100,6 +100,8 @@ under consideration."</i>
   <font style="font-size:10px">from <a href="http://christianfunnypictures.com/2016/02/theres-no-such-thing-as-a-free-lunch-or-is-there.html">christianfunnypictures.com</a></font>
 </p>
 
+
+
 ]
 
 ---
@@ -110,21 +112,19 @@ under consideration."</i>
 
 <br>
 
-$$\large Error = Bias + Variance\;(+ Noise)$$
-
-
+$$\large Error = Bias + Variance\;(+Noise)$$
 <ul style="margin-top:40px">
   <li class="m1"><span><b>Bias</b></span></li>
   <ul class="level">
-    <li><span>Ensteht, wenn <high>Modellannahmen</high> nicht mit dem Problem übereinstimmen.</span></li>
+    <li><span>Arises from strong <high>model assumptions</high> not being met by the environment.</span></li>
   </ul><br>
   <li class="m2"><span><b>Variance</b></span></li>
   <ul class="level">
-    <li><span>Ensteht, wenn <high>Modellflexibilität</high> zu hoch ist.</span></li>
+    <li><span>arises from high <high>model flexibility</high> fitting the noise in the data (i.e., overfitting).</span></li>
   </ul><br>
   <li class="m3"><span><b>Noise</b></span></li>
   <ul class="level">
-    <li><span>(Absolut) zufälliges Rauschen.</span></li>
+    <li><span>Fully random noise.</span></li>
   </ul>
 </ul>
 
@@ -143,24 +143,24 @@ $$\large Error = Bias + Variance\;(+ Noise)$$
 
 class: center, middle
 
-<h1><a>Kenne dein Problem</a></h1>
+<h1><a>Know your Problem</a></h1>
+
 
 ---
 
 .pull-left4[
-# Linear oder Nicht-linear
+# Linear or non-linear
 
 <ul>
-  <li class="m1"><span><b>Lineare Modelle</b></span></li>
+  <li class="m1"><span><b>Linear models</b></span></li>
   <ul class="level">
-    <li><span>Machen die Annahme, dass die Welt linear ist. Stimmt selten, führt jedoch zu <high>weniger overfitting</high>.</span></li>
+    <li><span>Linear models make strong model assumptions. They are more often wrong, but also <high>less prone to overfitting</high>.</span></li>
   </ul><br>
-  <li class="m2"><span><b>Nicht-lineare Modelle</b></span></li>
+  <li class="m2"><span><b>Non-linear models</b></span></li>
   <ul class="level">
-    <li><span>Beinhaltet (meist) lineare Modelle als Spezialfall und neigen damit zu <high>mehr overfitting</high>. Lohnt sich i.A. nur, wenn lineare Modelle das Problem schlecht approximieren. </span></li>
+    <li><span>Non-linear models make weaker model assumptions, leaving the exact relationship (more) open. They are are closer to the truth, but also <high>more prone to overfitting</high>.</span></li>
   </ul>
 </ul>
-
 
 ]
 
@@ -175,20 +175,18 @@ class: center, middle
 ]
 
 
-
-
 ---
 
 .pull-left45[
 
-# Kernel Trick
+# Kernel trick
 
 <ul>
-  <li class="m1"><span>Transformiert ursprünglichen Featurespace in einen neuen, der damit z.B. das Trennen von Klassen ermöglicht.</span></li><br>
-  <li class="m2"><span>Verwendet z.B. in <high>Support Vector Machines</high> (z.B. <mono>method = "svmRadial"</mono>) meist unter Verwendung einer <high>radial basis function</high> (rdf).</span></li>
+  <li class="m1"><span><high>Transforms "input space"</high> into new "feature space" to allows for object separation..</span></li><br>
+  <li class="m2"><span>Used in <high>Support Vector Machines</high> (e.g., <mono>method = "svmRadial"</mono>) often using a <high>radial basis function</high> (rbf).</span></li>
 </ul>
 
-<br>
+
 
 <p align="center">
   <img src="image/kernel_bw.png" height=160px>
@@ -210,16 +208,17 @@ class: center, middle
 
 ---
 
-# Automatische Featureentwicklung
+# Automatic feature engineering
 
 .pull-left3[
 
 <br>
 
 <ul>
-  <li class="m1"><span><high>Deep learning</high> (insbesondere Convolutional Neural Networks) sind besonders gut darin, <high>Features selber zu entwickeln</high>.</span></li><br>
-  <li class="m2"><span>Das <mono>tensorflow</mono> Paket bietet Zugang zu Google's mächtiger <high>Tensorflow</high> Library für Deep Learning.</span></li><br>
+  <li class="m1"><span><high>Deep learning</high> aka neural networks and, especially, <high>convolutional neural networks</high>, excel because they generate their features.</span></li><br>
+  <li class="m2"><span>Neural networks are not the focus of <mono>caret</mono> and this course. Powerful implementations based on <high>Google's Tensorflow</high> library are provided by <mono>tensorflow</mono>.</span></li><br>
 </ul>
+
 
 ]
 
@@ -235,27 +234,29 @@ class: center, middle
 
 ]
 
-
 ---
 
 class: center, middle
 
-<h1><a>Bleibe robust</a></h1>
+<h1><a>Keep it robust</a></h1>
+
 
 ---
 
-# Robustheit
+# Robustness
 
 .pull-left4[
 
 <ul>
-  <li class="m1"><span>Es gibt eine Reihe von <high>Tricks</high> um Modelle robuster zu machen, d.h. um den <i>Variance</i> Fehler zu minimieren.</span></li><br>
+  <li class="m1"><span>To produce <high>robust predictions</high> that suffer less from variance ML models use a variety of <high>tricks</high>.</span></li><br>
 </ul>
+
 
 <p align = "center">
   <img src="image/robustness_sel.png" width=350px><br>
   <font style="font-size:10px">from <a href="https://www.istockphoto.com/ch/grafiken/kraftathlet?sort=mostpopular&mediatype=illustration&assetfiletype=eps&phrase=kraftathlet">istockphoto.com</a></font>
 </p>
+
 
 ]
 
@@ -273,12 +274,12 @@ class: center, middle
 </tr>
 <tr style="background-color:#ffffff">
   <td align="center"><i>Tolerance</i></td>
-  <td align="center">Vergrössert Fehlertoleranz</td>
+  <td align="center">Decrease error tolerance</td>
   <td align="center"><mono>svmRadial</mono></td>
 </tr>
 <tr style="background-color:#ffffff">
   <td align="center"><i>Regularization</i></td>
-  <td align="center">Strafe für Komplexität</td>
+  <td align="center">Penalize for complexity</td>
   <td align="center"><mono>lasso</mono>, <mono>ridge</mono>, <mono>elasticnet</mono></td>
 </tr>
 <tr style="background-color:#ffffff">
@@ -313,8 +314,9 @@ class: center, middle
 
 .pull-left45[
 
+
 <ul>
-  <li class="m1"><span>Regularisierung bestraft den Fit für die <high> modell-spezifische Komplexität</>.</span></li><br>
+  <li class="m1"><span>Regularization adds <high>penalties for complexity</high> to prevent overfitting.</span></li><br>
 </ul>
 
 <br2>
@@ -417,13 +419,13 @@ overfit_gg
 # Bagging
 
 <ul>
-  <li class="m1"><span><high>Aggregieren</high> der Vorhersagen multipler Modelle, die auf Basis von <high>Stichproben</high> aus den Daten gefitted werden.</span></li><br>
-  <li class="m2"><span>Besonders nützlich bei Modellen mit moderat guter, varierender Performanz.</span></li><br>
-  <li class="m3"><span><b>Algorithmus</b>:</span></li>
+  <li class="m1"><span><high>Aggregate</high> predictions from multiple fits to <high>resampled</high> data..</span></li><br>
+  <li class="m2"><span>Especially beneficial for models that produce relatively<high>unrobust fits</high>.</span></li><br>
+  <li class="m3"><span><b>Algorithm</b>:</span></li>
   <ol>
-      <li><span><high>Stichprobe</high> aus den Daten mit zurücklegen</span></li>
-      <li><span><high>Fitte</high> Modelle zu Stichproben</span></li>
-      <li><span><high>Mittele</high> die Vorhersage</span></li>
+      <li><span><high>Resample</high> data (with replacement).</span></li>
+      <li><span><high>Fit</high> model to resampled data.</span></li>
+      <li><span><high>Average</high> predictions.</span></li>
   </ol>
 </ul>
 
@@ -437,8 +439,6 @@ overfit_gg
 </p>
 
 
-
-
 ]
 
 ---
@@ -448,17 +448,18 @@ overfit_gg
 .pull-left4[
 
 <ul>
-  <li class="m1"><span>Eine Art iteratives Bagging auf Basis einer <high>adaptiven Gewichtung</high> der Daten.</span></li><br>
-  <li class="m2"><span>Variante Extreme Gradient Boosting <mono>xgbTree</mono> zählt zu den <high>besten verfügbaren Modellen</high>.</span></li><br>
-  <li class="m3"><span><b>Algorithmus</b>:</span></li>
+  <li class="m1"><span>Boosting <high>adaptively re-weights</high> samples based on performance.</span></li><br>
+  <li class="m2"><span><mono>adaboost</mono> and <mono>xgbTree</mono> are some of the <high>best ML models out there</high>. </span></li><br>
+  <li class="m3"><span><b>Algorithm</b>:</span></li>
   <ol>
-      <li><span><high>Gewichte</high> alle Datenpunkte gleich.</span></li>
-      <li><span><high>Fitte</high> ein moderat flexibles Modell.</span></li>
-      <li><span><high>Erhöhe</high> Gewicht schlecht vorhergesagter Punkte.</span></li>
-      <li><span><high>Wiederhole</high> iterativ.</span></li>
-      <li><span><high>Mittele</high> Vorhersage proportional zum Modellfit.</span></li>
+      <li><span> Assign <high>equal weight</high> to all cases..</span></li>
+      <li><span><high>Fit</high> simple model.</span></li>
+      <li><span><high>Increase weight of misfit cases</high> by model misfit for next iteration.</span></li>
+      <li><span><high>Repeat</high>.</span></li>
+      <li><span><high>Average</high> predictions weighted by model misfit.</span></li>
   </ol>
 </ul>
+
 
 ]
 
@@ -474,18 +475,18 @@ overfit_gg
 
 ---
 
-# Automatische Featureselektion
+# Automatic feature selection
 
 .pull-left45[
 
 <ul>
   <li class="m1"><span><b>LASSO</b></span></li><br>
   <ul>
-    <li><span>Schätzt oft <high><mono>beta = 0</mono></high>, was effektiv das Feature aus dem Modell eliminiert.</span></li>
+    <li><span>Regularization can <high>estimate <mono>beta = 0</mono></high> and, thus, essentially deselects that feature.</span></li>
   </ul><br><br>
   <li class="m2"><span><b>Decision Tree / Random forests</b></span></li><br>
   <ul>
-    <li><span>Features müssen nicht für die Vorhersage verwendet werden (bei hohem <mono>mtry</mono>).</span></li>
+    <li><span>Trees reuse features so that <high>unpredictive features may never come to action</high>.</span></li>
   <ul>
 </ul>
 
@@ -512,7 +513,7 @@ overfit_gg
 
 ---
 
-# Erinnere
+# Remember
 
 .pull-left45[
 
@@ -545,7 +546,7 @@ overfit_gg
 
 class: middle, center
 
-<h1><a href="https://therbootcamp.github.io/ML_2020Oct/_sessions/Models/Models_practical.html">Practical</a></h1>
+<h1><a href="https://therbootcamp.github.io/ML-DHLab/_sessions/Models/Models_practical.html">Practical</a></h1>
 
 
 

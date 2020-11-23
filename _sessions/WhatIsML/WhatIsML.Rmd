@@ -1,11 +1,11 @@
 ---
-title: "Was ist ML?"
-author: "Maschinelles Lernen mit R<br>
+title: "What is ML?"
+author: "Machine Learning with R<br>
   <a href='https://therbootcamp.github.io'>
-    The R Bootcamp
+    The R Bootcamp @ DHLab
   </a>
   <br>
-  <a href='https://therbootcamp.github.io/ML_2020Oct/'>
+  <a href='https://therbootcamp.github.io/ML-DHLab/'>
     <i class='fas fa-clock' style='font-size:.9em;'></i>
   </a>&#8239; 
   <a href='https://therbootcamp.github.io'>
@@ -17,7 +17,7 @@ author: "Maschinelles Lernen mit R<br>
   <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
     <i class='fab fa-linkedin' style='font-size: .9em;'></i>
   </a>"
-date: "Oktober 2020"
+date: "November 2020"
 output:
   xaringan::moon_reader:
     css: ["default", "baselrbootcamp.css"]
@@ -45,7 +45,7 @@ layout: true
     </a>
     <a href="https://therbootcamp.github.io/">
       <font color="#7E7E7E">
-      Maschinelles Lernen mit R | Oktober 2020
+       Machine Learning with R | November 2020
       </font>
     </a>
     </span>
@@ -53,41 +53,35 @@ layout: true
 
 ---
 
-```{r, eval = FALSE, echo = FALSE}
-# Code to knit slides
-xaringan::inf_mr('_sessions/D1S2_Wrangling/Wrangling.Rmd')
-baselers <- read_csv("https://raw.githubusercontent.com/therbootcamp/baselers/master/inst/extdata/baselers.txt")
-```
+class: middle, center
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 options(width=110)
 options(digits = 4)
 library(tidyverse)
-baselers <- read_csv("1_Data/basel.csv")
+baselers <- read_csv("https://raw.githubusercontent.com/therbootcamp/baselers/master/inst/extdata/baselers.txt")
 ```
 
 
-class: middle, center
+# What do you think?
 
-<h1><a>Was denkt Du?</a></h1>
-
-Nicht Googlen :)
+No Googling :)
 
 ---
 
-# Was ist maschinelles Lernen?
+# What is machine learning?
 
 .pull-left45[
 
 <ul>
-  <li class="m1"><span><b>Maschinelles Lernen ist</b>...</span></li><br>
+  <li class="m1"><span><b>Machine learning is</b>...</span></li><br>
   <ul class="level">
-    <li><span>...ein <high>Bereich der künstlichen Intelligenz</high>...</span></li><br>
-    <li><span>...der mittels <high>statistischer Methoden</high>...</span></li><br>
-    <li><span>...es Computern ermöglicht zu <high>lernen</high>...</span></li><br>
-    <li><span>...d.h., fortwährend die eigene <high>Leistung</high> in (spezifischen) Aufgaben verbessert...</span></li><br>
-    <li><span>...<high>ohne explizit programmiert</high> worden zu sein.</span></li>
+    <li><span>...an <high>area of artificial intelligence</high>...</span></li><br>
+    <li><span>...that uses <high>statistical methods</high>...</span></li><br>
+    <li><span>...to computers to <high>learn</high>...</span></li><br>
+    <li><span>...i.e., to iteratively <high>improve</high> task performance...</span></li><br>
+    <li><span>...on the basis of available <high>data</high>.</span></li>
   </ul>
 </ul>
 
@@ -106,40 +100,35 @@ Nicht Googlen :)
 
 ---
 
-# Herkunft von ML 
-
-<div align="center">
-<iframe width="800" height="450" src="https://www.youtube.com/embed/cNxadbrN_aI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
----
-
-# Leicht zu verwechseln
-
 .pull-left5[
+
+# Easy to confuse
 
 <ul>
   <li class="m1"><span><b>AI</b></span></li>
   <ul class="level">
-    <li><span><high>Intelligenz realisiert durch Maschinen</high> im Vergleich zu Intelligenz realisiert durch Menschen oder Tiere.</span></li>
+    <li><span><high>Intelligence demonstrated by machines</high>, in contrast to the natural intelligence displayed by humans and animals.</span></li>
   </ul>
-  <li class="m2"><span><b>Statistik</b></span></li>
+  <li class="m2"><span><b>Statistics</b></span></li>
   <ul class="level">
-    <li><span><high>Feld der Mathematik</high>, das sich mit der Erhebung, Verarbeitung, Analyse, und Interpretation von Daten beschäftigt.</span></li>
+    <li><span><high>Branch of mathematics</high> dealing with data collection, organization, analysis, interpretation and presentation.</span></li>
   </ul>
   <li class="m3"><span><b>Big Data</b></span></li>
   <ul class="level">
-    <li><span>Beschäftigt sich mit Daten, die <high> zu gross und/oder zu komplex</high> für traditionelle Tools der Datenverarbeitung sind.</span></li>
+    <li><span>Deals with data sets that are <high>too large or complex</high> to be dealt with by traditional data-processing application software.</span></li>
   </ul>
   <li class="m4"><span><b>Data Science</b></span></li>
   <ul class="level">
-    <li><span>Multi-disziplinares Feld, das sich mit Methoden und Systemen zur Extraktion von <high>Erkenntnissen aus Daten</high> beschäftigt</span></li>
+    <li><span>A multi-disciplinary field that uses scientific methods, processes, algorithms and systems to <high>extract knowledge and insights</high> from structured and unstructured data.</span></li>
   </ul>
 </ul>
 
 ]
 
+
 .pull-right4[
+
+<br><br><br><br><br>
 
 <p align = "center">
 <img src="image/areas.png" height=390px><br>
@@ -147,222 +136,25 @@ Nicht Googlen :)
 
 ]
 
----
-
-class: middle, center
-
-<h1><a href="">Warum ML?</a></h1>
 
 ---
 
-# Zwei Szenarien
+# ML's origin
 
-.pull-left5[
-
-<ul>
-  <li class="m1"><span><b>Herzinfarkt vorhersagen</b></span></li>
-  <ul class="level">
-    <li><span>Ein Patient kommt in die Notaufnahme mit Schmerzen in der Brust und befürchtet einen Herzinfarkt.</span></li><br>
-    <li><span><i>Wie entscheidet ihr, ob der Patient einen Herzinfarkt hat oder nicht?</i></span></li>
-  </ul>
-  <br><br>
-  <li class="m2"><span><b>Verkaufszahlen vorhersagen</b></span></li>
-  <ul class="level">
-    <li><span>Die Unternehmensführung überlegt eine neue Filiale in Basel zu eröffnen.</span></li><br>
-    <li><span>Wie entscheidet ihr, ob prospektive Verkaufszahlen eine neue Filiale rechtfertigen?</span></li>
-  </ul>
-</ul>
-
-]
-
-.pull-right4[
-
-
-<p align = "center">
-<img src="image/chestpain.jpg" height=180px width=260px><br>
-<font style="font-size:10px">from <a href="https://medium.com/@dkwok94/machine-learning-for-my-grandma-ca242e97ef62">medium.com</a></font>
-</p>
-
-<p align = "center">
-<img src="image/storefront.jpg" height=180px width=260px><br>
-<font style="font-size:10px">from <a href="https://thirdmanrecords.com/locations/detroit-storefront">thirdmanrecords.com</a></font>
-</p>
-
-]
-
----
-
-<p align = "center">
-<img src="image/trump_gut_statement.jpg"><br>
-<font style="font-size:10px">from <a href="cnn.com">cnn.com</a></font>
-</p>
-
-
----
-
-# Können wir unser Intuition trauen?
-
-.pull-left45[
-
-<ul>
-  <li class="m1"><span><b>Intuition...</b></span></li>
-  <br>
-  <ul class="level">
-    <li><span></span></li><br>
-    <li><span></span></li><br>
-    <li><span></span></li><br>
-    <li><span></span></li><br>
-    <li><span></span></li>
-  </ul>
-</ul>
-
-]
-
-.pull-right45[
-
-
-<p align = "center">
-<img src="image/intuition1.png" height=180px><br>
-<font style="font-size:10px">adapted from <a href="https://medium.com/@dkwok94/machine-learning-for-my-grandma-ca242e97ef62">medium.com</a></font>
-</p>
-
-<p align = "center">
-<img src="image/intuition2.png" height=180px><br>
-<font style="font-size:10px">adapted from <a href="https://thirdmanrecords.com/locations/detroit-storefront">thirdmanrecords.com</a></font>
-</p>
-
-]
-
----
-
-# Können wir unser Intuition trauen?
-
-.pull-left45[
-
-<ul>
-  <li class="m1"><span><b>Intuition...</b></span></li>
-  <br>
-  <ul class="level">
-    <li><span>...verrät wenig darüber <high>wie die Vorhersage zustande gekommen ist</high>.</span></li><br>
-    <li><span>...kann leicht durch <high>andere Beweggründe als Akkuratheit</high> beeinflusst worden sein.</span></li><br>
-    <li><span>...es kann nicht festgestellt werden, ob <high>alle relevanten Informationen</high> berücksichtigt wurde.</span></li><br>
-    <li><span>...ist schwierig (exakt) zu <high>reproduzieren</high>.</span></li><br>
-    <li><span>...ist im Nachhinein <high>leicht zu verteidigen</high>.</span></li>
-  </ul>
-</ul>
-
-]
-
-.pull-right45[
-
-
-<p align = "center">
-<img src="image/intuition1.png" height=180px><br>
-<font style="font-size:10px">adapted from <a href="https://medium.com/@dkwok94/machine-learning-for-my-grandma-ca242e97ef62">medium.com</a></font>
-</p>
-
-<p align = "center">
-<img src="image/intuition2.png" height=180px><br>
-<font style="font-size:10px">adapted from <a href="https://thirdmanrecords.com/locations/detroit-storefront">thirdmanrecords.com</a></font>
-</p>
-
-]
-
----
-
-<br>
-
-<p align = "center">
-<img src="image/ML.png"><br>
-</p>
-
-
----
-
-# Vorteile des maschinellen Lernens
-
-.pull-left45[
-
-<ul>
-  <li class="m1"><span><b>ML...</b></span></li>
-  <br>
-  <ul class="level">
-    <li><span></span></li><br>
-    <li><span></span></li><br>
-    <li><span></span></li><br>
-    <li><span></span></li><br>
-    <li><span></span></li><br>
-    <li><span></span></li>
-  </ul>
-</ul>
-
-]
-
-.pull-right45[
-
-<p align = "center">
-<img src="image/ml1.png" height=180px><br>
-<font style="font-size:10px">from <a href="https://medium.com/@dkwok94/machine-learning-for-my-grandma-ca242e97ef62">medium.com</a></font>
-</p>
-
-<p align = "center">
-<img src="image/ml2.png" height=180px><br>
-<font style="font-size:10px">from <a href="https://thirdmanrecords.com/locations/detroit-storefront">thirdmanrecords.com</a></font>
-</p>
-
-] 
-
----
-
-# Vorteile des maschinellen Lernens
-
-.pull-left45[
-
-<ul>
-  <li class="m1"><span><b>ML...</b></span></li>
-  <br>
-  <ul class="level">
-    <li><span>...kann <high>alle Daten</high> berücksichtigen.</span></li><br>
-    <li><span>...ist <high>explizit, reproduzierbar, und quantitativ</high>,</span></li><br>
-    <li><span>...kann die <high>wichtigen Variablen identifizieren</high>.</span></li><br>
-    <li><span>...kann <high>Wahrscheinlichkeiten</high> und erwartete Fehler ausgeben. </span></li><br>
-    <li><span>...kann <high>neue Erkenntnisse</high> über die Daten liefern.</span></li>
-    <li><span>...kann <high>automatisiert</high> werden.</span></li>
-  </ul>
-</ul>
-
-]
-
-.pull-right45[
-
-<p align = "center">
-<img src="image/ml1.png" height=180px><br>
-<font style="font-size:10px">from <a href="https://medium.com/@dkwok94/machine-learning-for-my-grandma-ca242e97ef62">medium.com</a></font>
-</p>
-
-<p align = "center">
-<img src="image/ml2.png" height=180px><br>
-<font style="font-size:10px">from <a href="https://thirdmanrecords.com/locations/detroit-storefront">thirdmanrecords.com</a></font>
-</p>
-
-] 
-
----
-
-class: middle, center
-
-<h1><a href="">Bereiche des ML</a></h1>
+<div align="center">
+<iframe width="800" height="450" src="https://www.youtube.com/embed/cNxadbrN_aI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 
 ---
 
 .pull-left3[
 
-# Bereiche des maschinellen Lernens
+# Types of machine learning tasks
 
 <ul>
-  <li class="m1"><span>Es gibt verschiedene Bereiche des maschinellen Lernens mit jeweils eigenen Algorithmen.</span></li>
-  <li class="m2"><span>Wir fokussieren auf den Bereich des <high>Supervised Learning</high> (Deutsch: überwachtes Lernen).</span></li>
+  <li class="m1"><span>There are many types of machine learning tasks, each of which call for different models.</span></li>
+  <li class="m2"><span><high>We will focus on supervised machine learning</high>.</span></li>
 </ul>
 
 ]
@@ -381,7 +173,7 @@ class: middle, center
 
 ---
 
-# Terminologie
+# Data terminology
 
 
 .pull-left5[
@@ -396,7 +188,7 @@ class: middle, center
     <b>Definition</b>
   </td>  
   <td bgcolor="white">
-    <b>Beispiel</b>
+    <b>Example</b>
   </td>  
 </tr>
 <tr>
@@ -404,40 +196,40 @@ class: middle, center
     <i>Case<br><font style="font-size:12px">(Fall)</font></i>
   </td>
   <td bgcolor="white">
-   Die <high>Beobachtungseinheit</high> der Daten.
+   Die <high>Unit of observation</high> in data.
   </td>  
   <td bgcolor="white">
-   Ein Patient, eine Filiale, etc.
-  </td>  
-</tr>
-<tr>
-  <td bgcolor="white">
-    <i>Feature<br><font style="font-size:12px">(Variable, Prädiktor)</font></i>
-  </td>
-  <td bgcolor="white">
-   Eine gemessene <high>Eigenschaft</high> der <i>Cases</i>. 
-  </td>  
-  <td bgcolor="white">
-   Alter, Temperatur, Land, etc.
+   A patient, a site, etc.
   </td>  
 </tr>
 <tr>
   <td bgcolor="white">
-    <i>Criterion<br><font style="font-size:12px">(Variable, Kriterium)</font></i>
+    <i>Feature<br><font style="font-size:12px">(variable, predictor)</font></i>
   </td>
   <td bgcolor="white">
-   Das <high>Feature</high>, das man <high>vorhersagen</high> will.
+   A measurable <high>property</high> of <i>cases</i>. 
   </td>  
   <td bgcolor="white">
-   Herzinfarkt, Verkäufe, etc.
+   Age, temperature, country, etc.
   </td>  
 </tr>
 <tr>
   <td bgcolor="white">
-    <i>Daten</i>
+    <i>Criterion<br><font style="font-size:12px">(variable, criterion)</font></i>
   </td>
   <td bgcolor="white">
-  Üblicherweise <high>rechteckig</high> mit <high>Cases in Zeilen</high> und <high>Features in Spalten</high>.
+   The <high>Feature</high> that you want to <high>predict</high>.
+  </td>  
+  <td bgcolor="white">
+   Heart attack, sales, etc.
+  </td>  
+</tr>
+<tr>
+  <td bgcolor="white">
+    <i>Data</i>
+  </td>
+  <td bgcolor="white">
+  Typically <high>rectangular</high> with <high>Cases in rows</high> and <high>Features in columns</high>.
   </td>  
   <td bgcolor="white">
    <mono>.csv</mono>, <mono>.xls</mono>, <mono>.sav</mono>, etc.
@@ -462,24 +254,17 @@ class: middle, center
 
 # Supervised learning
 
-.pull-left45[
+.pull-left4[
 
 <ul>
-  <li class="m1"><span>Traditionell der <high>dominante Bereich</high> des machine learnings.</span></li>
-  <li class="m2"><span>Supervised learning benötigt <high>gelabelte Daten</high> um ein <high>Modell</high> zu lernen, das das Kriterium in Beziehung zu den Features setzt.</span></li>
+  <li class="m1"><span>The <high>dominant type</high> of machine learning.</span></li>
+  <li class="m2"><span>Supervised learning uses <high>labeled data</high> to learn <high>a model</high> that relates the criterion to the features.</span></li>
 </ul>
-
-<br>
-<u>Beispiel in Worten</u>
-
-<p style="margin-left:20px"><font style="font-size:24px">Wenn <mono>cp</mono> (chest pain) nicht <mono>a</mono> (asymptomatic) ist und <mono>age</mono> grösser ist als <mono>60</mono>, dann ist die Wahrscheinlichkeit für einen Herzinfarkt gross, anderfalls niedrig.</font></p>
-
-
 
 
 ]
 
-.pull-right45[
+.pull-right5[
 
 <p align = "center">
 <img src="image/supervised.png"><br>
@@ -488,7 +273,7 @@ class: middle, center
 
 ---
 
-# Drei Modelle des Supervised Learnings
+# 3 key (supervised) models
 
 <p align = "center" style="padding-top:20px">
 <img src="image/models.png"><br>
@@ -497,27 +282,27 @@ class: middle, center
 
 ---
 
-# Zwei Problemtypen des Supervised Learnings
+# 2 types of supervised problems
 
 .pull-left5[
+
 
 <ul>
   <li class="m1"><span><b>Regression</b></span></li>
   <br>
   <ul class="level">
-    <li><span>Vorhersage eines <high>numerischen, kontinuierlichen Kriteriums</high>.</span></li><br>
-    <li><span><i>Vorhersage des Cholesterinspiegels mit Alter</i></span></li>
+    <li><span>Prediction of a <high>quantitative criterion</high>.</span></li><br>
+    <li><span><i>Predict level cholesterol with age</i></span></li>
   </ul><br>
-  <li class="m2"><span><b>Klassifikation</b></span></li>
+  <li class="m2"><span><b>Classification</b></span></li>
   <br>
   <ul class="level">
-    <li><span>Vorhersage eines <high>kategorialen, diskreten Kriteriums</high>.</span></li><br>
-    <li><span><i>Vorhersage, ob Herzinfarkt ja oder nein</i></span></li>
+    <li><span>Prediction of a <high>categorical criterion</high>.</span></li><br>
+    <li><span><i>Predict heart attack yes or no</i></span></li>
   </ul><br>
 </ul>
 
 ]
-
 
 .pull-right4[
 
@@ -535,10 +320,10 @@ class: middle, center
 .pull-left5[
 
 <ul>
-  <li class="m1"><span>Analysiert die Zusammenhänge zwischen Cases oder Features um <high>zugrunde liegende Strukturen zu identifizieren</high>.</span></li><br>
+  <li class="m1"><span>Analyses relationships between cases or features to <high>discover hidden structures</high>.</span></li><br>
   <ul class="level">
-    <li><span><high>Dimensionsreduktion</high>: Zusammenfassung von Features auf Basis ihrer Zusammenhänge durch eine kleinere Anzahl synthetischer Features.</span></li><br>
-    <li><span><high>Clustering</high>: Gruppierung von Cases auf Basis ihrer Ähnlichkeiten zueinander.</span></li>
+    <li><span><high>Dimensionality reduction</high>: Group features on the basis of correlations into a smaller number of synthetic features.</span></li><br>
+    <li><span><high>Clustering</high>: Group cases on the basis of similarities/distances into clusters.</span></li>
   </ul>
 </ul>
 
@@ -562,13 +347,13 @@ class: middle, center
 .pull-left5[
 
 <ul>
-  <li class="m1"><span>Bereich <high>zwischen Supervised und Unsupervised</high> Learning.</span></li><br>
-  <li class="m2"><span><high>Lernt iterativ</high> auf Basis von minimalem Feedback.</span></li><br>
-  <li class="m3"><span>Prominenterweise involviert in:</span></li>
+  <li class="m1"><span>Domain <high>between supervised and unsupervised</high> learning.</span></li><br>
+  <li class="m2"><span><high>Learns iteratively</high> on the basis of (minimal) feedback.</span></li><br>
+  <li class="m3"><span>Used in:</span></li>
   <ul class="level"><br>
     <li><span>Modell fitting.</span></li><br>
-    <li><span>Robotik.</span></li><br>
-    <li><span>Spiele wie Schach, Go, oder Mario Kart.</span></li>
+    <li><span>Robotics.</span></li><br>
+    <li><span>Games: Chess, Go, or Mario Kart.</span></li>
   </ul>
 </ul>
 
@@ -589,41 +374,9 @@ class: middle, center
 ]
 
 
-<!---
-
-
-# Reinforcement learning
-
-.pull-left5[
-
-<ul>
-  <li class="m1"><span>Bereich <high>zwischen Supervised und Unsupervised</high> Learning.</span></li><br>
-  <li class="m2"><span><high>Lernt iterativ</high> auf Basis von minimalen Feedback.</span></li><br>
-  <li class="m3"><span>Prominenterweise involviert in:</span></li>
-  <ul class="level"><br>
-    <li><span>Modell fitting.</span></li><br>
-    <li><span>Robotik.</span></li><br>
-    <li><span>Spiele wie Schach, Go, oder Mario Kart.</span></li>
-  </ul>
-</ul>
-
-]
-
-
-
-.pull-right4[
-
-<br><br>
-
-<iframe width=550px height=310px src="https://www.youtube.com/embed/tXlM99xPQC8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-]
-
---->
-
 ---
 
-# Machine learning ist mehr als Algorithmen
+# Machine learning is more than algorithms
 
 <p align = "center">
 <img src="image/mlsteps.png" height=440px><br>
@@ -631,8 +384,7 @@ class: middle, center
 </p>
 
 
-
 ---
 class: middle, center
 
-<h1><a href=https://therbootcamp.github.io/ML_2020Oct/index.html>Agenda</a></h1>
+<h1><a href=https://therbootcamp.github.io/ML-DHLab/index.html>Schedule</a></h1>

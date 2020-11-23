@@ -1,11 +1,11 @@
 ---
 title: "Features"
-author: "Maschinelles Lernen mit R<br>
+author: "Machine Learning with R<br>
   <a href='https://therbootcamp.github.io'>
-    The R Bootcamp
+    The R Bootcamp @ DHLab
   </a>
   <br>
-  <a href='https://therbootcamp.github.io/ML_2020Oct/'>
+  <a href='https://therbootcamp.github.io/ML-DHLab/'>
     <i class='fas fa-clock' style='font-size:.9em;'></i>
   </a>&#8239; 
   <a href='https://therbootcamp.github.io'>
@@ -17,7 +17,7 @@ author: "Maschinelles Lernen mit R<br>
   <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
     <i class='fab fa-linkedin' style='font-size: .9em;'></i>
   </a>"
-date: "Oktober 2020"
+date: "November 2020"
 output:
   xaringan::moon_reader:
     css: ["default", "baselrbootcamp.css"]
@@ -45,7 +45,7 @@ layout: true
     </a>
     <a href="https://therbootcamp.github.io/">
       <font color="#7E7E7E">
-      Maschinelles Lernen mit R | Oktober 2020
+       Machine Learning with R | November 2020
       </font>
     </a>
     </span>
@@ -58,7 +58,7 @@ require(caret)
 require(tidyverse)
 # Code to knit slides
 #bas = read_csv('1_Data/basel.csv')
-bas = read_csv('1_Data/basel.csv') %>% na.omit()
+bas = read_csv('1_Data/baselers.csv')
 
 print2 <- function(x, nlines=10,...)
    cat(head(capture.output(print(x,...)), nlines), sep="\n")
@@ -80,18 +80,19 @@ bas <- bas %>% select_if(is.numeric)
 basel = bas
 
 fitControl_cv <- trainControl(
-  method = "cv",
-  number = 1)
+  method = "repeatedcv",
+  number = 1,
+  repeats = 1)
 
-train_index = createDataPartition(bas$einkommen, p = .8, list = FALSE)
+train_index = createDataPartition(bas$income, p = .8, list = FALSE)
 bas_train = bas %>% slice(train_index)
 bas_test = bas %>% slice(-train_index)
 
-einkommen_lm = train(einkommen ~ . - id, 
+income_lm = train(income ~ . - id, 
            method = 'lm', 
            data = bas_train)
 
-einkommen_lm_short = train(einkommen ~ alter + essen + alkohol + glueck + fitness + datause + tattoos + gewicht + kinder + groesse, 
+income_lm_short = train(income ~ age + food + alcohol + happiness + fitness + datause + tattoos + weight + children + fitness + height, 
            method = 'lm', 
            data = bas_train)
 
@@ -121,23 +122,24 @@ library(ggthemes)
 
 .pull-left45[
 
-# Feature Probleme
+# Feature issues
+
 
 <ul>
-  <li class="m1"><span><b>Zu viele Features</b></span></li>
+  <li class="m1"><span><b>Too many features</b></span></li>
   <ul class="level">
-    <li><span>Fluch der <high>Dimensionalität</high></span></li>
-    <li><span>Feature <high>Wichtigkeit</high></span></li>
+    <li><span>Curse of <high>dimensionality</high></span></li>
+    <li><span>Feature <high>importance</high></span></li>
   </ul><br>
-  <li class="m2"><span><b>Falsche Features</b>
+  <li class="m2"><span><b>Wrong features</b>
   <ul class="level">
-    <li><span><high>Skalierung</high> der Features</span></li>
-    <li><span><high>Korrelation</high> der Features</span></li>
-    <li><span><high>Qualität</high> der Features</span></li>
+    <li><span>Feature <high>scaling</high></span></li>
+    <li><span>Feature <high>correlation</high></span></li>
+    <li><span>Feature <high>quality</high></span></li>
   </ul>
-  <li class="m3"><span><b>Neue Features kreieren</b>
+  <li class="m3"><span><b>Create new features</b>
   <ul class="level">
-    <li><span><high>"Engineerig"</high> der Features</span></li>
+    <li><span>Feature <high>engineering</high></span></li>
   </ul>
   </span></li>
 </ul>
@@ -157,31 +159,31 @@ library(ggthemes)
 
 ---
 
-# Fluch der Dimensionalität
+# Curse of dimensionality
 
-.pull-left45[
+.pull-left35[
 
 <ul>
-  <li class="m1"><span><b>Dichte</b></span></li>
+  <li class="m1"><span><b>Density</b></span></li>
   <ul class="level">
-    <li><span>Die Menge der Fälle, die notwendig sind um den <high>Datenraum abzudecken</high> steigt exponentiell mit der Menge der Features.</span></li>
+    <li><span>The number of cases, that are necessary to <high>cover the data space</high> grows exponentially with the number of features.</span></li>
   </ul><br>
-  <li class="m2"><span><b>Redundanz</b></span></li>
+  <li class="m2"><span><b>Redundancy</b></span></li>
   <ul class="level">
-    <li><span>Redundanz zwischen den Features steigt i.a.R. mit der Anzahl der Features, was zu <high>Unsicherheiten</high> in der Schätzung führt.</span></li>
+    <li><span>Redundancy between the features grows with number, implying increased <high>uncertainty</high> in estimation.</span></li>
   </ul><br>
-  <li class="m3"><span><b>Effizienz</b></span></li>
+  <li class="m3"><span><b>Efficiency</b></span></li>
   <ul class="level">
-    <li><span>Mit der Menge der Feature steigt i.a.R die Anzahl der <high>Parameter</high> und damit auch i.a.R die benötigten <high>komputationalen Ressourcen</high>.</span></li>
+    <li><span>The number of <high>parameters</high> grows with features requiring for <high>computational resources</high>.</span></li>
   </ul>
   </span></li>
 </ul>
 
 ]
 
-.pull-right45[
+.pull-right6[
 
-<br><br><br><br>
+<br>
 
 <p align="center">
 <img src="image/cod.png"><br>
@@ -194,31 +196,30 @@ library(ggthemes)
 
 ---
 
-# Wie Dimensionalität reduzieren?
+# How to reduce dimensionality?
 
 .pull-left45[
 
 <ul>
-  <li class="m1"><span><b>Manuelle Selektion</b></span></li>
+  <li class="m1"><span><b>Manual selection</b></span></li>
   <ul class="level">
-    <li><span>Features können manuell auf Basis <high>statistischer</high> oder <high>theoretischer Gesichtspunkte</high> ausgewählt werden.</span></li>
+    <li><span>Reduce features <high>manually</high> based on statistical or intuitive considerations..</span></li>
   </ul><br>
-  <li class="m2"><span><b>Automatische Selektion</b></span></li>
+  <li class="m2"><span><b>Automatic selection</b></span></li>
   <ul class="level">
-    <li><span>Verwende <high>Modelle</high> die automatisch Features selegieren, z.B., Lasso Regression, oder Algorithmen für Featureselektion</span></li>
+    <li><span>Reduce variables <high>automatically</high> using suitable ML algorithms, e.g., <mono>random forests</mono> or <mono>lasso</mono>, or feature selection algorithms, e.g., <mono>recursive feature selection</mono>.</span></li>
   </ul><br>
-  <li class="m3"><span><b>Automatische Reduktion</b></span></li>
+  <li class="m3"><span><b>Automatic reduction</b></span></li>
   <ul class="level">
-    <li><span>Reduziere die Dimensionalität mit Methoden der <high>Dimensionsreduktion</high>, z.B. mit Principal Component Analysis (PCA).</span></li>
+    <li><span>Compress variables using <high>dimensionality reduction algorithms</high>, such as principal component analysis (PCA).</span></li>
   </ul>
   </span></li>
 </ul>
 
+
 ]
 
-.pull-right45[
-
-<br>
+.pull-right5[
 
 <p align = "center">
 <img src="image/highd.jpeg" height=350>
@@ -229,34 +230,32 @@ library(ggthemes)
 
 ---
 
-# Feature-Wichtigkeit
+# Feature importance
 
 .pull-left4[
 
-
 <ul>
-  <li class="m1"><span>Mass für die Bedeutung eines Features <high>für Fit/Vorhersage der Daten</high>.</span></li>
-  <li class="m2"><span><mono>caret</mono> berechnet die Feature-Wichtigkeit <high>Modell-spezifisch und skaliert</high> sie auf Werte innerhalb <mono>[0, 100]</mono></span></li>
-  <li class="m3"><span><b>Strategien</b></span></li>
+  <li class="m1"><span>Characterizes how much a <high>feature contributes</high> to the fitting/prediction performance. .</span></li><br>
+  <li class="m2"><span>The metric is <high>model specific</high>, but typically <high>normalized</high> to <mono>[0, 100]</mono>.</span></li><br>
+  <li class="m3"><span><b>Strategies</b></span></li>
   <ul class="level">
-    <li><span><high>1-Feature</high> Modelle (z.B. <mono>LOESS</mono>)</span></li>
-    <li><span>Loss durch <high>Scrambling</high></span></li>
-    <li><span>Wichtigkeit in <high>komplexen Modellen</high> (z.B. Random Forest)</span></li>
+    <li><span>Single variable prediction (e.g., using LOESS, ROC) </span></li>
+    <li><span>Accuracy loss from scrambling</span></li>
+    <li><span>Random Forest importance</span></li>
     <li><span>etc.</span></li>
   </ul>
 </ul>
-
 
 ]
 
 .pull-right5[
 ```{r, eval = FALSE}
-# Plotte Feature-Wichtigkeit für lm(einkommen ~ .)
-plot(varImp(einkommen_lm))
+# plot variable importance for lm(income ~ .)
+plot(varImp(income_lm))
 ```
 
 ```{r, echo = FALSE, fig.height=5.2, fig.width=8}
-plot(varImp(einkommen_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
+plot(varImp(income_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
 ```
 
 ]
@@ -268,27 +267,28 @@ plot(varImp(einkommen_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight
 .pull-left45[
 
 <ul>
-  <li class="m1"><span>Die <mono>varImp()</mono> Funktion liefert <high>Modell-spezifische Schätzungen</high> der Feature-Wichtigkeit.</span></li>
+  <li class="m1"><span>Automatically selects <high>appropriate measure</high> of variable importance for a given algorithm.</span></li>
 </ul>
 
+
 ```{r eval = FALSE}
-varImp(einkommen_lm)
+varImp(income_lm)
 ```
 
 ```{r echo = F}
-print2(varImp(einkommen_lm_short), 11)
+print2(varImp(income_lm_short), 11)
 ```
 
 ]
 
 .pull-right5[
 ```{r, eval = FALSE}
-# Plotte Feature-Wichtigkeit für lm(einkommen ~ .)
-plot(varImp(einkommen_lm))
+# plot variable importance for lm(income ~ .)
+plot(varImp(income_lm))
 ```
 
 ```{r, echo = FALSE, fig.height=5.2, fig.width=8}
-plot(varImp(einkommen_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
+plot(varImp(income_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
 ```
 
 ]
@@ -297,16 +297,16 @@ plot(varImp(einkommen_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight
 
 .pull-left35[
 
-# `rfe()`
+# Recursive feature selection
 
 <ul>
-  <li class="m1"><span>Die rekursive Featureselektion <mono>rfe()</mono> verwendet <high>Cross-Validation</high> um die besten <i>n</i> Features zu identifizieren.</span></li>
-  <li class="m2"><span><b>Algorithmus</b></span></li>
+  <li class="m1"><span><mono>rfe()</mono> uses <high>cross-validation</high> to select the best <i>n</i> freatures.</span></li><br>
+  <li class="m2"><span>Algorithm</span></li>
   <ol>
-    <li><span><high>Kandidatenset</high> <mono>n = [2, 3, 5, 10]</mono>.</span></li>
-    <li><span>Wiederholtes <high>Resampling</high> und Aufteilen der Daten.</span></li>
-    <li><span>Evaluiere <high>Vorhersageleistung</high> für jeweils die besten <mono>n</mono> Features.</span></li>
-    <li><span>Selegiere bestes <mono>n</mono> auf Basis der <high>aggregierten Vorhersageleistung</high>.</span></li>
+    <li><span><high>Candidates</high>, e.g., <mono>n = [2, 3, 5, 10]</mono>.</span></li>
+    <li><span><high>Resample</high> and split data.</span></li>
+    <li><span>Evaluate <high>performance</high> for the best <mono>n</mono> features.</span></li>
+    <li><span>Select best <mono>n</mono> on the basis of <high>aggregate performance</high>.</span></li>
   </ol>
 </ul>
 
@@ -317,17 +317,17 @@ plot(varImp(einkommen_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight
 <br><br>
 
 ```{r, eval = F}
-# Rekursive Featureselektion
+# Run feature elimination
 rfe(x = ..., y = ..., 
-    sizes = c(3, 4, 5, 10), # Kandidaten für N
+    sizes = c(3,4,5,10), # feature set sizes
     rfeControl = rfeControl(functions = lmFuncs))
 ```
 
 ```{r, echo = F}
-# Rekursive Featureselektion
-out = rfe(x = bas_train %>% select(-einkommen), 
-    y = bas_train$einkommen,
-    sizes = c(3, 4, 5, 10),   
+# Run feature elimination
+out = rfe(x = bas_train %>% select(-income), 
+    y = bas_train$income,
+    sizes = c(3,4,5,10),   # Features set sizes should be considered
     rfeControl = rfeControl(
       functions = lmFuncs,
       verbose = FALSE))
@@ -340,18 +340,18 @@ print2(out, 20)
 
 # Principal component analysis
 
-.pull-left4[
+.pull-left45[
 
 <ul>
-  <li class="m1"><span><high>Standardmodell</high> für Dimensionsreduktion.</span></li><br>
-  <li class="m2"><span>Lineares Modell (Regression) repräsentiert die Features in einem <high>neuen, kleineren Featureraum</high>.</span></li><br>
-  <li class="m3"><span>Der neue Featureraum erklärt <high>maximal viel Varianz</high> an den ursprünglichen Features.</span></li>
+  <li class="m1"><span>The <high>go-to algorithm</high> for dimensionality reduction</span></li><br>
+  <li class="m2"><span>Linear model (regression) represents features in a <high>new, smaller feature space</high>.</span></li><br>
+  <li class="m3"><span>The new feature space explains <high>maximal variance</high> of the original features.</span></li>
 </ul>
 
 ]
 
 
-.pull-right5[
+.pull-right45[
 
 <p align = "center">
 <img src="image/pca.png" height=350>
@@ -364,21 +364,21 @@ print2(out, 20)
 
 ---
 
-# `preProc = c('pca')`
+# Using `PCA`
 
 .pull-left45[
 
 ```{r fig.height=5.1, fig.width=8, eval = F}
-# Trainiere Modell OHNE PCA
-model = train(einkommen ~ ., method = 'lm', 
+# train model WITHOUT PCA preprocessing
+model = train(income ~ ., method = 'lm', 
            data = bas_train)
 
 plot(varImp(model))
 ```
 
 ```{r fig.height=5.1, fig.width=8, echo = F}
-# Trainiere Modell OHNE PCA
-model = train(einkommen ~ . -id, method = 'lm', 
+# train model WITHOUT PCA preprocessing
+model = train(income ~ . -id, method = 'lm', 
               data = bas_train)
 
 plot(varImp(model, scale=F),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
@@ -390,16 +390,16 @@ plot(varImp(model, scale=F),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheig
 .pull-right45[
 
 ```{r fig.height=5.1, fig.width=8, eval = F}
-# Trainiere Modell MIT PCA
-model = train(einkommen ~ ., method = 'lm', 
+# train model WITH PCA preprocessing
+model = train(income ~ ., method = 'lm', 
               data = bas_train,
               preProc = c('pca'))
 plot(varImp(model))
 ```
 
 ```{r fig.height=5.1, fig.width=8, echo = F}
-# Trainiere Modell MIT PCA
-model = train(einkommen ~ . -id, method = 'lm', 
+# train model WITH PCA preprocessing
+model = train(income ~ . -id, method = 'lm', 
               data = bas_train,
               preProc = c('pca'),
               trControl = trainControl(preProcOptions = list(thresh = 0.75)))
@@ -410,21 +410,22 @@ plot(varImp(model, scale=F),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheig
 
 ---
 
-# Andere, einfache Feature Probleme
+# Other, easy feature problems
 
 .pull-left45[
 
-### Multikollinearität
+### Multi-collinearity
 
 <ul>
-  <li class="m1"><span>Unter Multikollinearität korrelieren Features zu stark, was in schädlicher Redundanz, <high>instabilen Fits resultiert</high>, und zu <high>schlechteren Vorhersagen führt</high>.</span></li>
+  <li class="m1"><span><high>High feature correlations</high> mean that there is redundancy in the data, which can lead to less stable fits, uninterpretable variable importances, and worse predictions.</span></li>
 </ul>
 
+
 ```{r}
-# Identifiziere redundante Features
+# identify redundant variables
 findCorrelation(cor(basel))
 
-# Entferne redundante Features
+# remove from data
 remove <- findCorrelation(cor(basel))
 basel <- basel %>%
   select(-remove)
@@ -435,24 +436,26 @@ basel <- basel %>%
 
 .pull-right45[
 
-### Ungleiche oder zu niedrige Varianz
+### Low variance 
 
 <ul>
-  <li class="m2"><span>Ungleiche Varianzen <high>verzerren</high> Methoden, die gleiche Varianz erwarten (z.B. LASSO).</span></li>
+  <li class="m2"><span>Low variance variables add parameters, but <high>can hardly contribute to prediction</high> and are, thus, also redundant.</span></li>
+</ul>
+
+
+```{r}
+# identify low variance variables
+nearZeroVar(basel)
+```
+
+
+<ul>
+  <li class="m3"><span>Unequal variance <high>breaks regularization</high> (L1, L2) and renders estimates difficult to interpret..</span></li>
 </ul>
 
 ```{r, eval = F}
-# Standardisiere Features
-train(..., preProc = c("center", "scale"))
-```
-
-<ul>
-  <li class="m3"><span>Features ohne "Varianz" tragen nicht zur Vorhersage bei, aber <high>vergrössern die Komplexität des Modells.</span></li>
-</ul>
-
-```{r}
-# Identifiziere Feature ohne Varianz
-nearZeroVar(basel)
+# standardize and center variables
+train(..., preProc("center", "scale"))
 ```
 
 ]
@@ -460,19 +463,19 @@ nearZeroVar(basel)
 
 ---
 
-# Schwierige Feature Probleme
+# Difficult feature problems
 
 <br>
 .pull-left35[
 
 <ul>
-  <li class="m1"><span><b>Triviale Features</b></span></li>
+  <li class="m1"><span><b>Trivial Features</b></span></li>
   <ul>
-    <li><span>Erfolgreiche Vorhersage bedeutet nicht, dass ein <high>bedeutsames Muster</high> identifiziert wurde</span></li>
+    <li><span>Successful prediction not necessarily implies that a meaningful pattern has been detected.</span></li>
   </ul><br>
-  <li class="m2"><span><b>Fehlende Features</b></span></li>
+  <li class="m2"><span><b>Missing features</b></span></li>
   <ul>
-    <li><span>Erfolgreiche Vorhersage basiert i.d.R. auf der Entwicklung <high>neuer, relvanterer Features</high>.</span></li><br>
+    <li><span>Some problems are hard, requiring the engineering of new features.</span></li><br>
   </ul>
 </ul>
 
@@ -492,11 +495,11 @@ nearZeroVar(basel)
 
 ---
 
-# Triviale Features
+# Trivial features
 
 .pull-left3[
 
-<u><a href="https://www.gwern.net/Tanks">Ein urban myth?!</a></u>
+<u><a href="https://www.gwern.net/Tanks">An urban myth?!</a></u>
 
 "The Army trained a program to differentiate American tanks from Russian tanks with 100% accuracy. Only later did analysts realize that the American tanks had been photographed on a sunny day and the Russian tanks had been photographed on a cloudy day. The computer had learned to detect brightness."<br><br>
 New York Times <a href="https://www.nytimes.com/2017/10/09/science/stanford-sexual-orientation-study.html" style="font-size:8px">[Full text]</a>
@@ -516,39 +519,9 @@ New York Times <a href="https://www.nytimes.com/2017/10/09/science/stanford-sexu
 
 ]
 
-
-<!---
-
-# Triviale Features
-
-In 2012 sagte [Nate Silver](https://en.wikipedia.org/wiki/Nate_Silver) die Ausgänge der Präsidentschaftswahlen in 50 Staaten voraus, nachdem er dies für 49 Staaten in 2008 getan hat. <high>Wie ist dieser Erfolg zu bewerten?</high>
-
-.pull-left5[
-
-<p align = "center">
-<img src="image/elect2008.png" height = 360px><br>
-<font style="font-size:10px">from <a href="https://www.vox.com/policy-and-politics/2016/11/8/13563106/election-map-historical-vote">vox.com</a></font>
-</p>
-
-]
-
-.pull-right5[
-
-<p align = "center">
-<img src="image/elect2012.png" height = 360px><br>
-<font style="font-size:10px">from <a href="https://www.vox.com/policy-and-politics/2016/11/8/13563106/election-map-historical-vote">vox.com</a></font>
-</p>
-
-
-
-]
-
---->
-
 ---
 
-# (Immer!) fehlende Features
-
+# (Always!) missing features
 
 .pull-left85[
 
@@ -572,7 +545,7 @@ In 2012 sagte [Nate Silver](https://en.wikipedia.org/wiki/Nate_Silver) die Ausg�
 
 ---
 
-# Feature Engineering
+# Feature engineering
 
 .pull-left45[
 
@@ -602,76 +575,7 @@ In 2012 sagte [Nate Silver](https://en.wikipedia.org/wiki/Nate_Silver) die Ausg�
 
 ---
 
-# <mono>createDataPartition()</mono>
-
-.pull-left4[
-
-<ul>
-  <li class="m1"><span>Verwende <mono>createDataPartition()</mono> um den <high>Datensatz aufzuteilen</high> in Trainings- und Testdaten.</span></li>
-</ul>
-
-<br>
-
-<table style="cellspacing:0; cellpadding:0; border:none;">
-  <col width="30%">
-  <col width="70%">
-<tr>
-  <td bgcolor="white">
-    <b>Argument</b>
-  </td>
-  <td bgcolor="white">
-    <b>Beschreibung</b>
-  </td>  
-</tr>
-<tr>
-  <td bgcolor="white">
-    <mono>y</mono>
-  </td>
-  <td bgcolor="white">
-    Das Kriterion. Wichtig für eine <high>ausgewogene Aufteilung</high> der Daten.  
-  </td>  
-</tr>
-<tr>
-  <td bgcolor="white">
-    <mono>p</mono>
-  </td>
-  <td bgcolor="white">
-    Der <high>Antei der Daten</high> der den Trainingsdaten zugewisen wird. Oft <mono>.8</mono> oder <mono>.5</mono>.    
-  </td>  
-</tr>
-</table>
-
-
-]
-
-.pull-right5[
-
-```{r, eval = FALSE, echo = TRUE}
-# Wichtig für konstante Ergebnisse
-set.seed(100)
-
-# Indizes für Training
-index <- 
-  createDataPartition(y = basel$einkommen,
-                             p = .8,
-                             list = FALSE)
-
-# Kreiere Trainingsdaten
-basel_train <- basel %>% 
-  slice(index)
-
-# Kreiere Testdaten
-basel_test <- basel %>% 
-  slice(-index)
-```
-
-
-]
-
-
----
-
 class: middle, center
 
-<h1><a href="https://therbootcamp.github.io/ML_2020Oct/_sessions/Features/Features_practical.html">Practical</a></h1>
+<h1><a href="https://therbootcamp.github.io/ML-DHLab/_sessions/Features/Features_practical.html">Practical</a></h1>
 

@@ -1,11 +1,11 @@
 ---
-title: "Willkommen"
-author: "Maschinelles Lernen mit R<br>
+title: "Welcome!"
+author: "Machine Learning with R<br>
   <a href='https://therbootcamp.github.io'>
-    The R Bootcamp
+    The R Bootcamp @ DHLab
   </a>
   <br>
-  <a href='https://therbootcamp.github.io/ML_2020Oct/'>
+  <a href='https://therbootcamp.github.io/ML-DHLab/'>
     <i class='fas fa-clock' style='font-size:.9em;'></i>
   </a>&#8239; 
   <a href='https://therbootcamp.github.io'>
@@ -17,7 +17,7 @@ author: "Maschinelles Lernen mit R<br>
   <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
     <i class='fab fa-linkedin' style='font-size: .9em;'></i>
   </a>"
-date: "Oktober 2020"
+date: "November 2020"
 output:
   xaringan::moon_reader:
     css: ["default", "baselrbootcamp.css"]
@@ -45,7 +45,7 @@ layout: true
     </a>
     <a href="https://therbootcamp.github.io/">
       <font color="#7E7E7E">
-      Maschinelles Lernen mit R | Oktober 2020
+      Machine Learning with R | November 2020
       </font>
     </a>
     </span>
@@ -62,14 +62,15 @@ options(digits = 4)
 knitr::opts_chunk$set(fig.align = 'center')
 ```
 
-
 .pull-left6[
 
 <br><br><br><br><br>
 
-# Ziel
 
->###Das Ziel dieses Kurses ist Euch den kompetenten Umgang mit Methoden des maschinellen Lernens und deren Implementierung zu vermitteln. 
+# Aim
+
+
+>###The aim of this workshop is enable you to thoughtfully implement machine learning methods, using R, to make data-driven decisions.
 
 ]
 
@@ -83,24 +84,24 @@ knitr::opts_chunk$set(fig.align = 'center')
 
 ---
 
-
 .pull-left4[
 
 <br>
-# Agenda 
+
+# Schedule 
 
 <ul>
   <li class="m1"><span><high>Workshop</high></span></li>
   <ul class="level">
-    <li><span>3 Blöcke zu Fundamentals: Fitting, Predicting, Optimizing</span></li>
-    <li><span>1 Block zu Unsupervised Learning</span></li>
-    <li><span>2 Blöcke zu praktischen Überlegungen</span></li>
+    <li><span>3 sessions on Fundamentals: Fitting, Predicting, Optimizing</span></li>
+    <li><span>1 sessions on Unsupervised Learning</span></li>
+    <li><span>2 sessions on practial considerations</span></li>
   </ul><br>
-  <li class="m2"><span><high>Block</high>
+  <li class="m2"><span><high>Session</high>
   <ul class="level">
-    <li><span>Folien-basierte Einführung</span></li>
-    <li><span>Viele Übungen</span></li>
-    <li><span>Interaktive Zusammenfassung</span></li>
+    <li><span>Slide-based Intro</span></li>
+    <li><span>Many exercises</span></li>
+    <li><span>Interactive summary</span></li>
   </ul>
   </span></li>
 </ul>
@@ -116,28 +117,23 @@ knitr::opts_chunk$set(fig.align = 'center')
 
 ---
 
+# Introduction
 
-# Einführung
 
 .pull-left45[
-<br2>
 
 <ul>
-  <li class="m1"><span><high>Einführung</high>
-  <br><br>
+  <li class="m1"><span><high>Intro</high></span></li><br>
   <ul class="level">
     <li><span>30-45 min</span></li>
-    <li><span>Konzepte & Code Beispiele</span></li>
-  </ul>
-  </span></li>
-  <li class="m2"><span><high>Materialien</high>
-  <br><br>
+    <li><span>Concepts & code examples</span></li>
+  </ul><br>
+  <li class="m2"><span><high>Materials</high></span></li><br>
   <ul class="level">
-    <li><span>Immer <a href="https://therbootcamp.github.io/ML_2020Apr/">online verfügbar</a></span></li>
+    <li><span>Always <a href="https://therbootcamp.github.io/ML-DHLab/">online available</a></span></li>
   </ul>
   </span></li>
 </ul>
-
 ]
 
 .pull-right55[
@@ -155,49 +151,45 @@ knitr::opts_chunk$set(fig.align = 'center')
 
 .pull-left45[
 
-# Übungen
-
+# Practicals
 
 <ul>
-  <li class="m1"><span><high>Selber Programmieren</high>
+  <li class="m1"><span><high>Program yourself</high>
   <br><br>
   <ul class="level">
-    <li><span>20 - 50 Aufgaben</span></li>
-    <li><span>Zu Beginn einfach dann zunehmend schwieriger.</span></li>
-    <li><span>Folgt Eurem eigenen Tempo.</span></li>
-    <li><span>Antworten kommen später.</span></li>
+    <li><span>20 - 50 Tasks</span></li>
+    <li><span>Begins easy, increasingly difficult.</span></li>
+    <li><span>Follow your own speed.</span></li>
+    <li><span>Answers will be provided later.</span></li>
   </ul>
   </span></li>
 </ul>
 
 ]
 
-
-
-
 .pull-right5[
 <br>
 
-  <iframe src="https://therbootcamp.github.io/ML_2020Apr/_sessions/Fitting/Fitting_practical.html" height="480px" width = "500px"></iframe>
+  <iframe src="https://therbootcamp.github.io/ML_2019Oct/_sessions/Fitting/Fitting_practical.html" height="480px" width = "500px"></iframe>
 
-  Beispiel:<a href="https://therbootcamp.github.io/ML_2020Apr/_sessions/Fitting/Fitting_practical.html"> Fitting </a>
+  Example: <a href="https://therbootcamp.github.io/dML_2019Oct/_sessions/Fitting/Fitting_practical.html">Fitting Practical </a>
 
 ]
 
 ---
 
-# Vorstellung
+# Introductions
 
 .pull-left5[
 
 <ul>
-  <li class="m1"><span>Wie heisst Du?</span></li>
-  <li class="m2"><span>Was ist dein Beruf?</span></li>
-  <li class="m3"><span>Hast du Programmiererfahrung mit R oder anderen Programmiersprachen?</span></li>
-  <li class="m4"><span>Hast du Erfahrung mit ML und wofür möchtest du es einsetzen?</span></li>
-  <li class="m5"><span>Kaffee oder Tee?</span></li>
-  <li class="m6"><span>Bier oder Wein?</span></li>
-  <li class="m7"><span>Berlin oder Paris?</span></li>
+  <li class="m1"><span>What is your name?</span></li>
+  <li class="m2"><span>What is your field/position?</span></li>
+  <li class="m3"><span>How experienced are you with R and other programming languages?</span></li>
+  <li class="m4"><span>Do you have experience with ML and what would you like to use it for?</span></li>
+  <li class="m5"><span>Coffee or tea?</span></li>
+  <li class="m6"><span>Beer or wine?</span></li>
+  <li class="m7"><span>Berlin or Paris?</span></li>
 </ul>
 
 ]
@@ -212,7 +204,10 @@ knitr::opts_chunk$set(fig.align = 'center')
 
 ]
 
+
 ---
 class: middle, center
 
-<h1><a href=https://therbootcamp.github.io/ML_2020Oct/index.html>Agenda</a></h1>
+<h1><a href=https://therbootcamp.github.io/ML-DHLab/index.html>Schedule</a></h1>
+
+

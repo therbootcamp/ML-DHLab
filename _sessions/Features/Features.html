@@ -3,7 +3,7 @@
   <head>
     <title>Features</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Maschinelles Lernen mit R   The R Bootcamp" />
+    <meta name="author" content="Machine Learning with R   The R Bootcamp @ DHLab" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="baselrbootcamp.css" type="text/css" />
   </head>
@@ -12,8 +12,8 @@
 class: center, middle, inverse, title-slide
 
 # Features
-### Maschinelles Lernen mit R<br> <a href='https://therbootcamp.github.io'> The R Bootcamp </a> <br> <a href='https://therbootcamp.github.io/ML_2020Oct/'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
-### Oktober 2020
+### Machine Learning with R<br> <a href='https://therbootcamp.github.io'> The R Bootcamp @ DHLab </a> <br> <a href='https://therbootcamp.github.io/ML-DHLab/'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
+### November 2020
 
 ---
 
@@ -34,7 +34,7 @@ layout: true
     &lt;/a&gt;
     &lt;a href="https://therbootcamp.github.io/"&gt;
       &lt;font color="#7E7E7E"&gt;
-      Maschinelles Lernen mit R | Oktober 2020
+       Machine Learning with R | November 2020
       &lt;/font&gt;
     &lt;/a&gt;
     &lt;/span&gt;
@@ -53,23 +53,24 @@ layout: true
 
 .pull-left45[
 
-# Feature Probleme
+# Feature issues
+
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Zu viele Features&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Too many features&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Fluch der &lt;high&gt;Dimensionalität&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;Feature &lt;high&gt;Wichtigkeit&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Curse of &lt;high&gt;dimensionality&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Feature &lt;high&gt;importance&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Falsche Features&lt;/b&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Wrong features&lt;/b&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;&lt;high&gt;Skalierung&lt;/high&gt; der Features&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;&lt;high&gt;Korrelation&lt;/high&gt; der Features&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;&lt;high&gt;Qualität&lt;/high&gt; der Features&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Feature &lt;high&gt;scaling&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Feature &lt;high&gt;correlation&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Feature &lt;high&gt;quality&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Neue Features kreieren&lt;/b&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Create new features&lt;/b&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;&lt;high&gt;"Engineerig"&lt;/high&gt; der Features&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Feature &lt;high&gt;engineering&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;
   &lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -89,31 +90,31 @@ layout: true
 
 ---
 
-# Fluch der Dimensionalität
+# Curse of dimensionality
 
-.pull-left45[
+.pull-left35[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Dichte&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Density&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Die Menge der Fälle, die notwendig sind um den &lt;high&gt;Datenraum abzudecken&lt;/high&gt; steigt exponentiell mit der Menge der Features.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;The number of cases, that are necessary to &lt;high&gt;cover the data space&lt;/high&gt; grows exponentially with the number of features.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Redundanz&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Redundancy&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Redundanz zwischen den Features steigt i.a.R. mit der Anzahl der Features, was zu &lt;high&gt;Unsicherheiten&lt;/high&gt; in der Schätzung führt.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Redundancy between the features grows with number, implying increased &lt;high&gt;uncertainty&lt;/high&gt; in estimation.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Effizienz&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Efficiency&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Mit der Menge der Feature steigt i.a.R die Anzahl der &lt;high&gt;Parameter&lt;/high&gt; und damit auch i.a.R die benötigten &lt;high&gt;komputationalen Ressourcen&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;The number of &lt;high&gt;parameters&lt;/high&gt; grows with features requiring for &lt;high&gt;computational resources&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;
   &lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 ]
 
-.pull-right45[
+.pull-right6[
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;br&gt;
 
 &lt;p align="center"&gt;
 &lt;img src="image/cod.png"&gt;&lt;br&gt;
@@ -126,31 +127,30 @@ layout: true
 
 ---
 
-# Wie Dimensionalität reduzieren?
+# How to reduce dimensionality?
 
 .pull-left45[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Manuelle Selektion&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Manual selection&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Features können manuell auf Basis &lt;high&gt;statistischer&lt;/high&gt; oder &lt;high&gt;theoretischer Gesichtspunkte&lt;/high&gt; ausgewählt werden.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Reduce features &lt;high&gt;manually&lt;/high&gt; based on statistical or intuitive considerations..&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Automatische Selektion&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Automatic selection&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Verwende &lt;high&gt;Modelle&lt;/high&gt; die automatisch Features selegieren, z.B., Lasso Regression, oder Algorithmen für Featureselektion&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Reduce variables &lt;high&gt;automatically&lt;/high&gt; using suitable ML algorithms, e.g., &lt;mono&gt;random forests&lt;/mono&gt; or &lt;mono&gt;lasso&lt;/mono&gt;, or feature selection algorithms, e.g., &lt;mono&gt;recursive feature selection&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Automatische Reduktion&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Automatic reduction&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;Reduziere die Dimensionalität mit Methoden der &lt;high&gt;Dimensionsreduktion&lt;/high&gt;, z.B. mit Principal Component Analysis (PCA).&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Compress variables using &lt;high&gt;dimensionality reduction algorithms&lt;/high&gt;, such as principal component analysis (PCA).&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;
   &lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
+
 ]
 
-.pull-right45[
-
-&lt;br&gt;
+.pull-right5[
 
 &lt;p align = "center"&gt;
 &lt;img src="image/highd.jpeg" height=350&gt;
@@ -161,31 +161,29 @@ layout: true
 
 ---
 
-# Feature-Wichtigkeit
+# Feature importance
 
 .pull-left4[
 
-
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Mass für die Bedeutung eines Features &lt;high&gt;für Fit/Vorhersage der Daten&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;caret&lt;/mono&gt; berechnet die Feature-Wichtigkeit &lt;high&gt;Modell-spezifisch und skaliert&lt;/high&gt; sie auf Werte innerhalb &lt;mono&gt;[0, 100]&lt;/mono&gt;&lt;/span&gt;&lt;/li&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Strategien&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Characterizes how much a &lt;high&gt;feature contributes&lt;/high&gt; to the fitting/prediction performance. .&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;The metric is &lt;high&gt;model specific&lt;/high&gt;, but typically &lt;high&gt;normalized&lt;/high&gt; to &lt;mono&gt;[0, 100]&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Strategies&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul class="level"&gt;
-    &lt;li&gt;&lt;span&gt;&lt;high&gt;1-Feature&lt;/high&gt; Modelle (z.B. &lt;mono&gt;LOESS&lt;/mono&gt;)&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;Loss durch &lt;high&gt;Scrambling&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;Wichtigkeit in &lt;high&gt;komplexen Modellen&lt;/high&gt; (z.B. Random Forest)&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Single variable prediction (e.g., using LOESS, ROC) &lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Accuracy loss from scrambling&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Random Forest importance&lt;/span&gt;&lt;/li&gt;
     &lt;li&gt;&lt;span&gt;etc.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/ul&gt;
-
 
 ]
 
 .pull-right5[
 
 ```r
-# Plotte Feature-Wichtigkeit für lm(einkommen ~ .)
-plot(varImp(einkommen_lm))
+# plot variable importance for lm(income ~ .)
+plot(varImp(income_lm))
 ```
 
 &lt;img src="Features_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
@@ -199,27 +197,28 @@ plot(varImp(einkommen_lm))
 .pull-left45[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Die &lt;mono&gt;varImp()&lt;/mono&gt; Funktion liefert &lt;high&gt;Modell-spezifische Schätzungen&lt;/high&gt; der Feature-Wichtigkeit.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Automatically selects &lt;high&gt;appropriate measure&lt;/high&gt; of variable importance for a given algorithm.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
+
 ```r
-varImp(einkommen_lm)
+varImp(income_lm)
 ```
 
 
 ```
 lm variable importance
 
-        Overall
-alter   100.000
-essen    44.486
-glueck   27.924
-alkohol  22.938
-tattoos   5.414
-gewicht   4.086
-fitness   3.383
-groesse   1.552
+          Overall
+age       100.000
+food       43.847
+alcohol    26.201
+happiness  13.556
+tattoos     5.529
+datause     1.974
+children    1.610
+height      1.585
 ```
 
 ]
@@ -227,8 +226,8 @@ groesse   1.552
 .pull-right5[
 
 ```r
-# Plotte Feature-Wichtigkeit für lm(einkommen ~ .)
-plot(varImp(einkommen_lm))
+# plot variable importance for lm(income ~ .)
+plot(varImp(income_lm))
 ```
 
 &lt;img src="Features_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
@@ -239,16 +238,16 @@ plot(varImp(einkommen_lm))
 
 .pull-left35[
 
-# `rfe()`
+# Recursive feature selection
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Die rekursive Featureselektion &lt;mono&gt;rfe()&lt;/mono&gt; verwendet &lt;high&gt;Cross-Validation&lt;/high&gt; um die besten &lt;i&gt;n&lt;/i&gt; Features zu identifizieren.&lt;/span&gt;&lt;/li&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Algorithmus&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;mono&gt;rfe()&lt;/mono&gt; uses &lt;high&gt;cross-validation&lt;/high&gt; to select the best &lt;i&gt;n&lt;/i&gt; freatures.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Algorithm&lt;/span&gt;&lt;/li&gt;
   &lt;ol&gt;
-    &lt;li&gt;&lt;span&gt;&lt;high&gt;Kandidatenset&lt;/high&gt; &lt;mono&gt;n = [2, 3, 5, 10]&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;Wiederholtes &lt;high&gt;Resampling&lt;/high&gt; und Aufteilen der Daten.&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;Evaluiere &lt;high&gt;Vorhersageleistung&lt;/high&gt; für jeweils die besten &lt;mono&gt;n&lt;/mono&gt; Features.&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;Selegiere bestes &lt;mono&gt;n&lt;/mono&gt; auf Basis der &lt;high&gt;aggregierten Vorhersageleistung&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Candidates&lt;/high&gt;, e.g., &lt;mono&gt;n = [2, 3, 5, 10]&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;&lt;high&gt;Resample&lt;/high&gt; and split data.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Evaluate &lt;high&gt;performance&lt;/high&gt; for the best &lt;mono&gt;n&lt;/mono&gt; features.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Select best &lt;mono&gt;n&lt;/mono&gt; on the basis of &lt;high&gt;aggregate performance&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
   &lt;/ol&gt;
 &lt;/ul&gt;
 
@@ -260,9 +259,9 @@ plot(varImp(einkommen_lm))
 
 
 ```r
-# Rekursive Featureselektion
+# Run feature elimination
 rfe(x = ..., y = ..., 
-    sizes = c(3, 4, 5, 10), # Kandidaten für N
+    sizes = c(3,4,5,10), # feature set sizes
     rfeControl = rfeControl(functions = lmFuncs))
 ```
 
@@ -276,14 +275,14 @@ Outer resampling method: Bootstrapped (25 reps)
 Resampling performance over subset size:
 
  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD   MAESD Selected
-         3 0.380    0.850 0.305 0.0129     0.0127 0.00940         
-         4 0.361    0.864 0.293 0.0111     0.0113 0.00787        *
-         5 0.362    0.863 0.295 0.0115     0.0114 0.00803         
-        10 0.364    0.862 0.296 0.0108     0.0110 0.00778         
-        14 0.364    0.862 0.296 0.0109     0.0112 0.00781         
+         3 0.371    0.861 0.291 0.0107     0.0109 0.00846         
+         4 0.367    0.865 0.286 0.0102     0.0104 0.00807        *
+         5 0.368    0.864 0.287 0.0103     0.0105 0.00830         
+        10 0.370    0.863 0.289 0.0106     0.0102 0.00830         
+        14 0.370    0.863 0.289 0.0106     0.0102 0.00838         
 
 The top 4 variables (out of 4):
-   alter, essen, alkohol, glueck
+   age, food, alcohol, happiness
 ```
 
 ]
@@ -292,18 +291,18 @@ The top 4 variables (out of 4):
 
 # Principal component analysis
 
-.pull-left4[
+.pull-left45[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;high&gt;Standardmodell&lt;/high&gt; für Dimensionsreduktion.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Lineares Modell (Regression) repräsentiert die Features in einem &lt;high&gt;neuen, kleineren Featureraum&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;Der neue Featureraum erklärt &lt;high&gt;maximal viel Varianz&lt;/high&gt; an den ursprünglichen Features.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;The &lt;high&gt;go-to algorithm&lt;/high&gt; for dimensionality reduction&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Linear model (regression) represents features in a &lt;high&gt;new, smaller feature space&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;The new feature space explains &lt;high&gt;maximal variance&lt;/high&gt; of the original features.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 ]
 
 
-.pull-right5[
+.pull-right45[
 
 &lt;p align = "center"&gt;
 &lt;img src="image/pca.png" height=350&gt;
@@ -316,14 +315,14 @@ The top 4 variables (out of 4):
 
 ---
 
-# `preProc = c('pca')`
+# Using `PCA`
 
 .pull-left45[
 
 
 ```r
-# Trainiere Modell OHNE PCA
-model = train(einkommen ~ ., method = 'lm', 
+# train model WITHOUT PCA preprocessing
+model = train(income ~ ., method = 'lm', 
            data = bas_train)
 
 plot(varImp(model))
@@ -338,8 +337,8 @@ plot(varImp(model))
 
 
 ```r
-# Trainiere Modell MIT PCA
-model = train(einkommen ~ ., method = 'lm', 
+# train model WITH PCA preprocessing
+model = train(income ~ ., method = 'lm', 
               data = bas_train,
               preProc = c('pca'))
 plot(varImp(model))
@@ -351,19 +350,20 @@ plot(varImp(model))
 
 ---
 
-# Andere, einfache Feature Probleme
+# Other, easy feature problems
 
 .pull-left45[
 
-### Multikollinearität
+### Multi-collinearity
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Unter Multikollinearität korrelieren Features zu stark, was in schädlicher Redundanz, &lt;high&gt;instabilen Fits resultiert&lt;/high&gt;, und zu &lt;high&gt;schlechteren Vorhersagen führt&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;high&gt;High feature correlations&lt;/high&gt; mean that there is redundancy in the data, which can lead to less stable fits, uninterpretable variable importances, and worse predictions.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
+
 ```r
-# Identifiziere redundante Features
+# identify redundant variables
 findCorrelation(cor(basel))
 ```
 
@@ -372,7 +372,7 @@ findCorrelation(cor(basel))
 ```
 
 ```r
-# Entferne redundante Features
+# remove from data
 remove &lt;- findCorrelation(cor(basel))
 basel &lt;- basel %&gt;%
   select(-remove)
@@ -382,25 +382,16 @@ basel &lt;- basel %&gt;%
 
 .pull-right45[
 
-### Ungleiche oder zu niedrige Varianz
+### Low variance 
 
 &lt;ul&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Ungleiche Varianzen &lt;high&gt;verzerren&lt;/high&gt; Methoden, die gleiche Varianz erwarten (z.B. LASSO).&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Low variance variables add parameters, but &lt;high&gt;can hardly contribute to prediction&lt;/high&gt; and are, thus, also redundant.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
-```r
-# Standardisiere Features
-train(..., preProc = c("center", "scale"))
-```
-
-&lt;ul&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;Features ohne "Varianz" tragen nicht zur Vorhersage bei, aber &lt;high&gt;vergrössern die Komplexität des Modells.&lt;/span&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
 
 ```r
-# Identifiziere Feature ohne Varianz
+# identify low variance variables
 nearZeroVar(basel)
 ```
 
@@ -408,24 +399,35 @@ nearZeroVar(basel)
 integer(0)
 ```
 
+
+&lt;ul&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;Unequal variance &lt;high&gt;breaks regularization&lt;/high&gt; (L1, L2) and renders estimates difficult to interpret..&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+```r
+# standardize and center variables
+train(..., preProc("center", "scale"))
+```
+
 ]
 
 
 ---
 
-# Schwierige Feature Probleme
+# Difficult feature problems
 
 &lt;br&gt;
 .pull-left35[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Triviale Features&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Trivial Features&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;span&gt;Erfolgreiche Vorhersage bedeutet nicht, dass ein &lt;high&gt;bedeutsames Muster&lt;/high&gt; identifiziert wurde&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Successful prediction not necessarily implies that a meaningful pattern has been detected.&lt;/span&gt;&lt;/li&gt;
   &lt;/ul&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Fehlende Features&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Missing features&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;span&gt;Erfolgreiche Vorhersage basiert i.d.R. auf der Entwicklung &lt;high&gt;neuer, relvanterer Features&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Some problems are hard, requiring the engineering of new features.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;/ul&gt;
 &lt;/ul&gt;
 
@@ -445,11 +447,11 @@ integer(0)
 
 ---
 
-# Triviale Features
+# Trivial features
 
 .pull-left3[
 
-&lt;u&gt;&lt;a href="https://www.gwern.net/Tanks"&gt;Ein urban myth?!&lt;/a&gt;&lt;/u&gt;
+&lt;u&gt;&lt;a href="https://www.gwern.net/Tanks"&gt;An urban myth?!&lt;/a&gt;&lt;/u&gt;
 
 "The Army trained a program to differentiate American tanks from Russian tanks with 100% accuracy. Only later did analysts realize that the American tanks had been photographed on a sunny day and the Russian tanks had been photographed on a cloudy day. The computer had learned to detect brightness."&lt;br&gt;&lt;br&gt;
 New York Times &lt;a href="https://www.nytimes.com/2017/10/09/science/stanford-sexual-orientation-study.html" style="font-size:8px"&gt;[Full text]&lt;/a&gt;
@@ -469,39 +471,9 @@ New York Times &lt;a href="https://www.nytimes.com/2017/10/09/science/stanford-s
 
 ]
 
-
-&lt;!---
-
-# Triviale Features
-
-In 2012 sagte [Nate Silver](https://en.wikipedia.org/wiki/Nate_Silver) die Ausgänge der Präsidentschaftswahlen in 50 Staaten voraus, nachdem er dies für 49 Staaten in 2008 getan hat. &lt;high&gt;Wie ist dieser Erfolg zu bewerten?&lt;/high&gt;
-
-.pull-left5[
-
-&lt;p align = "center"&gt;
-&lt;img src="image/elect2008.png" height = 360px&gt;&lt;br&gt;
-&lt;font style="font-size:10px"&gt;from &lt;a href="https://www.vox.com/policy-and-politics/2016/11/8/13563106/election-map-historical-vote"&gt;vox.com&lt;/a&gt;&lt;/font&gt;
-&lt;/p&gt;
-
-]
-
-.pull-right5[
-
-&lt;p align = "center"&gt;
-&lt;img src="image/elect2012.png" height = 360px&gt;&lt;br&gt;
-&lt;font style="font-size:10px"&gt;from &lt;a href="https://www.vox.com/policy-and-politics/2016/11/8/13563106/election-map-historical-vote"&gt;vox.com&lt;/a&gt;&lt;/font&gt;
-&lt;/p&gt;
-
-
-
-]
-
----&gt;
-
 ---
 
-# (Immer!) fehlende Features
-
+# (Always!) missing features
 
 .pull-left85[
 
@@ -525,7 +497,7 @@ In 2012 sagte [Nate Silver](https://en.wikipedia.org/wiki/Nate_Silver) die Ausg�
 
 ---
 
-# Feature Engineering
+# Feature engineering
 
 .pull-left45[
 
@@ -555,79 +527,9 @@ In 2012 sagte [Nate Silver](https://en.wikipedia.org/wiki/Nate_Silver) die Ausg�
 
 ---
 
-# &lt;mono&gt;createDataPartition()&lt;/mono&gt;
-
-.pull-left4[
-
-&lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Verwende &lt;mono&gt;createDataPartition()&lt;/mono&gt; um den &lt;high&gt;Datensatz aufzuteilen&lt;/high&gt; in Trainings- und Testdaten.&lt;/span&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;br&gt;
-
-&lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
-  &lt;col width="30%"&gt;
-  &lt;col width="70%"&gt;
-&lt;tr&gt;
-  &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Argument&lt;/b&gt;
-  &lt;/td&gt;
-  &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
-  &lt;/td&gt;  
-&lt;/tr&gt;
-&lt;tr&gt;
-  &lt;td bgcolor="white"&gt;
-    &lt;mono&gt;y&lt;/mono&gt;
-  &lt;/td&gt;
-  &lt;td bgcolor="white"&gt;
-    Das Kriterion. Wichtig für eine &lt;high&gt;ausgewogene Aufteilung&lt;/high&gt; der Daten.  
-  &lt;/td&gt;  
-&lt;/tr&gt;
-&lt;tr&gt;
-  &lt;td bgcolor="white"&gt;
-    &lt;mono&gt;p&lt;/mono&gt;
-  &lt;/td&gt;
-  &lt;td bgcolor="white"&gt;
-    Der &lt;high&gt;Antei der Daten&lt;/high&gt; der den Trainingsdaten zugewisen wird. Oft &lt;mono&gt;.8&lt;/mono&gt; oder &lt;mono&gt;.5&lt;/mono&gt;.    
-  &lt;/td&gt;  
-&lt;/tr&gt;
-&lt;/table&gt;
-
-
-]
-
-.pull-right5[
-
-
-```r
-# Wichtig für konstante Ergebnisse
-set.seed(100)
-
-# Indizes für Training
-index &lt;- 
-  createDataPartition(y = basel$einkommen,
-                             p = .8,
-                             list = FALSE)
-
-# Kreiere Trainingsdaten
-basel_train &lt;- basel %&gt;% 
-  slice(index)
-
-# Kreiere Testdaten
-basel_test &lt;- basel %&gt;% 
-  slice(-index)
-```
-
-
-]
-
-
----
-
 class: middle, center
 
-&lt;h1&gt;&lt;a href="https://therbootcamp.github.io/ML_2020Oct/_sessions/Features/Features_practical.html"&gt;Practical&lt;/a&gt;&lt;/h1&gt;
+&lt;h1&gt;&lt;a href="https://therbootcamp.github.io/ML-DHLab/_sessions/Features/Features_practical.html"&gt;Practical&lt;/a&gt;&lt;/h1&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

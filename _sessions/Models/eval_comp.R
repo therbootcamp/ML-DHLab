@@ -61,17 +61,17 @@ ACCs = sort(ACCs, decreasing = T)
 
 cols = yarrr::piratepal("ipod")
 
-par(mar=c(10,5,1,1))
+par(mar=c(17,5,1,1))
 plot.new();plot.window(xlim=c(.5,length(ACCs)+.5),ylim=c(0,1))
 rect((1:length(ACCs))-.45,0,(1:length(ACCs))+.45,ACCs, col = cols, border=NA)
 mtext(seq(0,1,.1),at=seq(0,1,.1),side=2,las=1)
 mtext("ACC",side=2,las=1,line=2)
 text(1:length(ACCs),rep(.2,length(ACCs)),labels=round(ACCs,3),col='white',cex=1)
 
-#mtext(names(ACCs),side=1,las=2,at=(1:length(ACCs)))
+# i = 1
+# mtext(names(ACCs)[i],side=1,las=2,at=(1:length(ACCs))[i])
 
-i = 1
-mtext(names(ACCs)[i],side=1,las=2,at=(1:length(ACCs))[i])
+mtext(names(ACCs),side=1,las=2,at=(1:length(ACCs)))
 
 
 Sys.sleep(5)

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Optimizing</title>
+    <title>Optimization</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Maschinelles Lernen mit R   The R Bootcamp" />
+    <meta name="author" content="Machine Learning with R   The R Bootcamp @ DHLab" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="baselrbootcamp.css" type="text/css" />
   </head>
@@ -11,9 +11,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Optimizing
-### Maschinelles Lernen mit R<br> <a href='https://therbootcamp.github.io'> The R Bootcamp </a> <br> <a href='https://therbootcamp.github.io/ML_2020Oct/'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
-### Oktober 2020
+# Optimization
+### Machine Learning with R<br> <a href='https://therbootcamp.github.io'> The R Bootcamp @ DHLab </a> <br> <a href='https://therbootcamp.github.io/ML-DHLab/'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
+### November 2020
 
 ---
 
@@ -34,7 +34,7 @@ layout: true
     &lt;/a&gt;
     &lt;a href="https://therbootcamp.github.io/"&gt;
       &lt;font color="#7E7E7E"&gt;
-      Maschinelles Lernen mit R | Oktober 2020
+       Machine Learning with R | November 2020
       &lt;/font&gt;
     &lt;/a&gt;
     &lt;/span&gt;
@@ -53,11 +53,12 @@ layout: true
 
 .pull-left4[
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
-# Overfitting vermeiden
+
+# Fighting overfitting
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Overfitting tritt ein, wenn ein Modell die &lt;high&gt;Daten zu genau fitted&lt;/high&gt; und deswegen &lt;high&gt;keine guten Vorhersagen&lt;/high&gt; liefert&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Gute Performanz im Training bedeutet also nicht unbedingt &lt;high&gt;gute Performanz im Test&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;When a model &lt;high&gt;fits the training data too well&lt;/high&gt; on the expense of its performance in prediction, this is called overfitting.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Extremely flexible models are &lt;high&gt;'wolves in sheep's clothing'&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 ]
@@ -76,18 +77,18 @@ layout: true
 
 ---
 
-# Tuning durch Validation-Daten
+# Tuning parameters
 
 .pull-left45[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Die meisten ML Modelle besitzen Tuning Parameter, die die &lt;high&gt;Modellkomplexität&lt;/high&gt; kontrollieren&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Um diese Tuning Parameter zu fitten wird ein &lt;high&gt;Validationsdatensatz&lt;/high&gt; kreiert.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Vorgehen&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;  
+  &lt;li class="m1"&gt;&lt;span&gt;Most machine learning models are equipped with tuning parameters that &lt;high&gt;control model complexity&lt;high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;These tuning parameters can be identified using a &lt;high&gt;validation set&lt;/high&gt; created from the traning data..&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;  
   &lt;ol&gt;
-    &lt;li&gt;&lt;span&gt;Fitte Modell mit &lt;high&gt;verschiedenen Tuning Parameter&lt;/high&gt; Werte&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;Auf Basis des &lt;high&gt;Validationsdatensatzes&lt;/high&gt; wähle die besten Tuning Parameter&lt;/span&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span&gt;Fitte Modell für &lt;high&gt;gesamten Traningsdatensatz&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Fit model using various tuning parameters.&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Select tuning paramters with best prediction performance on validation set&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span&gt;Refit model to entire training set.&lt;/span&gt;&lt;/li&gt;
   &lt;/ol&gt;
 &lt;/ul&gt;
 
@@ -103,23 +104,25 @@ layout: true
 
 ---
 
-# Resampling Methoden
+# Resampling methods
 
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Resampling-Methoden &lt;high&gt;automatisieren&lt;/high&gt; und generalisieren das Tuning der Modelle.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Resampling methods automatize and &lt;high&gt;generalize model tuning&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
+
+
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
   &lt;col width="30%"&gt;
   &lt;col width="70%"&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Methode&lt;/b&gt;
+    &lt;b&gt;Method&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -127,7 +130,7 @@ layout: true
     &lt;i&gt;k-fold cross-validation&lt;/i&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Trennt die Daten in &lt;i&gt;k&lt;/i&gt;-Teile, verwendet &lt;high&gt;jeden Teil einmal&lt;/high&gt; als Validationsset, während die restlichen Teile &lt;i&gt;k-1&lt;/i&gt; als Trainingsset dienen. 
+    Splits the data in k-pieces, use &lt;high&gt;each piece once&lt;/high&gt; as the validation set, while using the other one for training. 
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -135,7 +138,7 @@ layout: true
     &lt;i&gt;Bootstrap&lt;/i&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Über &lt;i&gt;B&lt;/i&gt; Bootstrap Runden ziehe &lt;high&gt;Zufallsstrichproben mit Zurücklegen&lt;/high&gt; aus den Daten und trenne die Stichprobe in Training und Validation auf.
+    For &lt;i&gt;B&lt;/i&gt; bootstrap rounds &lt;high&gt;sample&lt;/high&gt; from the data &lt;high&gt;with replacement&lt;/high&gt; and split the data in training and validation set.  
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -151,12 +154,12 @@ layout: true
 
 ---
 
-# Resampling Methoden
+# Resampling methods
 
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Resampling-Methoden &lt;high&gt;automatisieren&lt;/high&gt; und generalisieren das Tuning der Modelle&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Resampling methods automatize and &lt;high&gt;generalize model tuning&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
@@ -164,10 +167,10 @@ layout: true
   &lt;col width="70%"&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Methode&lt;/b&gt;
+    &lt;b&gt;Method&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -175,7 +178,7 @@ layout: true
     &lt;i&gt;k-fold cross-validation&lt;/i&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Trennt die Daten in &lt;i&gt;k&lt;/i&gt;-Teile, verwendet &lt;high&gt;jeden Teil einmal&lt;/high&gt; als Validationsset, während die restlichen Teile &lt;i&gt;k-1&lt;/i&gt; als Trainingsset dienen. 
+    Splits the data in k-pieces, use &lt;high&gt;each piece once&lt;/high&gt; as the validation set, while using the other one for training. 
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -183,7 +186,7 @@ layout: true
     &lt;i&gt;Bootstrap&lt;/i&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Über &lt;i&gt;B&lt;/i&gt; Bootstrap Runden ziehe &lt;high&gt;Zufallsstrichproben mit Zurücklegen&lt;/high&gt; aus den Daten und trenne die Stichprobe in Training und Validation auf.
+    For &lt;i&gt;B&lt;/i&gt; bootstrap rounds &lt;high&gt;sample&lt;/high&gt; from the data &lt;high&gt;with replacement&lt;/high&gt; and split the data in training and validation set.  
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -199,12 +202,12 @@ layout: true
 
 ---
 
-# Resampling Methoden
+# Resampling methods
 
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Resampling-Methoden &lt;high&gt;automatisieren&lt;/high&gt; und generalisieren das Tuning der Modelle&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Resampling methods automatize and &lt;high&gt;generalize model tuning&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
@@ -212,10 +215,10 @@ layout: true
   &lt;col width="70%"&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Methode&lt;/b&gt;
+    &lt;b&gt;Method&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -223,7 +226,7 @@ layout: true
     &lt;i&gt;k-fold cross-validation&lt;/i&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Trennt die Daten in &lt;i&gt;k&lt;/i&gt;-Teile, verwendet &lt;high&gt;jeden Teil einmal&lt;/high&gt; als Validationsset, während die restlichen Teile &lt;i&gt;k-1&lt;/i&gt; als Trainingsset dienen. 
+    Splits the data in k-pieces, use &lt;high&gt;each piece once&lt;/high&gt; as the validation set, while using the other one for training. 
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -231,7 +234,7 @@ layout: true
     &lt;i&gt;Bootstrap&lt;/i&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Über &lt;i&gt;B&lt;/i&gt; Bootstrap Runden ziehe &lt;high&gt;Zufallsstrichproben mit Zurücklegen&lt;/high&gt; aus den Daten und trenne die Stichprobe in Training und Validation auf.
+    For &lt;i&gt;B&lt;/i&gt; bootstrap rounds &lt;high&gt;sample&lt;/high&gt; from the data &lt;high&gt;with replacement&lt;/high&gt; and split the data in training and validation set.  
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -249,11 +252,11 @@ layout: true
 
 class: center, middle
 
+&lt;font color = "gray"&gt;&lt;h1&gt;Regression&lt;/h1&gt;&lt;/font&gt;
+
 &lt;high&gt;&lt;h1&gt;Decision Trees&lt;/h1&gt;&lt;/high&gt;
 
 &lt;font color = "gray"&gt;&lt;h1&gt;Random Forests&lt;/h1&gt;&lt;/font&gt;
-
-&lt;font color = "gray"&gt;&lt;h1&gt;Regression&lt;/h1&gt;&lt;/font&gt;
 
 ---
 
@@ -262,9 +265,9 @@ class: center, middle
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Der Tuning Parameter in Decision Trees heisst &lt;mono&gt;cp&lt;/mono&gt; (&lt;high&gt;complexity parameter&lt;/high&gt;).&lt;/span&gt;&lt;/li&gt;
-  &lt;/ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called &lt;mono&gt;cp&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
 
 &lt;p style="padding-top:3px"&gt;&lt;/p&gt;
 
@@ -277,7 +280,7 @@ Loss = &amp; Impurity\,+\\
 $$
 &lt;p style="padding-top:3px"&gt;&lt;/p&gt;
 
-&lt;u&gt;&lt;mono&gt;tuneGrid&lt;/mono&gt; Einstellungen&lt;/u&gt;
+&lt;u&gt;&lt;mono&gt;tuneGrid settings&lt;/mono&gt;&lt;/u&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
@@ -285,23 +288,23 @@ $$
     &lt;b&gt;Parameter&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    Niedriger &lt;mono&gt;cp&lt;/mono&gt;, z.B. &lt;mono&gt;cp&lt;.01&lt;/mono&gt;
+    Small &lt;mono&gt;cp&lt;/mono&gt;, e.g., &lt;mono&gt;cp&lt;.01&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Niedrige Strafe, die zu &lt;high&gt;komplexen Bäumen&lt;/high&gt; führt.
+    Low penalty leading to &lt;high&gt;complex trees&lt;/high&gt;.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    Hoher &lt;mono&gt;cp&lt;/mono&gt;, z.B. &lt;mono&gt;cp&lt;.20&lt;/mono&gt;
+    Large &lt;mono&gt;cp&lt;/mono&gt;, e.g., &lt;mono&gt;cp&lt;.20&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Hohe Strafe, die zu &lt;high&gt;einfachen Bäumen&lt;/high&gt; führt.
+    Large penalty leading to &lt;high&gt;simple trees&lt;/high&gt;.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -326,8 +329,7 @@ $$
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Der Tuning Parameter in Decision Trees heisst &lt;mono&gt;cp&lt;/mono&gt; (&lt;high&gt;complexity parameter&lt;/high&gt;).&lt;/span&gt;&lt;/li&gt;
-  &lt;/ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called &lt;mono&gt;cp&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p style="padding-top:3px"&gt;&lt;/p&gt;
@@ -341,7 +343,7 @@ Loss = &amp; Impurity\,+\\
 $$
 &lt;p style="padding-top:3px"&gt;&lt;/p&gt;
 
-&lt;u&gt;&lt;mono&gt;tuneGrid&lt;/mono&gt; Einstellungen&lt;/u&gt;
+&lt;u&gt;&lt;mono&gt;tuneGrid settings&lt;/mono&gt;&lt;/u&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
@@ -349,23 +351,23 @@ $$
     &lt;b&gt;Parameter&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    Niedriger &lt;mono&gt;cp&lt;/mono&gt;, z.B. &lt;mono&gt;cp&lt;.01&lt;/mono&gt;
+    Small &lt;mono&gt;cp&lt;/mono&gt;, e.g., &lt;mono&gt;cp&lt;.01&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Niedrige Strafe, die zu &lt;high&gt;komplexen Bäumen&lt;/high&gt; führt.
+    Low penalty leading to &lt;high&gt;complex trees&lt;/high&gt;.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    Hoher &lt;mono&gt;cp&lt;/mono&gt;, z.B. &lt;mono&gt;cp&lt;.20&lt;/mono&gt;
+    Large &lt;mono&gt;cp&lt;/mono&gt;, e.g., &lt;mono&gt;cp&lt;.20&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Hohe Strafe, die zu &lt;high&gt;einfachen Bäumen&lt;/high&gt; führt.
+    Large penalty leading to &lt;high&gt;simple trees&lt;/high&gt;.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -376,21 +378,21 @@ $$
 
 
 ```r
-# Decision Tree mit cp = .01
-train(form = einkommen ~ .,
+# Decision tree with a defined cp = .01
+train(form = income ~ .,
       data = basel,
-      method = "rpart", 
+      method = "rpart",  # Decision Tree
       trControl = ctrl,
       tuneGrid = 
-        expand.grid(cp = .01))
+        expand.grid(cp = .01)) # cp
 
-# Decision Tree mit cp = .2
-train(form = einkommen ~ .,
+# Decision tree with a defined cp = .2
+train(form = income ~ .,
       data = basel,
-      method = "rpart", 
+      method = "rpart",  # Decision Tree
       trControl = ctrl,
       tuneGrid = 
-        expand.grid(cp = .2))
+        expand.grid(cp = .2)) # cp
 ```
 
 ]
@@ -399,11 +401,12 @@ train(form = einkommen ~ .,
 
 class: center, middle
 
+&lt;font color = "gray"&gt;&lt;h1&gt;Regression&lt;/h1&gt;&lt;/font&gt;
+
 &lt;font color = "gray"&gt;&lt;h1&gt;Decision Trees&lt;/h1&gt;&lt;/font&gt;
 
 &lt;high&gt;&lt;h1&gt;Random Forests&lt;/h1&gt;&lt;/high&gt;
 
-&lt;font color = "gray"&gt;&lt;h1&gt;Regression&lt;/h1&gt;&lt;/font&gt;
 
 ---
 
@@ -412,12 +415,11 @@ class: center, middle
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Der Tuning Parameter in Random Trees heisst &lt;mono&gt;mtry&lt;/mono&gt; und kontrolliert die &lt;high&gt;Diversität&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;mtry&lt;/mono&gt; bestimmt &lt;high&gt;wie viele Feature&lt;/high&gt; für den Split eines Knoten herangezogen werden.&lt;/span&gt;&lt;/li&gt;
-  &lt;/ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Random Forests have a &lt;high&gt;diversity parameter&lt;/high&gt; called &lt;mono&gt;mtry&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Technically, this controls how many features are randomly considered at each split of the trees.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;u&gt;&lt;mono&gt;tuneGrid&lt;/mono&gt; Einstellungen&lt;/u&gt;
+&lt;u&gt;&lt;mono&gt;tuneGrid settings&lt;/mono&gt;&lt;/u&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
@@ -425,23 +427,23 @@ class: center, middle
     &lt;b&gt;Parameter&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    Niedriges &lt;mono&gt;mtry&lt;/mono&gt;, z.B., &lt;mono&gt;mtry = 1&lt;/mono&gt;
+    Small &lt;mono&gt;mtry&lt;/mono&gt;, e.g., &lt;mono&gt;mtry = 1&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;high&gt;Diverser Wald.&lt;/high&gt; Auf eine Weise, weniger komplex.
+    &lt;high&gt;Diverse forest.&lt;/high&gt; In a way, less complex.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    Hohes &lt;mono&gt;mtry&lt;/mono&gt;, z.B., &lt;mono&gt;mtry = 5&lt;/mono&gt;
+    Large &lt;mono&gt;mtry&lt;/mono&gt;, e.g., &lt;mono&gt;mtry&gt;5&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;high&gt;Monotoner Wald.&lt;/high&gt; Auf eine Weise, komplexer.
+    &lt;high&gt;Similar forest.&lt;/high&gt; In a way, more complex.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -463,12 +465,11 @@ class: center, middle
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Der Tuning Parameter in Random Trees heisst &lt;mono&gt;mtry&lt;/mono&gt; und kontrolliert die &lt;high&gt;Diversität&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;mtry&lt;/mono&gt; bestimmt &lt;high&gt;wie viele Feature&lt;/high&gt; für den Split eines Knoten herangezogen werden.&lt;/span&gt;&lt;/li&gt;
-  &lt;/ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Random Forests have a &lt;high&gt;diversity parameter&lt;/high&gt; called &lt;mono&gt;mtry&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Technically, this controls how many features are randomly considered at each split of the trees.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;u&gt;&lt;mono&gt;tuneGrid&lt;/mono&gt; Einstellungen&lt;/u&gt;
+&lt;u&gt;&lt;mono&gt;tuneGrid settings&lt;/mono&gt;&lt;/u&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
@@ -476,23 +477,23 @@ class: center, middle
     &lt;b&gt;Parameter&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    Niedriges &lt;mono&gt;mtry&lt;/mono&gt;, z.B., &lt;mono&gt;mtry = 1&lt;/mono&gt;
+    Small &lt;mono&gt;mtry&lt;/mono&gt;, e.g., &lt;mono&gt;mtry = 1&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;high&gt;Diverser Wald.&lt;/high&gt; Auf eine Weise, weniger komplex.
+    &lt;high&gt;Diverse forest.&lt;/high&gt; In a way, less complex.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
-    Hohes &lt;mono&gt;mtry&lt;/mono&gt;, z.B., &lt;mono&gt;mtry = 5&lt;/mono&gt;
+    Large &lt;mono&gt;mtry&lt;/mono&gt;, e.g., &lt;mono&gt;mtry&gt;5&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;high&gt;Monotoner Wald.&lt;/high&gt; Auf eine Weise, komplexer.
+    &lt;high&gt;Similar forest.&lt;/high&gt; In a way, more complex.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -503,36 +504,36 @@ class: center, middle
 
 
 ```r
-# Random forest mit mtry = 2
-train(form = einkommen ~ .,
+# Random forest with a defined mtry = 2
+train(form = income ~ .,
       data = basel,
-      method = "rf",  
+      method = "rf",  # Random forest
       trControl = ctrl,
       tuneGrid = 
-        expand.grid(mtry = 2)) 
+        expand.grid(mtry = 2)) # mtry
 
-# Random forest mit mtry = 5
-train(form = einkommen ~ .,
+# Random forest with a defined mtry = 5
+train(form = income ~ .,
       data = basel,
-      method = "rf",  
+      method = "rf",  # Random forest
       trControl = ctrl,
       tuneGrid = 
-        expand.grid(mtry = 5)) 
+        expand.grid(mtry = 5)) # mtry
 ```
 
 ]
-
 
 
 ---
 
 class: center, middle
 
+&lt;high&gt;&lt;h1&gt;Regression&lt;/h1&gt;&lt;/high&gt;
+
 &lt;font color = "gray"&gt;&lt;h1&gt;Decision Trees&lt;/h1&gt;&lt;/font&gt;
 
 &lt;font color = "gray"&gt;&lt;h1&gt;Random Forests&lt;/h1&gt;&lt;/font&gt;
 
-&lt;high&gt;&lt;h1&gt;Regression&lt;/h1&gt;&lt;/high&gt;
 
 ---
 
@@ -541,20 +542,21 @@ class: center, middle
 .pull-left45[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Bestraft proportional zum &lt;high&gt;Tuning parameter &amp;lambda;&lt;/high&gt; den Loss einer Regression für die Grösse der Modellparameter&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Penalizes regression loss for having large &amp;beta; values using the &lt;high&gt; &amp;lambda; tuning parameter&lt;/high&gt; and one of several penalty functions.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $$
+
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
   &lt;td bgcolor="white"&gt;
     &lt;b&gt;Name&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Funktion&lt;/b&gt;
+    &lt;b&gt;Function&lt;/b&gt;
   &lt;/td&gt; 
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Strafe&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -565,7 +567,7 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
     |&amp;beta;&lt;sub&gt;j&lt;/sub&gt;|
   &lt;/td&gt; 
   &lt;td bgcolor="white"&gt;
-    Proportional zu den &lt;high&gt;absoluten&lt;/high&gt; Regressionsgewichten.
+    Penalize by the &lt;high&gt;absolute&lt;/high&gt; regression weights.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -576,7 +578,7 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
     &amp;beta;&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;
   &lt;/td&gt;  
   &lt;td bgcolor="white"&gt;
-    Proportional zu den &lt;high&gt;quadrierten&lt;/high&gt; Regressionsgewichten.
+    Penalize by the &lt;high&gt;squared&lt;/high&gt; regression weights.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -587,7 +589,7 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
     |&amp;beta;&lt;sub&gt;j&lt;/sub&gt;| + &amp;beta;&lt;sub&gt;j&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;
   &lt;/td&gt; 
   &lt;td bgcolor="white"&gt;
-    Summe von Lasso und Ridge.
+    Penalize by Lasso and Ridge penalties.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -613,14 +615,14 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
 # Regularized regression
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Ridge und Lasso verhalten sich &lt;high&gt;erstaunlich unterschiedlich&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Lasso and Ridge have very &lt;high&gt;different behavior&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Ridge&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;span&gt;Durch die Quadrierung werden vor allem extreme &amp;beta;s in ihrer Grösse reduziert.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;By penalizing the most extreme &amp;beta;s most strongly, Ridge leads to (relatively) more &lt;high&gt;uniform &amp;beta;s&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;/ul&gt;
   &lt;li class="m3"&gt;&lt;span&gt;&lt;b&gt;Lasso&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;span&gt;Bei absoluten Werte werden alle &amp;beta;s gleichermassen in ihrer Grösse reduziert, was zu einer automatischen Feature-Auswahl führt, wenn einige &amp;beta;s Null werden.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;By penalizing all &amp;beta;s equally, irrespective of magnitude, Lasso drives some &amp;beta;s to 0 resulting effectively in &lt;high&gt;automatic feature selection&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;/ul&gt;
 &lt;/ul&gt;
 
@@ -652,14 +654,12 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
 
 .pull-left4[
 
-
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Verwende &lt;mono&gt;method = "glmnet"&lt;/mono&gt; für Lasso und Ridge&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Die Art der Regularisierung wird über das &lt;highm&gt;tuneGrid&lt;/highm&gt; Argument spezifiziert&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;/ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;To fit Lasso or Ridge penalized regression in R, use &lt;mono&gt;method = "glmnet"&lt;/mono&gt;.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Specify the &lt;high&gt;type of penalty&lt;/high&gt; and the &lt;high&gt;penalty weight&lt;/high&gt; using the &lt;mono&gt;tuneGrid&lt;/mono&gt; argument.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
 
-&lt;u&gt;&lt;mono&gt;tuneGrid&lt;/mono&gt; Einstellungen&lt;/u&gt;
+&lt;u&gt;&lt;mono&gt;tuneGrid settings&lt;/mono&gt;&lt;/u&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
@@ -667,7 +667,7 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
     &lt;b&gt;Parameter&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -675,7 +675,7 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
     &lt;mono&gt;alpha = 1&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Regression mit Lasso Regularisierung.
+    Regression with Lasso penalty.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -683,7 +683,7 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
     &lt;mono&gt;alpha = 0&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Regression mut Ridge Regularisierung.
+    Regression with Ridge penalty.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -691,7 +691,7 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
     &lt;mono&gt;lambda&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-  Gewicht der Regularisierung.
+  Regularization penalty weight.
   &lt;/td&gt; 
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -703,18 +703,18 @@ $$Regularized \;loss = \sum_i^n (y_i-\hat{y}_i)^2+\lambda \sum_j^p f(\beta_j)) $
 
 
 ```r
-# Trainiere ridge regression
-train(form = einkommen ~ .,
-      data = basel,
+# Train ridge regression
+train(form = criterion ~ .,
+      data = data_train,
       method = "glmnet",  
       trControl = ctrl,
       tuneGrid = 
         expand.grid(alpha = 0,   # Ridge 
                     lambda = 1)) # Lambda
 
-# Trainiere lasso regression
-train(form = einkommen ~ .,
-      data = basel,
+# Train lasso regression
+train(form = criterion ~ .,
+      data = data_train,
       method = "glmnet",  
       trControl = ctrl,
       tuneGrid = 
@@ -725,29 +725,27 @@ train(form = einkommen ~ .,
 ]
 
 
+
 ---
 
 class: center,  middle
 
 &lt;br&gt;&lt;br&gt;
 
-&lt;h1&gt;&lt;a&gt;Parameter Tuning mit 10-fold CV in &lt;mono&gt;caret&lt;/mono&gt;&lt;/h1&gt;
-
-
+&lt;h1&gt;&lt;a&gt;Parameter Tuning with 10-fold CV in &lt;mono&gt;caret&lt;/mono&gt;&lt;/h1&gt;
 
 ---
 
 .pull-left45[
 
-# &lt;i&gt;k&lt;/i&gt;-fache Cross Validation für Ridge und Lasso
-
+# &lt;i&gt;k&lt;/i&gt;-fold cross validation for Ridge and Lasso
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Ziel&lt;/b&gt;:&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Goal&lt;/b&gt;:&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;ul&gt;
-    &lt;li&gt;&lt;span&gt;Identifiziere durch 10-fache Cross Validation die &lt;high&gt;besten Regularisierungsparameter&lt;/high&gt; für ein Regressionsmodell&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+    &lt;li&gt;&lt;span&gt;Use 10-fold cross-validation to identify &lt;high&gt;optimal regularization parameters&lt;/high&gt; for a regression model.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;/ul&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Berücksichtige&lt;/b&gt;:&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Consider&lt;/b&gt;:&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;span&gt;&amp;alpha; &amp;in; 0, .5, 1&lt;/span&gt;&lt;/li&gt;
     &lt;li&gt;&lt;span&gt;&amp;lambda; &amp;in; 1, 2, ..., 100&lt;/span&gt;&lt;/li&gt;
@@ -777,10 +775,10 @@ class: center,  middle
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Spezifiziere über &lt;mono&gt;trainControl&lt;/mono&gt; die Art des Resamplings&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Specify the use of k-fold cross-validation using the &lt;mono&gt;trainControl()&lt;/mono&gt; function.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
 
-&lt;u&gt;&lt;mono&gt;trainControl() Argumente&lt;/mono&gt;&lt;/u&gt;
+&lt;u&gt;&lt;mono&gt;trainControl() arguments&lt;/mono&gt;&lt;/u&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
@@ -788,7 +786,7 @@ class: center,  middle
     &lt;b&gt;Argument&lt;/b&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    &lt;b&gt;Beschreibung&lt;/b&gt;
+    &lt;b&gt;Description&lt;/b&gt;
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -796,7 +794,7 @@ class: center,  middle
     &lt;mono&gt;method&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Die Resampling Methode; verwende `"cv"` für Cross Validation.
+    The resampling method, use `"cv"` for cross validation.
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -804,7 +802,7 @@ class: center,  middle
     &lt;mono&gt;number&lt;/mono&gt;
   &lt;/td&gt;
   &lt;td bgcolor="white"&gt;
-    Die Anzahl der "Folds".
+    The number of folds.
   &lt;/td&gt;  
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -816,12 +814,12 @@ class: center,  middle
 
 
 ```r
-# Spezifiziere 10-fache Cross Validation
+# Specify 10 fold cross-validation
 ctrl_cv &lt;- trainControl(method = "cv",
                         number = 10)
 
-# Prädiziere einkommen mit glmnet
-glmnet_mod &lt;- train(form = einkommen ~ .,
+# Predict income using glmnet
+glmnet_mod &lt;- train(form = income ~ .,
                     data = basel,
                     method = "glmnet",  
                     trControl = ctrl_cv)
@@ -836,10 +834,9 @@ glmnet_mod &lt;- train(form = einkommen ~ .,
 .pull-left4[
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Spezifiziere über &lt;mono&gt;tuneGrid&lt;/mono&gt; die &lt;high&gt;Kandidatensets&lt;/high&gt; für die Tuning Parameter.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;tuneGrid&lt;/mono&gt; eine &lt;mono&gt;liste&lt;/mono&gt; oder einen &lt;mono&gt;data.frame&lt;/mono&gt;; komfortabel durch &lt;mono&gt;expand.grid()&lt;/mono&gt; erstellt.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Specify the tuning parameter values to consider using the &lt;high&gt;&lt;mono&gt;tuneGrid&lt;/mono&gt;&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;tuneGrid&lt;/mono&gt; expects a &lt;high&gt;list or data frame&lt;/high&gt; as input.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
 &lt;/ul&gt;
-
 
 ]
 
@@ -847,12 +844,12 @@ glmnet_mod &lt;- train(form = einkommen ~ .,
 
 
 ```r
-# Spezifiziere 10-fache Cross Validation
+# Specify 10 fold cross-validation
 ctrl_cv &lt;- trainControl(method = "cv",
                         number = 10)
 
-# Prädiziere einkommen mit glmnet
-glmnet_mod &lt;- train(form = einkommen ~ .,
+# Predict income using glmnet
+glmnet_mod &lt;- train(form = income ~ .,
                     data = basel,
                     method = "glmnet",  
                     trControl = ctrl_cv,
@@ -868,13 +865,13 @@ glmnet_mod &lt;- train(form = einkommen ~ .,
 
 .pull-left4[
 
-# &lt;i&gt;k&lt;/i&gt;-fold Cross Validation
+# &lt;i&gt;k&lt;/i&gt;-Fold Cross validation
 
 &lt;p style="padding-top:1px"&gt;&lt;/p&gt;
 
 
 ```r
-# Printe Überblick
+# Print summary information
 glmnet_mod
 ```
 
@@ -896,40 +893,40 @@ The final values used for the model were alpha = 1 and lambda = 27.`
 ```
 glmnet 
 
-6120 samples
+1000 samples
   19 predictor
 
 No pre-processing
 Resampling: Cross-Validated (10 fold) 
-Summary of sample sizes: 5506, 5507, 5508, 5509, 5507, 5509, ... 
+Summary of sample sizes: 900, 901, 900, 901, 901, 899, ... 
 Resampling results across tuning parameters:
 
   alpha  lambda  RMSE  Rsquared  MAE  
-  0.0      1     1054  0.8717    844.0
-  0.0      2     1054  0.8717    844.0
-  0.0      3     1054  0.8717    844.0
-  0.0      4     1054  0.8717    844.0
-  0.0      5     1054  0.8717    844.0
-  0.0      6     1054  0.8717    844.0
-  0.0      7     1054  0.8717    844.0
-  0.0      8     1054  0.8717    844.0
-  0.0      9     1054  0.8717    844.0
-  0.0     10     1054  0.8717    844.0
-  0.0     11     1054  0.8717    844.0
-  0.0     12     1054  0.8717    844.0
+  0.0      1     1047  0.8614    823.3
+  0.0      2     1047  0.8614    823.3
+  0.0      3     1047  0.8614    823.3
+  0.0      4     1047  0.8614    823.3
+  0.0      5     1047  0.8614    823.3
+  0.0      6     1047  0.8614    823.3
+  0.0      7     1047  0.8614    823.3
+  0.0      8     1047  0.8614    823.3
+  0.0      9     1047  0.8614    823.3
+  0.0     10     1047  0.8614    823.3
+  0.0     11     1047  0.8614    823.3
+  0.0     12     1047  0.8614    823.3
 ```
 
 ]
 
 ---
 
-# &lt;i&gt;k&lt;/i&gt;-fold Cross Validation
+# &lt;i&gt;k&lt;/i&gt;-Fold Cross validation
 
 .pull-left4[
 
 
 ```r
-# Visualisiere Tuningparameter Fehlerkurve
+# Visualise tuning error curve
 plot(glmnet_mod)
 ```
 
@@ -957,8 +954,8 @@ The final values used for the model were alpha = 1 and lambda = 27.`
 
 
 ```r
-# Modellparameter unter dem besten Werten
-# für alpha und lambda
+# Model coefficients for best 
+#   alpha and lambda
 coef(glmnet_mod$finalModel,
      glmnet_mod$bestTune$lambda)
 ```
@@ -971,32 +968,27 @@ coef(glmnet_mod$finalModel,
 
 ```
 25 x 1 sparse Matrix of class "dgCMatrix"
-                                         1
-(Intercept)                       873.7053
-id                                  .     
-geschlechtm                         .     
-alter                             108.5944
-groesse                             1.6993
-gewicht                            -1.1578
-bildungobligatorisch              -43.2194
-bildungsek II                     -77.9362
-bildungsek III                    -20.9463
-konfessionevangelisch-reformiert   -7.8896
-konfessionkatholisch                .     
-konfessionkonfessionslos           45.1148
-konfessionmuslimisch              103.6467
-kinder                              2.3714
-glueck                           -209.4458
-fitness                            26.3446
-essen                               2.7141
-alkohol                            25.9812
-tattoos                           -16.4525
-rhein                               3.6709
-datause                             0.1059
-arztbesuche                        -1.5933
-wandern                            -0.1534
-fasnachtnein                        .     
-sehhilfenein                       -0.1204
+                                       1
+(Intercept)                     462.1958
+id                                .     
+sexmale                           .     
+age                             116.1387
+height                            1.8865
+weight                            .     
+educationobligatory_school        .     
+educationSEK_II                   .     
+educationSEK_III                  1.1857
+confessionconfessionless          3.9774
+confessionevangelical-reformed    .     
+confessionmuslim                  .     
+confessionother                   .     
+children                        -21.0502
+happiness                      -128.5448
+fitness                           .     
+food                              2.3193
+alcohol                          22.2351
+tattoos                         -24.8320
+rhine                             0.4256
 ```
 
 ]
@@ -1007,11 +999,9 @@ sehhilfenein                       -0.1204
 
 .pull-left35[
 
+Compare the prediction performance of several models with `resamples()`.
 
-&lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Vergleiche die &lt;high&gt;Performanz für die Validationsets&lt;/high&gt; mit &lt;mono&gt;resamples()&lt;/mono&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Die &lt;mono&gt;summary()&lt;/mono&gt; des Objekts gibt einen ausführlichen &lt;high&gt;Überblick&lt;/high&gt; über die Performanz.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-&lt;/ul&gt;
+The `summary()` of this object will print 'prediction' error statistics from cross-validation during training. This is your &lt;high&gt;estimate of future prediction performance&lt;/high&gt;!
 
 ]
 
@@ -1019,18 +1009,18 @@ sehhilfenein                       -0.1204
 
 
 ```r
-# Einfaches Modell
-glm_mod &lt;-  train(form = einkommen ~ .,
+# Simple competitor model
+glm_mod &lt;-  train(form = income ~ .,
                   data = basel,  
                   method = "glm",
                   trControl = ctrl_cv)
 
-# Berechne Performanzen 
+# Determine prediction statistics 
 resamples_mod &lt;- resamples(
   list(glmnet = glmnet_mod,
        glm = glm_mod))
 
-# Zeige Überblick
+# Print result summary
 summary(resamples_mod)
 ```
 
@@ -1039,13 +1029,13 @@ summary(resamples_mod)
 
 .pull-left35[
 
-# Modellvergleich
+# Model comparison
 
 &lt;p style="padding-top:1px"&gt;&lt;/p&gt;
 
-Vergleiche die Vorhersageperformanz mehrerer Modelle mit `resamples()`.
+Compare the prediction performance of several models with `resamples()`.
 
-Das `summary()` des Outputobjekts printet Vorhersage Fehlerstatistiken der Cross Validation während des Trainings. Das ist eine &lt;high&gt;Schätzung der zukünftigen Vorhersageperformanz&lt;/high&gt;!
+The `summary()` of this object will print 'prediction' error statistics from cross-validation during training. This is your &lt;high&gt;estimate of future prediction performance&lt;/high&gt;!
 
 ]
 
@@ -1064,28 +1054,28 @@ Number of resamples: 10
 
 MAE 
         Min. 1st Qu. Median  Mean 3rd Qu.  Max. NA's
-glmnet 769.4   827.1  836.9 832.1   843.9 880.6    0
-glm    788.2   813.2  840.3 832.4   849.0 865.0    0
+glmnet 743.1   761.2  818.3 807.8   836.7 891.7    0
+glm    734.8   777.7  801.6 812.8   844.5 892.2    0
 
 RMSE 
         Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
-glmnet 957.1    1025   1050 1040    1054 1103    0
-glm    988.2    1017   1044 1040    1064 1085    0
+glmnet 936.5   990.3   1042 1028    1076 1098    0
+glm    950.7  1008.9   1016 1034    1063 1128    0
 
 Rsquared 
          Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
-glmnet 0.8601  0.8661 0.8720 0.8721  0.8774 0.8854    0
-glm    0.8558  0.8647 0.8736 0.8719  0.8768 0.8847    0
+glmnet 0.8386  0.8440 0.8582 0.8638  0.8865 0.9021    0
+glm    0.8268  0.8549 0.8694 0.8624  0.8740 0.8825    0
 ```
 
 ]
-
 ---&gt;
 
 ---
+
 class: middle, center
 
-&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/ML_2020Oct/_sessions/Optimization/Optimization_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
+&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/ML-DHLab/_sessions/Optimization/Optimization_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

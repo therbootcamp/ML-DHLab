@@ -1,10 +1,12 @@
 ---
-title: "Modelling Wettberweb"
+title: "Model competition"
+subtitle: ""
 author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0'><col width='10%'><col width='10%'>
   <tr style='border:none'>
     <td style='display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none' nowrap>
-      <font style='font-style:normal'>Maschinelles Lernen mit R</font><br>
-      <a href='https://therbootcamp.github.io/ML_2020Oct/'>
+      <font style='font-style:normal'>Machine Learning with R</font>
+      <br>
+      <a href='https://therbootcamp.github.io/ML_2019Oct/'>
         <i class='fas fa-clock' style='font-size:.9em;' ></i>
       </a>
       <a href='https://therbootcamp.github.io'>
@@ -16,9 +18,9 @@ author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0
       <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
         <i class='fab fa-linkedin' style='font-size: .9em;'></i>
       </a>
-      <a href='https://therbootcamp.github.io'>
-        <font style='font-style:normal'>The R Bootcamp</font>
-      </a>
+            <a href='https://therbootcamp.github.io'>
+        <font style='font-style:normal'>Basel R Bootcamp</font>
+      </a>&nbsp;&nbsp;
     </td>
     <td style='width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none'>
       <img src='https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png' style='height:15px;width:80px'/>
@@ -49,17 +51,17 @@ knitr::include_graphics("image/twitter.gif")
 
 # {.tabset}
 
-## Überblick
+## Overview
 
-Demonstriere dein Können im maschinellen Lernen in einem Modelling Wettbewerb. Sage das Geschlecht eines Tweeters auf Basis von Meta Informationen vorher und gewinne &#127851;&#127851;&#127851;.
+Demonstrate your machine-learning-jedi-knight skills in this model competition. Predict `gender` from a tweeter's meta information and win lots of &#127851;&#127851;&#127851;.
 
-Der Wettbewerb läuft noch...
+The competition will end in...
 
 <font style="font-size:32px"><p id="demo" align="center"></p></font>
 
 <script>
 // Set the date we're counting down to
-var countDownDate = new Date("Oct 24, 2020 17:25:00").getTime();
+var countDownDate = new Date("Oct 6, 2019 17:05:00").getTime();
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -88,114 +90,131 @@ var x = setInterval(function() {
 }, 1000);
 </script>
 
-## Wettbewerb
+<br><br><br>
 
-### A - Setup
+## Mission statement
 
-1. Öffne dein `TheRBootcamp` R project. Es sollte die Ordner `1_Data` und `2_Code` enthalten. Stelle sicher, dass du alle Datensätze, welche im `Datensätze` Tab aufgelisted sind, in deinem `1_Data` Ordner hast. 
+After his overpaid machine learning task force maneuvered itself into obsolescence having developed the perfect algorithm to predict the locations of future crime, Baschi Dürr, head of justice and homeland security department of Basel-Stadt, needed a new project for his machine learning task before Elisabeth Ackerman, president of the governing council, might withdraw his newly-earned funding. And he knew he had to act quickly. To finance a new set of Wegner Swivel Chairs ([what else!](https://twentytwentyone.com/product/pp-502-swivel-chair-pp-mobler)) for city hall's conference rooms, Elisabeth Ackerman and Dr. Eva Herzog, head of the city's financial department, had just announced that any expendable resources were to be invested in cryptocurrencies. Out of a lack of ideas, Baschi Dürr called up his American friends, who had previously given him such a great price on the American crime data set. He learned that they had recently begun to use machine learning for political education with impressive results ([truly outstanding!](https://www.theguardian.com/news/2018/may/06/cambridge-analytica-how-turn-clicks-into-votes-christopher-wylie)). They explained that, using machine learning, one could uncover a person's gender or personality to then send that person tailored political information. All too aware of the Swiss democracy's need for information, Baschi Dürr ordered his machine learning task force to congregate at once not to waste any time: Switzerland was not going to miss out on this amazing opportunity. America first, [Switzerland second](https://www.youtube.com/watch?v=reuJ8yVCgSM).
 
-2. Öffne ein neues R Skript. Schreibe deinen Namen, das Datum und "Modelling Wettbewerb" als Kommentare an den Anfang des Skripts.
+(Names, characters, businesses, places, events, locales, and incidents are either the products of the author's imagination or used in a fictitious manner. Any resemblance to actual persons, living or dead, or actual events is purely coincidental.)
+
+
+### A - Preliminaries
+
+1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. 
+
+2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Models_competition.R` in the `2_Code` folder.  
+
+3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
 ```{r, eval = FALSE, echo = TRUE}
 ## NAME
-## DATUM
-## Modelling Wettbewerb
+## DATE
+## Modeling competition
+
+library(tidyverse)
+library(caret)
 ```
 
-3. Speichere das neue Skript unter dem Namen `modelling_wettbewerb.R` im `2_Code` Ordner.
+```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
+library(tidyverse)
+```
 
-4. Lade die Pakete `tidyverse`, `caret`, `party`, und `partykit`.
-
-5. Mit dem Code unten lade den `tweets` Datensatz und ändere `character` in `factor`. 
+4. With the code below, load the `tweets` data set and change any character variables to factors.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 
-# Lade tweets daten
+# Load tweet data
 tweets <- read_csv(file = "1_Data/tweets_train.csv")
 
-# Ändere character zu factor
+# change character to factor
 tweets <- tweets %>% mutate_if(is.character, as.factor)
 
 ```
 
-### B - Wettbewerbsregeln
+### B Competition rules
 
-1. Das Ziel des Wettbewerbs ist die maximale `Accuracy` in der Vorhersage, ob der Twitter User `female` oder `male` ist, zu erzielen. 
+1. The goal of the competition is to predict with maximal `Accuracy` whether a twitter user is `'female'` or `'male'`.
 
-2. Um am Wettbewerb teilzunehmen, reicht <b>bis zu drei</b> `train`-Objekte (also der Output der `train()`-Funktion ein).
+2. Entering the competition grants you a chance to win lots of &#127851;&#127851;&#127851;.
 
-3. Um ein `train`-Objekt einzureichen, speichert es zuerst als `.RDS`-Datei, die ihr benennt mit `PSEUDONYM_VERSION.RDS`, wobei ihr `PSEUDONYM` mit einem selbstgewählten Pseudonym ersetzt und `VERSION` mit einer selbstgewählten Beschreibung des verwendeten Ansatzes. Siehe den Code unten. 
+3. To enter the competition, you can submit <b>up to three</b> caret `train`-object (result of the `train()` function) containing your candidate model. 
+
+4. To submit the model, first save your model as an `.RDS`-file named `pseudonym_train.RDS`, with `pseudonym` replaced by a pseudonym of your choice. See the code below.
 
 ```{r}
-# Fitte Modell
-my_train <- train(...)
-
-# Speichere train Objekt
-saveRDS(my_train,'1_Data/PSEUDONYM_VERSION.RDS')
+# save train obect as .RDS
+saveRDS(my_train,'1_Data/mypseudonym_train.RDS')
 ```
 
-5. Reiche deine `.RDS` Datei per [**Mail**](mailto:therbootcamp@gmail.com) ein. 
+5. Submit your `.RDS` file (containing your training object) via the following link:
 
 <div align = "center">
 <table>
 <tr>
-<th>Problemtyp</th>
-<th>Kriterium</th>
-<th>Gütekriterium</th>
+<th>Task type</th>
+<th>Criterion</th>
+<th>Performance measure</th>
 <th>Submission link</th>
 </tr>
 <tr>
-  <td>Klassifikation</td> 
+  <td>Classification</td> 
   <td>tweets (`gender`)</td>
   <td>Accuracy</td>
-  <td>[**Submit candidate**](mailto:therbootcamp@gmail.com)</td>
+  <td>[**Submit candidate**](https://www.dropbox.com/request/03OHzgLFyAyRpXI9D1fW)</td>
 </tr>
 </table>
 </div>
 
-6. Du darfst alle Waffen in `caret`s Arsenal verwenden. Versuche neue Modelle oder Tuning Parameter oder neue Präprozessierungsmethoden. Verwende alle oder nur einige Features. 
+6. Use any weapon in your arsenal (or `caret`'s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction `Accuracy`. Consult the [**course materials**](https://therbootcamp.github.io/ML_2019Oct/) for help. 
 
-7. <font style="font-color:#EA4B68">Was du nicht darfst, ist neue Variablen zu erstellen. Ansonsten können wir nämlich später dein Modell nicht mit anderen vergleichen. D.h. alle Manipulationen der Features (jenseits deren Eliminiation z.B. dadurch, dass nur bestimmte Features in der Formula für die Vorhersage ausgewählt werden) müssen über das `preProcess`-Argument der `train()` Funktion durchgeführt werden. </font>
+7. In order for us to to be able to evaluate and compare the models, you must refrain from any manipulation (or engineering) of features other than those accessible via the `preProcess` argument in the `train()` function.
 
-
-## Datensatz
+## Datasets
 
 ```{r, eval = TRUE, message = FALSE, echo = FALSE}
 library(tidyverse)
 library(ggthemes)
 ```
 
-|Datei  |Zeilen | Spalten |
+|File  |Rows | Columns |
 |:----|:-----|:------|
-|[tweets.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/1_Data/tweets_train.csv)| 2500 | 23|
+|[tweets](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/tweets_train.csv)| 2500 | 23|
 
-Der `tweets.csv` Datensatz ist ein (stark) vor-verarbeiteter Ausschnitt dieses Datensatzes von [Kaggle](https://www.kaggle.com/crowdflower/twitter-user-gender-classification). 
+```{r, message = FALSE, eval = TRUE, echo = FALSE}
+# Load datasets locally
+library(tidyverse)
+```
 
-|Name  | Beschreibung |
+Note: The `tweets` data are a (heavily) pre-processed subsets of this original data set from [Kaggle](https://www.kaggle.com/crowdflower/twitter-user-gender-classification). 
+
+##### Variable descriptions
+
+|Name  |Meaning |
 |:--------------------------|:-----------------------------------------|
-|gender| Das Kriterium. Ob die tweetende Person männlich (`male`) oder weiblich (`female`) ist.|
-|year_created| Das Jahr in dem der Twitter Account erstellt wurde.|
-|hour_created| Die Stunde des Tages (1:24h) in der der Twitter Account erstellt wurde.|
-|tweet_count| Die Anzahl der Tweets, die über den Account gepostet wurden.|
-|retweet_count | Die Anzahl der Retweets, die über den Account gepostet wurden. |
-|user_timezone| Die Zeitzone des Accounts relativ zu GMT. |
-|name_nchar| Die Anzahl der Buchstaben im Namen des Accounts.|
-|name_male| `1`, wenn der Account Name einen der 1,000 Häufigsten männlichen Babynamen in Amerika enthält, ansonsten `0`. |
-|name_female|`1`, wenn der Account Name einen der 1,000 Häufigsten weiblichen Babynamen in Amerika enthält, ansonsten `0`. |
-|descr_nchar| Die Anzahl der Buchstaben im Namen Description Feld des Accounts|
-|descr_male| `1`, wenn das Description Feld des Accounts einen der 1,000 häufigsten männlichen Babynamen in Amerika enthält, ansonsten `0`. |
-|descr_female| `1`, wenn das Description Feld des Accounts einen der 1,000 häufigsten weiblichen Babynamen in Amerika enthält, ansonsten `0`.|
-|descr_sent| Durchschnittlicher Sentiment Score (>0 = positives Sentiment) des Texts im Description Feld des Accounts. |
-|tweet_nchar| Die Anzahl der Buchstaben in einem zufällig ausgewählten Tweets des Accounts.|
-|tweet_male| `1`, wenn der zufällig ausgewählte Tweet einen der 1,000 häufigsten männlichen Babynamen in Amerika enthält, ansonsten `0`.|
-|tweet_female| `1`, wenn der zufällig ausgewählte Tweet einen der 1,000 häufigsten weiblichen Babynamen in Amerika enthält, ansonsten `0`.|
-|tweet_sent| Durchschnittlicher Sentiment Score (>0 = positives Sentiment) des Texts zufällig ausgewählte Tweets. |
-|linkcol_red| Rotwert (1:255) in der Linkfarbe des Accounts. |
-|linkcol_green| Grünwert (1:255) in der Linkfarbe des Accounts.|
-|linkcol_blue| Blauwert (1:255) in der Linkfarbe des Accounts.|
-|sidecol_red| Rotwert (1:255) in Seitenbande des Accounts.|
-|sidecol_green| Grünwert (1:255) in Seitenbande des Accounts.|
-|sidecol_blue| Blauwert (1:255) in Seitenbande des Accounts.|
+|gender| The criterion. Whether the person tweeting was `"male"` or `"female"`.|
+|year_created| The year the person's twitter account was created.|
+|hour_created| The hour of day (1:24h) the person's twitter account was created.|
+|tweet_count| The number of tweets that the person has posted.|
+|retweet_count| The number of retweets that the person has posted. |
+|user_timezone| The person's time zone relative to GMT. |
+|name_nchar| The number of characters in the person's twitter name. |
+|name_male| `1` if the person's twitter name contains one of the 1'000 most frequent male baby names in America, `0` if not.|
+|name_female|`1` if the person's twitter name contains one of the 1'000 most frequent female baby names in America, `0` if not.|
+|descr_nchar| The number of characters in the person's twitter account description.|
+|descr_male| `1` if the person's twitter account description contains one of the 1'000 most frequent male baby names in America, `0` if not.|
+|descr_female| `1` if the person's twitter account description contains one of the 1'000 most frequent female baby names in America, `0` if not.|
+|descr_sent| Average sentiment score (>0 = positive sentiment) of the person's twitter account description.|
+|tweet_nchar| The number of characters in one randomly chosen tweet by the person.|
+|tweet_male| `1` if the randomly chosen tweet contains one of the 1'000 most frequent male baby names in America, `0` if not.|
+|tweet_female| `1` if the randomly chosen tweet contains one of the 1'000 most frequent female baby names in America, `0` if not.|
+|tweet_sent| Average sentiment score (>0 = positive sentiment) of the randomly chosen tweet.|
+|linkcol_red| Red value (1:255) in the link color according to the person's twitter scheme. |
+|linkcol_green| green value (1:255) in the link color according to the person's twitter scheme.|
+|linkcol_blue| blue value (1:255) in the link color according to the person's twitter scheme.|
+|sidecol_red| Red value (1:255) in the side bar color according to the person's twitter scheme.|
+|sidecol_green| Green value (1:255) in the side bar color according to the person's twitter scheme.|
+|sidecol_blue| Blue value (1:255) in the side bar color according to the person's twitter scheme.|
 
 
 ## Cheatsheet

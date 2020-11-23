@@ -1,10 +1,10 @@
 ---
-title: "Optimizing"
+title: "Optimization"
 author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0'><col width='10%'><col width='10%'>
   <tr style='border:none'>
     <td style='display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none' nowrap>
-      <font style='font-style:normal'>Maschinelles Lernen mit R</font><br>
-      <a href='https://therbootcamp.github.io/ML_2020Oct/'>
+      <font style='font-style:normal'>Machine Learning with R</font><br>
+      <a href='https://therbootcamp.github.io/ML_2019Oct/'>
         <i class='fas fa-clock' style='font-size:.9em;' ></i>
       </a>
       <a href='https://therbootcamp.github.io'>
@@ -17,7 +17,7 @@ author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0
         <i class='fab fa-linkedin' style='font-size: .9em;'></i>
       </a>
       <a href='https://therbootcamp.github.io'>
-        <font style='font-style:normal'>The R Bootcamp</font>
+        <font style='font-style:normal'>Basel R Bootcamp</font>
       </a>
     </td>
     <td style='width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none'>
@@ -48,12 +48,14 @@ set.seed(100)
 ```{r, message = FALSE, eval = TRUE, echo = FALSE}
 # Load datasets locally
 library(tidyverse)
-graduation_train <- read_csv("1_Data/graduation_train.csv")
-graduation_test <- read_csv("1_Data/graduation_test.csv")
-house_train <- read_csv("1_Data/house_train.csv")
-house_test <- read_csv("1_Data/house_test.csv")
-baseball_train <- read_csv("1_Data/baseball_train.csv") 
-baseball_test <- read_csv("1_Data/baseball_test.csv") 
+college_train <- read_csv("../../1_Data/college_train.csv")
+college_test <- read_csv("../../1_Data/college_test.csv")
+house_train <- read_csv("../../1_Data/house_train.csv")
+house_test <- read_csv("../../1_Data/house_test.csv")
+hitters_train <- read_csv("../../1_Data/hitters_train.csv") %>%
+  select(Salary, everything())
+hitters_test <- read_csv("../../1_Data/hitters_test.csv") %>%
+  select(Salary, everything())
 ```
 <p align="center">
 <img width="100%" src="image/rexthor.png" margin=0><br>
@@ -62,180 +64,297 @@ baseball_test <- read_csv("1_Data/baseball_test.csv")
 
 # {.tabset}
 
+## Overview
 
-## Überblick
+By the end of this practical you will know how to:
 
-In diesem Practical wirst du optimale Tuning Parameter identifizieren für eine bestmögliche Vorhersageperformanz. 
+1. Use cross-validation to select optimal model tuning parameters for decision trees and random forests.
+2. Compare 'standard' regression with lasso and ridge penalised regression.
+3. Use cross-validation to estimate future test accuracy.
 
-Am Ende des Practicals wirst du wissen wie man...
+## Tasks
 
-1. Cross-Validation zur Auswahl der Tuning Parameter verwendet. 
-2. Wie sich eine simple Regression von Lasso und Ridge unterscheidet.
+### Baseball player salaries
 
-## Aufgaben
+In this practical, we will predict the `Salary` of baseball players from the `hitters_train` and `hitters_test` datasets. 
 
 ### A - Setup
 
-1. Öffne dein `TheRBootcamp` R project. 
+1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section are in your `1_Data` folder
 
-2. Öffne ein neues R Skript. Schreibe deinen Namen, das Datum und "Optimizing Practical" als Kommentare an den Anfang des Skripts.
+2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Optimization_practical.R` in the `2_Code` folder.  
 
-```{r, eval = FALSE, echo = TRUE}
-## NAME
-## DATUM
-## Optimizing Practical
-```
+3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
-3. Speichere das neue Skript unter dem Namen `optimizing_practical.R` im `2_Code` Ordner.
-
-4. Lade die Pakete `tidyverse`, `caret`, `party`, `partykit`.
-
-```{r}
+```{r, echo = TRUE, eval = TRUE, message = FALSE}
+# Load packages necessary for this script
 library(tidyverse)
 library(caret)
 library(party)
 library(partykit)
 ```
 
-
-### B - Lade die `baseball` Datensätze
-
-1. Verwende die `read_csv()` Funktion um die Datensätze `baseball_train.csv` und `baseball_test.csv` einzulesen.
-
-```{r, echo = T, eval = T, message = F}
-# Lese Daten ein
-baseball_train <- read_csv(file = "1_Data/baseball_train.csv")
-baseball_test <- read_csv(file = "1_Data/baseball_test.csv")
+```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
+library(tidyverse)
+library(caret)
+library(party)
+library(partykit)
 ```
 
-2. Printe die Datensätze. 
+4. Run the code below to load each of the datasets listed in the `Datasets` section as new objects.
 
-3. Verwende `names(XX)`, `summary(XX)`, und `View(XX)` um einen weiteren Überblick über die Daten zu bekommen.
-
-4. Wiederum, führe den Code unten aus um sicherzustellen, dass alle `character` Features als Faktoren vorliegen. 
-
-```{r, echo = TRUE}
-# Konvertiere alle character zu factor
-baseball_train <- baseball_train %>%
-          mutate_if(is.character, factor)
-
-baseball_test <- baseball_test %>%
-          mutate_if(is.character, factor)
+```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
+# hitters data
+hitters_train <- read_csv(file = "1_Data/hitters_train.csv")
+hitters_test <- read_csv(file = "1_Data/hitters_test.csv")
 ```
 
-### C - Definiere `trainControl`
+5. Take a look at the first few rows of each dataframe by printing them to the console.
 
-1. Definiere ein Objekt `ctrl_cv` das 10-fold Cross-Validation als Resampling Methode bestimmt. Im Detail,...
+```{r, echo = TRUE, eval = FALSE}
+# Print dataframes to the console
+hitters_train
+hitters_test
+```
 
-- setze das `method` Argument auf `"cv"` für Cross-Validation.
-- setze das `number` Argument auf `10` für 10 folds.
+6. Print the numbers of rows and columns of each dataset using the `dim()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+# Print numbers of rows and columns
+dim(XXX)
+dim(XXX)
+```
+
+```{r}
+dim(hitters_train)
+dim(hitters_test)
+```
+
+7. Look at the names of the dataframes with the `names()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+# Print the names of each dataframe
+names(XXX)
+names(XXX)
+```
+
+```{r}
+names(hitters_train)
+names(hitters_test)
+```
+
+8. Open each dataset in a new window using `View()`. Do they look ok?
 
 ```{r, eval = FALSE, echo = TRUE}
-# Verwende 10-fold Cross-Validation
+# Open each dataset in a window.
+View(XXX)
+View(XXX)
+```
+
+9. As always, we need to convert all character columns to factors before we start. Do this by running the following code.
+
+```{r}
+# Convert all character columns to factor
+hitters_train <- hitters_train %>%
+          mutate_if(is.character, factor)
+
+hitters_test <- hitters_test %>%
+          mutate_if(is.character, factor)
+```
+
+### B - Setup `trainControl`
+
+1. Set up your training by specifying `ctrl_cv` as 10-fold cross-validation. Specifically,...
+
+- set `method = "cv"` to specify cross validation.
+- set `number = 10` to specify 10 folds.
+
+```{r, eval = FALSE, echo = TRUE}
+# Use 10-fold cross validation
 ctrl_cv <- trainControl(method = "XX", 
                         number = XX) 
 ```
 
 ```{r}
-# Verwende 10-fold Cross-Validation
+# Use 10-fold cross validation
 ctrl_cv <- trainControl(method = "cv", 
                         number = 10) 
 ```
 
+### C - Regression (standard)
 
-### C - Regression
+1. Fit a (standard) regression model predicting `Salary` as a function of all features. Specifically,...
 
-1. Fitte eine normale Regression auf bekanntem Wege (z.B. wie im Practical zu [Prediction](_sessions/Prediction/Prediction_practical.html)), die das `Gehalt` des Baseballspielers durch alle Features im Datensatz vorhersagt. Einziger Unterschied: Setze das `trControl` Argument auf das eben definierte `ctrl_cv` Objekt. 
-
+- set the formula to `Salary ~ .`.
+- set the data to `hitters_train`.
+- set the method to `"glm"` for regular regression.
+- set the train control argument to `ctrl_cv`.
 
 ```{r, echo = TRUE, eval = FALSE}
-# Normal Regression
-gehalt_glm <- train(form = XX ~ .,
+# Normal Regression --------------------------
+salary_glm <- train(form = XX ~ .,
                     data = XX,
                     method = "XX",
                     trControl = XX)
 ```
 
 ```{r}
-# Normal Regression
-gehalt_glm <- train(form = Gehalt ~ .,
-                   data = baseball_train,
+# Normal Regression --------------------------
+salary_glm <- train(form = Salary ~ .,
+                   data = hitters_train,
                    method = "glm",
                    trControl = ctrl_cv)
 ```
 
-2. Exploriere `gehalt_glm` indem du `gehalt_glm$finalModel` printest und `summary()` auf das Fit-Objekt anwendest. Wie beurteilst du die Outputs?
+2. Print your `salary_glm`. What do you see?
 
 ```{r}
-gehalt_glm
+salary_glm
 ```
 
+3. Try plotting your `salary_glm` object. What happens? What does this error mean?
+
+```{r}
+# I get the following error:
+
+# Error in plot.train(salary_glm) : 
+#   There are no tuning parameters for this model.
+
+
+# The problem is that method = "glm" has no tuning parameters so there is nothing to plot!
+```
+
+4. Print your final model object with `salary_glm$finalModel`.
+
+```{r, echo = TRUE}
+# Print final regression model
+salary_glm$finalModel
+```
+
+5. Print your final regression model coefficients with `coef()`.
+
+```{r}
+# Print glm coefficients
+coef(salary_glm$finalModel)
+```
 
 ### D - Ridge Regression
 
-1. Bevor du ein Regressionsmodel mit Ridge fitten kannst, benötigst du das Kandidatenset für die Tuning Parameter. Erstelle hierzu mit dem Code einen Vector von möglichen `lambda` Werten.  
+It's time to fit an optimized regression model with a Ridge penalty!
+
+1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values spanning a wide range, from very close to 0 to 1,000.
 
 ```{r, echo = TRUE}
-# Kandidaten für lambda
+# Vector of lambda values to try
 lambda_vec <- 10 ^ (seq(-4, 4, length = 100))
 ```
 
-2. Fitte eine Ridge Regression, die das `Gehalt` des Baseballspielers durch alle Feature im Datensatz vorhersagt. Hierzu kannst du mit dem Code der normalen Regression beginnen und anschliessend zwei Änderungen vornehmen: 
+2. Fit a ridge regression model predicting `Salary` as a function of all features. Specifically,...
 
-- setze das `preProcess` Argument auf `c("center", "scale")` um möglichen Problemen mit unterschielichen Skalierungen aus dem Weg zu gehen, die bei Regularisierung auftreten können.
-- setze das `tuneGrid` auf `expand.grid(alpha = 0, lambda = lambda_vec)` um Ridge auszuwählen und alle verschiedenen Kandidaten in `lambda_vec` durchlaufen zu lassen.
+- set the formula to `Salary ~ .`.
+- set the data to `hitters_train`.
+- set the method to `"glmnet"` for regularized regression.
+- set the train control argument to `ctrl_cv`.
+- set the `preProcess` argument to `c("center", "scale")` to make sure the variables are standarised when estimating the beta weights (this is good practice for ridge regression as otherwise the different scales of the variables impact the betas and thus the punishment would also depend on the scale).
+- set the tuneGrid argument such that alpha is 0 (for ridge regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below).
 
 ```{r, echo = TRUE, eval = FALSE}
-# Ridge Regression
-gehalt_ridge <- train(form = XX ~ .,
+# Ridge Regression --------------------------
+salary_ridge <- train(form = XX ~ .,
                       data = XX,
                       method = "XX",
                       trControl = XX,
-                      preProcess = XX,  
-                      tuneGrid = XX)
-```
-
-```{r}
-# Ridge Regression
-gehalt_ridge <- train(form = Gehalt ~ .,
-                      data = baseball_train,
-                      method = "glmnet",
-                      trControl = ctrl_cv,
-                      preProcess = c("center", "scale"), 
-                      tuneGrid = expand.grid(alpha = 0, 
+                      preProcess = c("XX", "XX"),  # Standardise
+                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                              lambda = lambda_vec))
 ```
 
-3. Plotte das Objekt `gehalt_ridge` mit `plot()`. Was verrät dir der Plot? Welcher `lambda` Wert könnte optimal sein?
+```{r}
+# Ridge Regression --------------------------
+salary_ridge <- train(form = Salary ~ .,
+                      data = hitters_train,
+                      method = "glmnet",
+                      trControl = ctrl_cv,
+                      preProcess = c("center", "scale"),  # Standardise
+                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
+                                             lambda = lambda_vec))
+```
+
+3. Print your `salary_ridge` object. What do you see?
 
 ```{r}
-plot(gehalt_ridge)
+salary_ridge
 ```
 
-4. Printe mit dem Code unten den durch die Cross-Validation als bestes `lambda` identifizierten Wert. Passt er zum Plot in der letzten Aufgabe?
+4. Plot your `salary_ridge` object. What do you see? Which value of the regularization parameter seems to be the best?
+
+```{r, echo = TRUE, eval = FALSE}
+# Plot salary_ridge object
+plot(XX)
+```
+
+```{r}
+plot(salary_ridge)
+```
+
+5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE}
-# Printe besten lambda parameter
-gehalt_ridge$bestTune$lambda
+# Print best regularisation parameter
+salary_ridge$bestTune$lambda
 ```
 
-5. Lasse dir mit dem Code unten die Parameter des finale Modells anzeigen. Wie beurteilst du den Output? 
+6. What were your final regression model coefficients for the best lambda value? Find them by running the following code.
 
 ```{r, echo = TRUE}
-# Erhalte die Modellparameter für das Modell unter dem optimalen lambda
-coef(gehalt_ridge$finalModel, 
-     gehalt_ridge$bestTune$lambda)
+# Get coefficients from best lambda value
+coef(salary_ridge$finalModel, 
+     salary_ridge$bestTune$lambda)
 ```
 
+7. How do these coefficients compare to what you found in regular regression? Are they similar? Different?
+
+```{r}
+# Actually the look quite different! The reason why is that we have changed the scale using preProcess
+
+# If you want the coefficients on the original scale, you'd need to convert them, or run your training again without any processing. However, this can lead to problems finding the optimal Lambda value...
+```
 
 ### E - Lasso Regression
 
-1. Fitte eine Lasso Regression, die das `Gehalt` des Baseballspielers durch alle Features im Datensatz vorhersagt. Beginne mit dem Code für die Ridge Regression und definiere als einzige Änderung `alpha = 1`.
+It's time to fit an optimized regression model with a Lasso penalty!
+
+1. Before we can fit a lasso regression model, we again first specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 1,000.
+
+```{r, echo = TRUE}
+# Determine possible values of lambda
+lambda_vec <- 10 ^ seq(from = -4, to = 4, length = 100)
+```
+
+2. Fit a lasso regression model predicting `Salary` as a function of all features. Specifically,...
+
+- set the formula to `Salary ~ .`.
+- set the data to `hitters_train`.
+- set the method to `"glmnet"` for regularized regression.
+- set the train control argument to `ctrl_cv`.
+- set the `preProcess` argument to `c("center", "scale")` to make sure the variables are standarised when estimating the beta weights (this is also good practice for lasso regression).
+- set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below).
+
+```{r, echo = TRUE, eval = FALSE}
+# Lasso Regression --------------------------
+salary_lasso <- train(form = XX ~ .,
+                      data = XX,
+                      method = "XX",
+                      trControl = XX,
+                      preProcess = c("XX", "XX"),  # Standardise
+                      tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
+                                            lambda = lambda_vec))
+```
 
 ```{r}
 # Fit a lasso regression
-gehalt_lasso <- train(form = Gehalt ~ .,
-                   data = baseball_train,
+salary_lasso <- train(form = Salary ~ .,
+                   data = hitters_train,
                    method = "glmnet",
                    trControl = ctrl_cv,
                    preProcess = c("center", "scale"),
@@ -243,134 +362,194 @@ gehalt_lasso <- train(form = Gehalt ~ .,
                                           lambda = lambda_vec))
 ```
 
-2. Plotte das Objekt `gehalt_lasso` mit `plot()`. Was verrät dir der Plot? Welcher `lambda` Wert könnte optimal sein?
+3. Print your `salary_lasso` object. What do you see?
 
 ```{r}
-plot(gehalt_lasso)
+salary_lasso
 ```
 
-3. Printe mit dem Code unten den durch die Cross-Validation als bestes `lambda` identifizierten Wert. Passt er zum Plot in der letzten Aufgabe?
 
-```{r, echo = TRUE}
-# Printe besten lambda Parameter
-gehalt_lasso$bestTune$lambda
+4. Plot your `salary_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
+
+```{r, echo = TRUE, eval = FALSE}
+# Plot salary_lasso object
+plot(XX)
 ```
 
-4. Lasse dir mit dem Code unten die Parameter des finalen Modells anzeigen. Wie beurteilst du den Output? Hat sich was im Vergleich zu Ridge verändert?
+```{r}
+plot(salary_lasso)
+```
+
+
+5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE}
-# Erhalte die Modellparameter für das Modell unter dem optimalen lambda
-coef(gehalt_lasso$finalModel, 
-     gehalt_lasso$bestTune$lambda)
+# Print best regularisation parameter
+salary_lasso$bestTune$lambda
+```
+
+6. What were your final regression model coefficients for the best lambda value? Find them by running the following code.
+
+```{r, echo = TRUE}
+# Get coefficients from best lambda value
+coef(salary_lasso$finalModel, 
+     salary_lasso$bestTune$lambda)
+```
+
+7. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
+
+```{r}
+# Yep!
+
+# I see that many features are now removed!
 ```
 
 ### F - Decision Tree
 
-1. Bevor du einen Decision Tree per Cross-Validation fittest, benötigst du das Kandidatenset für die Tuning Parameter. Erstelle hierzu mit dem Code einen Vektor von möglichen `cp` Werten. 
+It's time to fit an optimized decision tree model!
+
+1. Before we can fit a decision tree, we need to specify which values of the complexity parameter `cp` we want to try. Using the code below, create a vector called `cp_vec` which contains 100 values between 0 and 1.
 
 ```{r}
-# Kandidaten für cp
+# Determine possible values of the complexity parameter cp
 cp_vec <- seq(from = 0, to = 1, length = 100)
 ```
 
+2. Fit a decision tree model predicting `Salary` as a function of all features. Specifically,...
 
-2. Fitte einen Decision Tree, der das `Gehalt` des Baseballspielers durch alle Features im Datensatz vorhersagt. Beginne mit dem bekannten Code und zusätzlich...
-
-- setze das `trControl` Argument auf das `ctrl_cv` Objekt. 
-- setze das `tuneGrid` Argument auf `expand.grid(cp = cp_vec)`.
+- set the formula to `Salary ~ .`.
+- set the data to `hitters_train`.
+- set the method to `"rpart"` for decision trees.
+- set the train control argument to `ctrl_cv`,
+- set the tuneGrid argument with all `cp` values you specified in `cp_vec`.
 
 ```{r, echo = TRUE, eval = FALSE}
-# Decision Tree 
-gehalt_rpart <- train(form = XX ~ .,
+# Decision Tree --------------------------
+salary_rpart <- train(form = XX ~ .,
                   data = XX,
                   method = "XX",
                   trControl = XX,
-                  tuneGrid = XX)
+                  tuneGrid = expand.grid(cp = cp_vec))
 ```
 
 ```{r}
-# Decision Tree
-gehalt_rpart <- train(form = Gehalt ~ .,
-                  data = baseball_train,
+# Decision Tree --------------------------
+salary_rpart <- train(form = Salary ~ .,
+                  data = hitters_train,
                   method = "rpart",
                   trControl = ctrl_cv,
                   tuneGrid = expand.grid(cp = cp_vec))
 ```
 
-
-3. Plotte das Objekt `gehalt_rpart` mit `plot()`. Was verrät dir der Plot? Welcher `cp` Wert könnte optimal sein?
+3. Print your `salary_rpart` object. What do you see?
 
 ```{r}
-plot(gehalt_rpart)
+salary_rpart
 ```
 
-4. Printe mit dem Code unten den durch die Cross-Validation als besten `cp` identifizierten Wert. Passt er zum Plot in der letzten Aufgabe?
+4. Plot your `salary_rpart` object. What do you see? Which value of the complexity parameter seems to be the best?
+
+```{r, echo = TRUE, eval = FALSE}
+# Plot salary_rpart object
+plot(XX)
+```
+
+```{r}
+plot(salary_rpart)
+```
+
+5. Print the best value of `cp` by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE}
-# Print besten cp Parameter
-gehalt_rpart$bestTune$cp
+# Print best regularisation parameter
+salary_rpart$bestTune$cp
 ```
 
-5. Plotte das finale Modell mit dem folgenden Code.
+6. Plot your final decision tree using the following code:
 
 ```{r, echo = TRUE}
-# Visualisiere den Decision Tree
-plot(as.party(gehalt_rpart$finalModel)) 
+# Visualise your trees
+plot(as.party(salary_rpart$finalModel)) 
 ```
+
+
+7. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
+
+```{r}
+# Actually, the tree just has one root and no nodes! This is due to the optimal complexity parameter being so high.
+```
+
 
 ### G - Random Forests
 
-1. Bevor du einen Random Forest per Cross-Validation fittest, benötigst du das Kandidatenset für die Tuning Parameter. Erstelle hierzu mit dem Code einen Vektor von möglichen `mtry` Werten. 
+It's time to fit an optimized random forest model!
+
+1. Before we can fit a random forest model, we need to specify which values of the diversity parameter `mtry` we want to try. Using the code below, create a vector called `mtry_vec` which is a sequence of numbers from 1 to 10.
 
 ```{r}
-# Kandidaten für mtry
+# Determine possible values of the random forest diversity parameter mtry
 mtry_vec <- 1:10
 ```
 
-2. Fitte einen Random Forest, der das `Gehalt` des Baseballspielers durch alle Features im Datensatz vorhersagt. Beginne mit dem bekannten Code und zusätzlich...
+2. Fit a random forest model predicting `Salary` as a function of all features. Specifically,...
 
-- setze das `trControl` Argument auf das `ctrl_cv` Objekt. 
-- setze das `tuneGrid` Argument auf `expand.grid(mtry = mtry_vec)`.
+- set the formula to `Salary ~ .`.
+- set the data to `hitters_train`.
+- set the method to `"rf"` for random forests.
+- set the train control argument to `ctrl_cv`.
+- set the tuneGrid argument such that mtry can take on the values you defined in `mtry_vec`.
 
 ```{r, echo = TRUE, eval = FALSE}
-# Random Forest 
-gehalt_rf <- train(form = XX ~ .,
+# Random Forest --------------------------
+salary_rf <- train(form = XX ~ .,
                    data = XX,
                    method = "XX",
                    trControl = XX,
-                   tuneGrid = XX)
+                   tuneGrid = expand.grid(mtry = mtry_vec))
 ```
 
 ```{r}
-# Random Forest 
-gehalt_rf <- train(form = Gehalt ~ .,
-                   data = baseball_train,
+# Random Forest --------------------------
+salary_rf <- train(form = Salary ~ .,
+                   data = hitters_train,
                    method = "rf",
                    trControl = ctrl_cv,
                    tuneGrid = expand.grid(mtry = mtry_vec))
 ```
 
-
-3. Plotte das Objekt `gehalt_rf` mit `plot()`. Was verrät dir der Plot? Welche `mtry` Werte könnten optimal sein?
+3. Print your `salary_rf` object. What do you see?
 
 ```{r}
-plot(gehalt_rf)
+salary_rf
 ```
 
-4. Printe mit dem Code unten den durch die Cross-Validation als bestes `mtry` identifizierten Wert. Passt er zum Plot in der letzten Aufgabe?
+
+4. Plot your `salary_rf` object. What do you see? Which value of the regularization parameter seems to be the best?
+
+```{r, echo = TRUE, eval = FALSE}
+# Plot salary_rf object
+plot(XX)
+```
+
+```{r}
+plot(salary_rf)
+```
+
+
+5. Print the best value of `mtry` by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE}
-# Printe besten mtry Parameter
-gehalt_rf$bestTune$mtry
+# Print best mtry parameter
+salary_rf$bestTune$mtry
 ```
 
+### H - Estimate prediction accuracy from training folds
 
-### H - Schätze die Vorhersageperformanz über Cross Validation
+1. Using `resamples()`, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; `glm = salary_glm`, ...). See below.
 
-1. Verwende `resamples()` um die geschätzte Vorhersageleistung der einzelnen Modelle zu bestimmen. Übergebe hierzu die einzelnen gefitteten Modelle (z.b., `gehalt_glm`) an die Funktion. 
 ```{r, eval = FALSE, echo = TRUE}
-# Geschätzte Vorhersageleistung
-gehalt_resamples <- resamples(list(glm = XXX,
+# Summarise accuracy statistics across folds
+salary_resamples <- resamples(list(glm = XXX,
                                    ridge = XXX, 
                                    lasso = XXX, 
                                    rpart = XXX, 
@@ -378,176 +557,328 @@ gehalt_resamples <- resamples(list(glm = XXX,
 ```
 
 ```{r}
-# Geschätzte Vorhersageleistung
-gehalt_resamples <- resamples(list(glm = gehalt_glm,
-                                   ridge = gehalt_ridge, 
-                                   lasso = gehalt_lasso, 
-                                   dt = gehalt_rpart, 
-                                   rf = gehalt_rf))
+# Summarise accuracy statistics across folds
+salary_resamples <- resamples(list(glm = salary_glm,
+                                   ridge = salary_ridge, 
+                                   lasso = salary_lasso, 
+                                   dt = salary_rpart, 
+                                   rf = salary_rf))
 ```
 
-2. Erhalte einen Überblick über die Ergennisse mit `summary(gehalt_resamples)`. Wie interpretierst du den Ouput? Welches Modell hat die beste geschätzte Vorhersageleistung?
+2. Look at the summary of your `salary_resamples` object with `summary(salary_resamples)`. What does this tell you? Which model do you expect to have the best prediction accuracy for the test data?
 
-### I - Berechne tatsächliche Vorhersageleistung
+```{r}
+# Print summaries of cross-validation accuracy 
 
-1. Speichere das Kriterium (`Gehalt`) der Testdaten `baseball_test` in einem Objekt namens `criterion_test`.
+# I see below that the random forest model has the lowest mean MAE, so I
+#  would expect it to be the best model in the true test data
+summary(salary_resamples)
+```
+
+### I - Calculate prediction accuracy
+
+1. Save the criterion value for the test data as a new vector called `criterion_test`.
 
 ```{r, eval = FALSE, echo = TRUE}
-# Testkriterium
+# Save salaries of players in test dataset as criterion_test
 criterion_test <- XXX$XXX
 ```
 
 ```{r}
-# Geschätzte Vorhersageleistung
-criterion_test <- baseball_test$Gehalt
+criterion_test <- hitters_test$Salary
 ```
 
-2. Verwende `predict()` um auf bekanntem Wege Vorhersagen für die Testdaten `baseball_test` auf Basis der Modelle zu bestimmen.
+2. Using `predict()`, save the prediction of your regular regression model `salary_glm` for the `hitters_test` data as a new object called `glm_pred`. Specifically,...
+
+- set the first argument to `salary_glm`.
+- set the newdata argument to `hitters_test`.
 
 ```{r, eval = FALSE, echo = TRUE}
-# Vorhersagen der Modelle
+# Save the glm predicted salaries of hitters_test
+glm_pred <- predict(XXX, newdata = XXX)
+```
+
+
+```{r}
+# Save predictions for glm
+glm_pred <- predict(salary_glm, newdata = hitters_test)
+```
+
+3. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `rpart_pred` and `rf_pred`.
+
+```{r, eval = FALSE, echo = TRUE}
 ridge_pred <- predict(XXX, newdata = XXX)
 lasso_pred <- predict(XXX, newdata = XXX)
 rpart_pred <- predict(XXX, newdata = XXX)
 rf_pred <- predict(XXX, newdata = XXX)
 ```
 
-```{r}
-# Vorhersagen der Modelle
-ridge_pred <- predict(gehalt_ridge, newdata = baseball_test)
-lasso_pred <- predict(gehalt_lasso, newdata = baseball_test)
-rpart_pred <- predict(gehalt_rpart, newdata = baseball_test)
-rf_pred <- predict(gehalt_rf, newdata = baseball_test)
-```
-
-4. Verwende `postResample()` um die Vorhersagen mit den tatsächlichen Kriteriumswerten zu vergleichen. Welches Modell hat in der Vorhersage der Testdaten die beste Performanz?
 
 ```{r}
-postResample(ridge_pred, criterion_test)
-postResample(lasso_pred, criterion_test)
-postResample(rpart_pred, criterion_test)
-postResample(rf_pred, criterion_test)
+# Save predictions from other models
+ridge_pred <- predict(salary_ridge, newdata = hitters_test)
+lasso_pred <- predict(salary_lasso, newdata = hitters_test)
+rpart_pred <- predict(salary_rpart, newdata = hitters_test)
+rf_pred <- predict(salary_rf, newdata = hitters_test)
 ```
 
+4. Using `postResample()`, calculate the aggregate prediction accuracy for each model using the template below. Specifically,...
 
-5. Vergleiche die geschätzten Vorhersageleistungen auf Basis von `resamples()` (aus der letzten Sektion) mit der Leistung für tatsächliche Vorhersage. Wie gross sind die Unterschiede?
-
-### X - Challenges: Abschlussrate
-
-Vergleiche auf Basis der Schritte in diesem Practical die Performanz von Regression, Lasso, Ridge, Decision Tree und Random Forest für die `graduation_train` und `graduation_test` Datensätze aus dem letzten Practical. Lass die Modelle das Kriterium `Privatuniversität` auf Basis aller anderen Features vorhersagen. Nicht vergessen für Klassifikation muss das Kriterium ein `factor` sein.
-
-1. Welches Modell ist das beste? 
-2. Wie viel besser werden die Modelle durch Model Tuning? Vergleiche mit den Ergebnissen des letzten Practicals. 
-3. Setzt Lasso die Gewichte einzelner Features auf 0? Was könnte das für die Relevanz des Features bedeuten?
-
-### Y - Challenges: Hauspreise
-
-Vergleiche auf Basis der Schritte in diesem Practical die Performanz von Regression, Lasso, Ridge, Decision Tree und Random Forest für die `house_train` und `house_test` Datensätze aus dem letzten Practical. Lass die Modelle das Kriterium `Preis` auf Basis aller anderen Features vorhersagen.
-
-1. Welches Modell ist das beste? 
-2. Wie viel besser werden die Modelle durch Model Tuning? Vergleiche mit den Ergebnissen des letzten Practicals. 
-3. Setzt Lasso die Gewichte einzelner Features auf 0? Was könnte das für die Relevanz des Features bedeuten?
-
-
-
-## Beispiele
+- set the pred argument to your model predictions (e.g.; `ridge_pred`).
+- set the `obs` argument to the true criterion values `criterion_test`).
 
 ```{r, eval = FALSE, echo = TRUE}
+# Calculate aggregate accuracy for a model
+postResample(pred = XXX, 
+             obs = XXX)
+```
 
-# Schritt 0: Lade Pakete-----------
-library(tidyverse)   
-library(caret)      
-library(partykit)  
-library(party)  
+```{r}
+# Prediction error for normal regression
+postResample(pred = glm_pred, 
+             obs = hitters_test$Salary)
 
-# Step 1: Lade und bereite Daten ----------------------
+# Prediction error for ridge regression
+postResample(pred = ridge_pred, 
+             obs = hitters_test$Salary)
 
-# Training und Testdaten
+# Prediction error for lasso regression
+postResample(pred = lasso_pred, 
+             obs = hitters_test$Salary)
+
+# Prediction error for decision trees
+postResample(pred = rpart_pred, 
+             obs = hitters_test$Salary)
+
+# Prediction error for random forests
+postResample(pred = rf_pred, 
+             obs = hitters_test$Salary)
+
+```
+
+
+```{r, echo = FALSE}
+x <- postResample(pred = rf_pred, 
+             obs = hitters_test$Salary)
+```
+
+
+5. Which of your models had the best performance in the true test data?
+
+```{r}
+# Random forests had the lowest test MAE of
+postResample(pred = rf_pred, 
+             obs = hitters_test$Salary)[3]
+```
+
+
+6. How close were your models' true prediction error to the values you estimated in the previous section when you ran `resamples()`?
+
+```{r}
+# Depends on what you mean by 'close', but they are definitely higher (worse) in the test data
+```
+
+
+### Z - Challenges
+
+1. In addition to 'regular' 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models' performance? To test this, create a new training control object called `ctrl_cv_rep` as below. Then, train your models again using `ctrl_cv_rep` (instead of `ctrl_cv`), and evaluate their prediction performance. Do they improve? Do you get different optimal tuning values compared to your previous models?
+
+```{r}
+# Repeated cross validation.
+#  Folds = 10
+#  Repeats = 5
+ctrl_cv_rep <- trainControl(method = "repeatedcv",
+                            number = 10,
+                            repeats = 5)
+```
+
+2. Using the same procedure as above, compare models predicting the prices of houses in King County Washington using the `house_train` and `house_test` datasets. 
+
+3. When using lasso regression, do you find that the lasso sets any beta weights to exactly 0? If so, which ones?
+
+4. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
+
+5. Using the same procedure as above, compare models predicting the graduate rate of students from different colleges using the `college_train` and `college_test` datasets. 
+
+6. When using lasso regression, do you find that the lasso sets any beta weights to exactly 0? If so, which ones?
+
+7. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
+
+## Examples
+
+```{r, eval = FALSE, echo = TRUE}
+# Model optimization with Regression
+
+# Step 0: Load packages-----------
+library(tidyverse)    # Load tidyverse for dplyr and tidyr
+library(caret)        # For ML mastery 
+library(partykit)     # For decision trees
+library(party)        # For decision trees
+
+# Step 1: Load, clean, and explore data ----------------------
+
+# training data
 data_train <- read_csv("1_Data/diamonds_train.csv")
+
+# test data
 data_test <- read_csv("1_Data/diamonds_test.csv")
 
-# Konvertiere alle character zu factor
-data_train <- data_train %>% mutate_if(is.character, factor)
-data_test <- data_test %>% mutate_if(is.character, factor)
+# Convert all characters to factor
+#  Some ML models require factors
+data_train <- data_train %>%
+  mutate_if(is.character, factor)
 
-# Definiere Kriterien
+data_test <- data_test %>%
+  mutate_if(is.character, factor)
+
+# Explore training data
+data_train        # Print the dataset
+View(data_train)  # Open in a new spreadsheet-like window 
+dim(data_train)   # Print dimensions
+names(data_train) # Print the names
+
+# Define criterion_train
+#   We'll use this later to evaluate model accuracy
 criterion_train <- data_train$price
 criterion_test <- data_test$price
 
-# Schritt 2: Definiere die Training-Kontrollparameter -------------
+# Step 2: Define training control parameters -------------
 
-# Verwende 10-fold Cross Validation
+# Use 10-fold cross validation
 ctrl_cv <- trainControl(method = "cv", 
                         number = 10) 
 
-# Scrhitt 3: Trainieree Modelle -----------------------------
+# Step 3: Train models: -----------------------------
+#   Criterion: hwy
+#   Features: year, cyl, displ
 
-# Simple Regression ----
+# Normal Regression --------------------------
 price_glm <- train(form = price ~ carat + depth + table + x + y,
                    data = data_train,
                    method = "glm",
                    trControl = ctrl_cv)
 
 
-# Zeige Outputs
+# Print key results
 price_glm
+
+# RMSE  Rsquared  MAE
+# 1506  0.86      921
+
+# Coefficients
 coef(price_glm$finalModel)
 
-# Lasso ----
+# (Intercept)       carat       depth       table           x           y 
+#     21464.9     11040.4      -215.6       -94.2     -3681.6      2358.9 
 
-# Kandidatenset für lambda
+# Lasso --------------------------
+
+# Vector of lambda values to try
 lambda_vec <- 10 ^ seq(-3, 3, length = 100)
 
-# Lasso Regression
 price_lasso <- train(form = price ~ carat + depth + table + x + y,
                    data = data_train,
                    method = "glmnet",
                    trControl = ctrl_cv,
-                   preProcess = c("center", "scale"), # Standardisiere 
-                   tuneGrid = expand.grid(alpha = 1,  
+                   preProcess = c("center", "scale"),  # Standardise
+                   tuneGrid = expand.grid(alpha = 1,  # Lasso
                                           lambda = lambda_vec))
 
-# Zeige Outputs
-price_lasso 
+
+# Print key results
+price_lasso
+
+# glmnet 
+# 
+# 5000 samples
+#    5 predictor
+# 
+# Pre-processing: centered (5), scaled (5) 
+# Resampling: Cross-Validated (10 fold) 
+# Summary of sample sizes: 4500, 4500, 4500, 4500, 4500, 4500, ... 
+# Resampling results across tuning parameters:
+# 
+#   lambda    RMSE  Rsquared  MAE 
+#   1.00e-03  1509  0.858      918
+#   1.15e-03  1509  0.858      918
+#   1.32e-03  1509  0.858      918
+#   1.52e-03  1509  0.858      918
+
+# Plot regularisation parameter versus error
 plot(price_lasso)
 
-# Zeige beste Regularisierungsparameter
+# Print best regularisation parameter
 price_lasso$bestTune$lambda
 
-# Zeige finales Modell
+# Get coefficients from best lambda value
 coef(price_lasso$finalModel, 
      price_lasso$bestTune$lambda)
 
+# 6 x 1 sparse Matrix of class "dgCMatrix"
+#                 1
+# (Intercept)  4001
+# carat        5179
+# depth        -300
+# table        -213
+# x           -3222
+# y            1755
 
-# Ridge ----
 
-# Kandidatenset für lambda
+# Ridge --------------------------
+
+# Vector of lambda values to try
 lambda_vec <- 10 ^ seq(-3, 3, length = 100)
 
-# Ridge Regression
 price_ridge <- train(form = price ~ carat + depth + table + x + y,
                      data = data_train,
                      method = "glmnet",
                      trControl = ctrl_cv,
-                     preProcess = c("center", "scale"), # Standardisiere
-                     tuneGrid = expand.grid(alpha = 0,
+                     preProcess = c("center", "scale"),  # Standardise
+                     tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                             lambda = lambda_vec))
 
-# Zeige Outputs
+# Print key results
 price_ridge
+
+# glmnet 
+# 
+# 5000 samples
+#    5 predictor
+# 
+# Pre-processing: centered (5), scaled (5) 
+# Resampling: Cross-Validated (10 fold) 
+# Summary of sample sizes: 4500, 4500, 4500, 4500, 4500, 4500, ... 
+# Resampling results across tuning parameters:
+# 
+#   lambda    RMSE  Rsquared  MAE 
+#   1.00e-03  1638  0.835     1137
+#   1.15e-03  1638  0.835     1137
+#   1.32e-03  1638  0.835     1137
+#   1.52e-03  1638  0.835     1137
+#   1.75e-03  1638  0.835     1137
+
+# Plot regularisation parameter versus error
 plot(price_ridge)
 
-# Zeige beste Regularisierungsparameter
+# Print best regularisation parameter
 price_ridge$bestTune$lambda
 
-# Zeige finales Modell
+# Get coefficients from best lambda value
 coef(price_ridge$finalModel, 
      price_ridge$bestTune$lambda)
 
+# 6 x 1 sparse Matrix of class "dgCMatrix"
+#                1
+# (Intercept) 4001
+# carat       2059
+# depth       -131
+# table       -168
+# x            716
+# y            797
 
 # Decision Trees --------------------------
 
-# Kandidatenset für cp
+# Vector of cp values to try
 cp_vec <- seq(0, .1, length = 100)
 
 price_rpart <- train(form = price ~ carat + depth + table + x + y,
@@ -556,164 +887,255 @@ price_rpart <- train(form = price ~ carat + depth + table + x + y,
                   trControl = ctrl_cv,
                   tuneGrid = expand.grid(cp = cp_vec))
 
-# Zeige Outputs
+# Print key results
 price_rpart
 
-# Zeige beste Regularisierungsparameter
+# Plot complexity parameter vs. error
 plot(price_rpart)
+
+# Print best complexity parameter
 price_rpart$bestTune$cp
 
+# [1] 0.00202
 
-# Schritt 3: Vorhersageperformanz in folds ----
+# Step 3: Estimate prediction accuracy from folds ----
 
-# Berechne Performanz
+# Get accuracy statistics across folds
 resamples_price <- resamples(list(ridge = price_ridge, 
                                   lasso = price_lasso, 
                                   glm = price_glm))
 
-# Zusammenfassung
+# Print summary of accuracies
 summary(resamples_price)
 
+# MAE 
+#       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
+# ridge 1094    1100   1117 1137    1170 1217    0
+# lasso  869     887    929  918     944  960    0
+# glm    856     882    921  920     949  986    0
+# 
+# RMSE 
+#       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
+# ridge 1545    1580   1609 1638    1703 1772    0
+# lasso 1323    1479   1518 1509    1583 1593    0
+# glm   1350    1429   1526 1509    1582 1702    0
+# 
+# Rsquared 
+#        Min. 1st Qu. Median  Mean 3rd Qu.  Max. NA's
+# ridge 0.798   0.828  0.836 0.835   0.848 0.854    0
+# lasso 0.827   0.846  0.858 0.858   0.868 0.902    0
+# glm   0.819   0.849  0.863 0.860   0.870 0.888    0
 
-# Schritt 4: Vorhersageevaluation -------------------
+# Step 4: Measure prediction Accuracy -------------------
 
-# GLM
-glm_pred <- predict(price_glm, newdata = data_test)
-postResample(pred = glm_pred, obs = criterion_test)
+# GLM ================================
 
-# Ridge
-ridge_pred <- predict(price_ridge, newdata = data_test)
-postResample(pred = ridge_pred, obs = criterion_test)
+# Predictions
+glm_pred <- predict(price_glm, 
+                    newdata = data_test)
 
-# Lasso
-lasso_pred <- predict(price_lasso, newdata = data_test)
-postResample(pred = lasso_pred, obs = criterion_test)
+# Calculate aggregate accuracy
+postResample(pred = glm_pred, 
+             obs = criterion_test)
+
+#     RMSE Rsquared      MAE 
+# 1654.017    0.832  944.854 
+
+# Ridge ================================
+
+# Predictions
+ridge_pred <- predict(price_ridge, 
+                      newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = ridge_pred, 
+             obs = criterion_test)
+
+#     RMSE Rsquared      MAE 
+# 1650.541    0.832 1133.063 
 
 
+# Lasso ================================
 
+# Predictions
+lasso_pred <- predict(price_lasso, 
+                      newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = lasso_pred, 
+             obs = criterion_test)
+
+#     RMSE Rsquared      MAE 
+# 1653.675    0.832  942.870 
+
+
+# Visualise Accuracy -------------------------
+
+# Tidy competition results
+accuracy <- tibble(criterion_test = criterion_test,
+                   Regression = glm_pred,
+                   Ridge = ridge_pred,
+                   Lasso = lasso_pred) %>%
+               gather(model, prediction, -criterion_test) %>%
+               # Add error measures
+               mutate(se = prediction - criterion_test,
+                      ae = abs(prediction - criterion_test))
+
+# Calculate summaries
+accuracy_agg <- accuracy %>%
+                  group_by(model) %>%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+ggplot(data = accuracy,
+       aes(x = criterion_test, y = prediction, col = model)) +
+  geom_point(alpha = .5) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(x = "True Prices",
+       y = "Predicted Prices",
+       title = "Predicting Diamond Prices",
+       subtitle = "Black line indicates perfect performance")
+
+# Plot B) Violin plot of absolute errors
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = "Fitting Absolute Errors",
+       subtitle = "Numbers indicate means",
+       x = "Model",
+       y = "Absolute Error (Log Transformed)") +
+  guides(fill = FALSE) +
+  annotate(geom = "label", 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2)) +
+  scale_y_continuous(trans='log')
 ```
 
 
 
-## Datensätze
+## Datasets
 
 ```{r, eval = TRUE, message = FALSE, echo = FALSE}
 library(tidyverse)
 library(ggthemes)
 ```
 
-|Datei  |Zeilen | Spalten |
+|File  |Rows | Columns |
 |:----|:-----|:------|
-|[baseball_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/1_Data/baseball_train.csv)| 213 | 20|
-|[baseball_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/1_Data/baseball_test.csv)| 50 | 20|
-|[graduation_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/1_Data/graduation_train.csv)| 500 | 18|
-|[graduation_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/1_Data/graduation_test.csv)| 277 | 18|
-|[house_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/1_Data/house_train.csv)| 5000 | 21|
-|[house_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/1_Data/house_test.csv)| 1000 | 21|
+|[hitters_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/hitters_train.csv)| 50 | 20|
+|[hitters_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/hitters_test.csv)| 213 | 20|
+|[college_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_train.csv)| 500 | 18|
+|[college_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_test.csv)| 277 | 18|
+|[house_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/house_train.csv)| 5000 | 21|
+|[house_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/hitters_test.csv)| 1000 | 21|
 
 
-#### `baseball_train` and `baseball_test`
+- The `hitters_train` and `hitters_test` data are taken from the `Hitters` dataset in the `ISLR` package. They are data frames with observations of major league baseball players from the 1986 and 1987 seasons.
 
-Die `baseball_train` und `baseball_test` Datensätze entstammen dem `Hitters` Datensatz des `ISLR` Pakets. Sie enthalten Daten über Major League Baseball Spieler aus den Saisons 1986 und 1987.
+- The `college_train` and `college_test` data are taken from the `College` dataset in the `ISLR` package. They contain statistics for a large number of US Colleges from the 1995 issue of US News and World Report.
 
-| Name | Beschreibung |
-|Gehalt| Jahresgehalt zu Beginn des Jahres 1987 |
-|Schlaeger86| Einsätze als Schläger im Jahr 1986 |
-|Getroffen86| Treffer des Balls im Jahr 1986 |
-|Home_runs86| Home runs im Jahr 1986 |
-|Runs86| Runs im Jahr 1986 |
-|Runs_andere86| Runs anderer ermöglicht im Jahr 1986 |
-|Walks86| Walks durch Fehlwürfe des Werfers im Jahr 1986 |
-|Putout86| Putouts eines Schlägers als Fänger im 1986  |
-|Vorlage86| Vorlage zum Putout als Fänger im Jahr 1986 |
-|Fehler86| Fehler der Fänger im Jahr 1986  |
-|Erfahrung| Erfahrung in Jahren in Major Ligen zu Beginn des Jahres 1987 |
-|Schlaeger| Einsätze als Schläger insgesamt |
-|Getroffen| Treffer des Balls insgesamt |
-|Home_runs| Home runs insgesamt |
-|Runs| Runs insgesamt |
-|Runs_andere| Runs anderer ermöglicht insgesamt |
-|Walks| Walks durch Fehlwürfe des Werfers insgesamt |
-|Liga| Ligakürzel: A = American, N = National |
-|Division| Divisionskürzel: E = East, W = West |
-|Liga87| Ligakürzel in 1987: A = American, N = National |
 
-#### `graduation_train` und `graduation_test`
+- The `house_train` and `house_test` data come from [https://www.kaggle.com/harlfoxem/housesalesprediction](https://www.kaggle.com/harlfoxem/housesalesprediction)
 
-Die `graduation_train` und `graduation_test` Datensätze entstammen dem `College` Datensatz aus dem `ISLR` Paket. sie enthalten Statistiken für eine grosse Anzahl US Colleges auf Basis des *US News and World Reports* aus dem Jahr 1995.
 
-| Name | Beschreibung |
+#### Variable description of `hitters_train` and `hitters_test`
+
+| Name | Description |
 |:-------------|:-------------------------------------|
-|Privatuniversitaet| Ja oder Nein |
-|Bewerbungen| Anzahl Bewerbungen |
-|Angenommen| Anzahl angenommene Bewerbungen  |
-|Eingeschrieben| Anzahl eingeschrieben  |
-|Prozent_Top10| Prozent der Studierenden innerhalb Top 10% in High School |
-|Prozent_Top25| Prozent der Studierenden innerhalb Top 25% in High School   |
-|Vollzeit| Anzahl Studierende in Vollzeit  |
-|Teilzeit| Anzahl Studierende in Teilzeit  |
-|Kosten_ausserhalb| Kosten für Studierende aus einem anderen Staat |
-|Kosten_Unterkunft| Kosten für Studierende für Unterkunft und Verpflegung  |
-|Kosten_Buecher| Kosten für Studierende für Bücher  |
-|Kosten_persoenlich| Kosten für Studierende für Persönliches  |
-|Prozent_PhD| Anteil PhDs innerhalb der Dozentenschaft |
-|Prozent_Degree| Anteil Abschlüsse innerhalb der Dozentenschaft |
-|Verhaeltnis_Stud.Doz.| Verhältnis Studierene zu Dozenten  |
-|Prozent_Spenden| Anteil Alumnis, die an das College spenden |
-|Kosten_Student| Ausbildungskosten für das College pro Student |
-|Abschlussrate| Abschlussrate |
+| `Salary` | 1987 annual salary on opening day in thousands of dollars. |
+| `AtBat` | Number of times at bat in 1986.  |
+| `Hits` | Number of hits in 1986. |
+| `HmRun` | Number of home runs in 1986. |
+| `Runs` | Number of runs in 1986. |
+| `RBI` | Number of runs batted in in 1986. |
+| `Walks` | Number of walks in 1986. |
+| `Years` | Number of years in the major leagues. |
+| `CAtBat` | Number of times at bat during his career. |
+| `CHits` | Number of hits during his career. |
+| `CHmRun` | Number of home runs during his career. |
+| `CRuns` | Number of runs during his career. |
+| `CRBI` | Number of runs batted in during his career. |
+| `CWalks` | Number of walks during his career. |
+| `League` | A factor with levels A and N indicating player's league at the end of 1986. |
+| `Division` | A factor with levels E and W indicating player's division at the end of 1986. |
+| `PutOuts` | Number of put outs in 1986. |
+| `Assists` | Number of assists in 1986. |
+| `Errors` | Number of errors in 1986. |
+| `NewLeague` | A factor with levels A and N indicating player's league at the beginning of 1987. |
 
 
-#### `house_train` and `house_test`
 
-Die `house_train` und `house_test` Datensätze enthalten Hauspreise und -Eigenschaften in der King County in den USA, welches die Stadt Seattle beinhaltet. Quelle der Daten ist [Kaggle](https://www.kaggle.com/harlfoxem/housesalesprediction).
+#### Variable description of `college_train` and `college_test`
 
-| Name | Beschreibung |
+| Name | Description |
 |:-------------|:-------------------------------------|
-|Preis| Preis des Hauses |
-|Schlafzimmer| Anzahl Schlafzimmer  |
-|Baeder| Anzahl Bäder |
-|Gesamt_sqft| Gesamtfläche des Hauses in square foot |
-|Grundstück_sqft| Fläche des Grundstücks in square foot |
-|Stockwerke| Anzahl Stockwerke |
-|Uferlage| 0 = Nein, 1 = Ja |
-|Besichtigung| Wurde das Haus besichtigt  |
-|Zustand| Wie gut ist der Zustand des Hauses |
-|Einstufung| Einstufung gemäss King County Einstufungssystem |
-|Wohnraum_sqft| Wohnraum des Hauses in square foot|
-|Keller_sqft| Kellerraum des Hauses in square foot |
-|Baujahr| Baujahr |
-|Renovationsjahr| Renovationsjahr |
-|Postleitzahl| Postleitzahl |
-|Breitengrad| Breitengrad |
-|Laengengrad| Längengrad |
-|Gesamt_sqft_2015| Gesamtfläche des Hauses in square foot in 2015 |
-|Grundstück_sqft_2015| Fläche des Grundstücks in square foot in 2015 |
+| `Private` | A factor with levels No and Yes indicating private or public university. |
+| `Apps` | Number of applications received.  |
+| `Accept` | Number of applications accepted. |
+| `Enroll` | Number of new students enrolled. |
+| `Top10perc` | Pct. new students from top 10% of H.S. class. |
+| `Top25perc` | Pct. new students from top 25% of H.S. class. |
+| `F.Undergrad` | Number of fulltime undergraduates. |
+| `P.Undergrad` | Number of parttime undergraduates. |
+| `Outstate` | Out-of-state tuition. |
+| `Room.Board` | Room and board costs. |
+| `Books` | Estimated book costs. |
+| `Personal` | Estimated personal spending. |
+| `PhD` | Pct. of faculty with Ph.D.'s. |
+| `Terminal` | Pct. of faculty with terminal degree. |
+| `S.F.Ratio` | Student/faculty ratio. |
+| `perc.alumni` | Pct. alumni who donate. |
+| `Expend` | Instructional expenditure per student. |
+| `Grad.Rate` | Graduation rate. |
 
+#### Variable description of `house_train` and `house_test`
 
+| Name | Description |
+|:-------------|:-------------------------------------|
+| `price` | Price of the house in $. |
+| `bedrooms` | Number of bedrooms.  |
+| `bathrooms` | Number of bathrooms. |
+| `sqft_living` | Square footage of the home. |
+| `sqft_lot` | Square footage of the lot. |
+| `floors` | Total floors (levels) in house. |
+| `waterfront` | House which has a view to a waterfront. |
+| `view` | Has been viewed. |
+| `condition` | How good the condition is (Overall). |
+| `grade` | Overall grade given to the housing unit, based on King County grading system. |
+| `sqft_above` | Square footage of house apart from basement. |
+| `sqft_basement` | Square footage of the basement. |
+| `yr_built` | Built Year. |
+| `yr_renovated` | Year when house was renovated. |
+| `zipcode` | Zip code. |
+| `lat` | Latitude coordinate. |
+| `long` | Longitude coordinate. |
+| `sqft_living15` | Living room area in 2015 (implies some renovations). This might or might not have affected the lotsize area. |
+| `sqft_lot15` | lot-size area in 2015 (implies some renovations). |
 
-## Funktionen
+## Functions
 
-### Pakete
+### Packages
 
-|Paket| Installation|
+|Package| Installation|
 |:------|:------|
 |`tidyverse`|`install.packages("tidyverse")`|
 |`caret`|`install.packages("caret")`|
 |`partykit`|`install.packages("partykit")`|
 |`party`|`install.packages("party")`|
 
-### Funktionen
+### Functions
 
-| Funktion| Paket | Beschreibung |
+| Function| Package | Description |
 |:---|:------|:---------------------------------------------|
-| `trainControl()`|`caret`|   Definiere wie das Modell trainiert wird | 
-| `train()`|`caret`|  Trainiere (fitte) ein Modell   |
-| `predict(object, newdata)`|`stats`| Vorhersage des Kriteriumswerts in `newdata` |
-| `postResample()`|`caret`| Evaluiere Performanz in Regressionsfällen   |
-| `confusionMatrix()`|`caret`|   Evaluiere Performanz in Klassifikationsfällen |
+| `trainControl()`|`caret`|    Define modelling control parameters| 
+| `train()`|`caret`|    Train a model|
+| `predict(object, newdata)`|`stats`|    Predict the criterion values of `newdata` based on `object`|
+| `postResample()`|`caret`|   Calculate aggregate model performance in regression tasks|
+| `confusionMatrix()`|`caret`|   Calculate aggregate model performance in classification tasks| 
 
-## Materialien
+## Resources
 
 <figure>
 <center>
