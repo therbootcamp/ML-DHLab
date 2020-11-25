@@ -1,4 +1,4 @@
-price,bedrooms,bathrooms,sqft_living,sqft_lot,floors,waterfront,view,condition,grade,sqft_above,sqft_basement,yr_built,yr_renovated,zipcode,lat,long,sqft_living15,sqft_lot15
+Preis,Schlafzimmer,Baeder,Gesamt_sqft,Grundstück_sqft,Stockwerke,Uferlage,Besichtigung,Zustand,Einstufung,Wohnraum_sqft,Keller_sqft,Baujahr,Renovationsjahr,Postleitzahl,Breitengrad,Laengengrad,Gesamt_sqft_2015,Grundstück_sqft_2015
 176000,2,1,770,5200,1,0,0,5,6,770,0,1969,0,98042,47.3627,-122.087,1150,5330
 370000,2,1,850,6213,1,0,0,3,6,750,100,1916,0,98136,47.5282,-122.384,1880,5500
 875909,4,2.5,3610,13292,2,0,0,3,10,3610,0,1996,0,98075,47.5868,-121.974,3000,10776

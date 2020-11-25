@@ -513,10 +513,6 @@ New York Times <a href="https://www.nytimes.com/2017/10/09/science/stanford-sexu
 <font style="font-size:10px">from <a href="https://en.wikipedia.org/wiki/British_heavy_tanks_of_World_War_I#/media/File:Mark_I_series_tank.jpg">wikipedia.org</a></font>
 </p>
 
-
-
-
-
 ]
 
 ---
@@ -572,6 +568,75 @@ New York Times <a href="https://www.nytimes.com/2017/10/09/science/stanford-sexu
 
 
 ]
+
+---
+
+# <mono>createDataPartition()</mono>
+
+.pull-left4[
+
+<ul>
+  <li class="m1"><span>Use <mono>createDataPartition()</mono> to split the <high>data set</high> in training  and test.</span></li>
+</ul>
+
+<br>
+
+<table style="cellspacing:0; cellpadding:0; border:none;">
+  <col width="30%">
+  <col width="70%">
+<tr>
+  <td bgcolor="white">
+    <b>Argument</b>
+  </td>
+  <td bgcolor="white">
+    <b>Beschreibung</b>
+  </td>  
+</tr>
+<tr>
+  <td bgcolor="white">
+    <mono>y</mono>
+  </td>
+  <td bgcolor="white">
+    The criterion. Important for a <high>balanced split</high> of the data.  
+  </td>  
+</tr>
+<tr>
+  <td bgcolor="white">
+    <mono>p</mono>
+  </td>
+  <td bgcolor="white">
+    The <high>proportion of data</high> of data assigned to training. Often <mono>.8</mono> or <mono>.5</mono>.    
+  </td>  
+</tr>
+</table>
+
+
+]
+
+.pull-right5[
+
+```{r, eval = FALSE, echo = TRUE}
+# Important for reproducible results
+set.seed(100)
+
+# Index for training
+index <- 
+  createDataPartition(y = basel$income,
+                             p = .8,
+                             list = FALSE)
+
+# Create training 
+basel_train <- basel %>% 
+  slice(index)
+
+# Create test
+basel_test <- basel %>% 
+  slice(-index)
+```
+
+
+]
+
 
 ---
 

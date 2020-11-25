@@ -76,14 +76,14 @@ layout: true
 
 ---
 
-# Which of these models is better? Why?
+# Which is better?
 
 &lt;img src="Fitting_files/figure-html/unnamed-chunk-2-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
-# Which of these models is better? Why?
+# Which is better?
 
 &lt;img src="Fitting_files/figure-html/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
@@ -709,7 +709,7 @@ confusionMatrix(fit, truth)
 
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Controls how &lt;mono&gt;caret&lt;/mono&gt; fits an ML model.&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Controls how &lt;mono&gt;caret&lt;/mono&gt; fits an ML model.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;li class="m2"&gt;&lt;span&gt;Until Session &lt;b&gt;Optimisierung&lt;/b&gt; we use &lt;highm&gt;method = "none"&lt;/highm&gt;.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -958,17 +958,6 @@ Resampling: None
 &lt;/ul&gt;
 
 
-```
-# A tibble: 5 x 5
-  Default   Age Gender Cards Education
-    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;
-1       0    45 M          3        11
-2       1    36 F          2        14
-3       0    76 F          5        12
-4       1    25 M          2        17
-5       1    36 F          3        12
-```
-
 ]
 
 .pull-right5[
@@ -1002,6 +991,9 @@ load_mod &lt;- train(form = factor(Default) ~ .,
   &lt;li class="m1"&gt;&lt;span&gt;&lt;mono&gt;train()&lt;/mono&gt; returns a &lt;mono&gt;list&lt;/mono&gt; with an object called &lt;mono&gt;finalModel&lt;/mono&gt; containing the best fitting model.&lt;/span&gt;&lt;/li&gt;
   &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;.$finalModel&lt;/mono&gt; &lt;high&gt;extracts the model&lt;/high&gt;, then explore using:&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;br&gt;
+
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
@@ -1069,6 +1061,8 @@ names(eink_mod$finalModel)
   &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;.$finalModel&lt;/mono&gt; &lt;high&gt;extracts the model&lt;/high&gt;, then explore using:&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;br&gt;
+
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
   &lt;td&gt;
@@ -1124,14 +1118,17 @@ eink_mod$finalModel$coefficients
 
 ---
 
-# &lt;mono&gt;.$finalModel&lt;/mono&gt;
 
 .pull-left4[
+
+# &lt;mono&gt;.$finalModel&lt;/mono&gt;
 
 &lt;ul&gt;
   &lt;li class="m1"&gt;&lt;span&gt;&lt;mono&gt;train()&lt;/mono&gt; returns a &lt;mono&gt;list&lt;/mono&gt; with an object called &lt;mono&gt;finalModel&lt;/mono&gt; containing the best fitting model.&lt;/span&gt;&lt;/li&gt;
   &lt;li class="m2"&gt;&lt;span&gt;&lt;mono&gt;.$finalModel&lt;/mono&gt; &lt;high&gt;extracts the model&lt;/high&gt;, then explore using:&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;br&gt;
 
 &lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
 &lt;tr&gt;
@@ -1163,6 +1160,8 @@ eink_mod$finalModel$coefficients
 ]
 
 .pull-right5[
+
+&lt;br&gt;&lt;br&gt;
 
 
 
@@ -1219,14 +1218,12 @@ Number of Fisher Scoring iterations: 2
 ```r
 # Extrahiere gefittete Werte
 glm_fits &lt;- predict(object = eink_mod)
-glm_fits[1:20]
+glm_fits[1:8]
 ```
 
 ```
-    1     2     3     4     5     6     7     8     9    10 
- 5508  6960  6982  8645  5325 10648  8663  4592  9776  7507 
-   11    12    13    14    15    16    17    18    19    20 
- 5461 10367  4701  5495  8872  4859  7326 13553  6969  8256 
+    1     2     3     4     5     6     7     8 
+ 5508  6960  6982  8645  5325 10648  8663  4592 
 ```
 
 ]
@@ -1234,7 +1231,7 @@ glm_fits[1:20]
 .pull-right45[
 
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-26-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-25-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -1249,6 +1246,7 @@ glm_fits[1:20]
   &lt;li class="m2"&gt;&lt;span&gt;Specify redicted values and the true values inside the function.&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;br&gt;
 
 
 ```r
@@ -1266,13 +1264,13 @@ postResample(glm_fits,
 
 .pull-right45[
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-28-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-27-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 
-.pull-left5[
+.pull-left45[
 
 &lt;p style="padding-top:10px"&gt;&lt;/p&gt;
 
@@ -1308,7 +1306,7 @@ confusionMatrix(predict(eyecor_mod),
 
 ]
 
-.pull-right4[
+.pull-right45[
 
 &lt;br&gt;
 

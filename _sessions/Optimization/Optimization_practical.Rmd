@@ -84,7 +84,7 @@ By the end of this practical you will know how to:
 
 3. Save the script as a new file called `Optimization_practical.R` in the `2_Code` folder.  
 
-4. Using `library()` load the packages `tidyverse`, `caret`, `party`, `partykit`..
+4. Using `library()` load the packages `tidyverse`, `caret`, `party`, `partykit`.
 
 ```{r, eval = TRUE}
 # Load packages necessary for this script
@@ -96,7 +96,7 @@ library(partykit)
 
 ### B - Load the `graduation` data
 
-1. You will again begin by analyzing the graduation data. Read in the datasets `graduation_train.csv` and `graduation_test.csv` and convert all character to factors. Furthermore, the code below limits the number of training cases to 100 to emphasize the impact of the model tuning. 
+1. You will again begin by analyzing the graduation data. Read in the data sets `graduation_train.csv` and `graduation_test.csv` and convert all character to factors. 
 
 ```{r, echo = TRUE}
 # Read college data
@@ -224,13 +224,8 @@ coef(graduation_ridge$finalModel,
 
 8. How do these coefficients compare to what you found in regular regression? Are they similar? Could the differences have something to do with the applied scaling?
 
-```{r}
-# Actually the look quite different! The reason why is that we have changed the scale using preProcess
 
-# If you want the coefficients on the original scale, you'd need to convert them, or run your training again without any processing. However, this can lead to problems finding the optimal Lambda value...
-```
-
-3. Using `predict()` save the fitted values of `graduation_glm` object as `glm_fit`.
+9. Using `predict()` save the fitted values of `graduation_glm` object as `glm_fit`.
 
 ```{r}
 # Save fitted value
@@ -240,7 +235,7 @@ glm_fit <- predict(graduation_glm)
 
 #### Lasso regression
 
-9. Now fit a lasso regression model predicting `Grad.Rate` as a function of all features. Set `alpha = 0` for the Lasso penalty and add `lambda = lambda_vec` as above. 
+10. Now fit a lasso regression model predicting `Grad.Rate` as a function of all features. Set `alpha = 1` for the Lasso penalty and add `lambda = lambda_vec` as above. 
 
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -260,18 +255,18 @@ graduation_lasso <- train(form = Grad.Rate ~ .,
                           data = college_train,
                           method = "glmnet",
                           trControl = ctrl_cv,
-                          preProcess = c("center", "scale"),    # Standardise
+                          preProcess = c("center", "scale"),   # Standardise
                           tuneGrid = data.frame(alpha = 1,     # Lasso penalty
-                                                 lambda = lambda_vec))
+                                                 lambda = lambda_vec)) # Penalty weight
 ```
 
-10. Print your `graduation_lasso` object. Which lambda was selected as best performing?
+11. Print your `graduation_lasso` object. Which lambda was selected as best performing?
 
 ```{r}
 graduation_lasso
 ```
 
-11. Plot your `graduation_lasso` object. What do you see? Does this match the plot match the value identified in the previous task?
+12. Plot your `graduation_lasso` object. What do you see? Does this match the plot match the value identified in the previous task?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot model object
@@ -282,7 +277,7 @@ plot(XX)
 plot(graduation_lasso)
 ```
 
-12. What were your final regression model coefficients for the best lambda value? Find them by running the following code.
+13. What were your final regression model coefficients for the best lambda value? Find them by running the following code.
 
 ```{r, echo = TRUE}
 # Get coefficients from best lambda value
@@ -290,26 +285,19 @@ coef(graduation_lasso$finalModel,
      graduation_lasso$bestTune$lambda)
 ```
 
-13. How do these coefficients compare to what you found for the regular and ridge regression? Have some features between set to 0?
-
-```{r}
-# Yep!
-
-# I see that many features are now removed!
-```
+14. How do these coefficients compare to what you found for the regular and ridge regression? Have some features been set to 0?
 
 #### Evaluate performance
 
-14. Store the training data and test data criterion (`Grad.Rate`) as `criterion_train` and `criterion_test`. 
+15. Store the training data and test data criterion (`Grad.Rate`) as `criterion_train` and `criterion_test`. 
 
 ```{r}
 # store criteria
 criterion_train <- college_train$Grad.Rate
 criterion_test <- college_test$Grad.Rate
 ```
-
-
-15. Using `predict()`, save the fitted values of your models as  `glm_fit`, `ridge_fit`, and `lasso_fit`. 
+s
+16. Using `predict()`, save the fitted values of your models as  `glm_fit`, `ridge_fit`, and `lasso_fit`. 
 
 ```{r}
 # store fitted values
@@ -318,7 +306,7 @@ ridge_fit <- predict(graduation_ridge)
 lasso_fit <- predict(graduation_lasso)
 ```
 
-16. Using `postResample` evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? 
+17. Using `postResample` evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? 
 
 ```{r}
 # evaluate fit
@@ -327,7 +315,7 @@ postResample(pred = ridge_fit, obs = criterion_train)
 postResample(pred = lasso_fit, obs = criterion_train)
 ```
 
-16. Using `predict()` and `newdata = college_test`, save the predicted values of your models as  `glm_pred`, `ridge_pred`, and `lasso_pred`. 
+18. Using `predict()` and `newdata = college_test`, save the predicted values of your models as  `glm_pred`, `ridge_pred`, and `lasso_pred`. 
 
 ```{r}
 # store predicted values
@@ -336,7 +324,7 @@ ridge_pred <- predict(graduation_ridge, newdata = college_test)
 lasso_pred <- predict(graduation_lasso, newdata = college_test)
 ```
 
-17. Using `postResample` evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the regularized regressions outperform the unregularized one? 
+19. Using `postResample` evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the regularized regressions outperform the unregularized one? 
 
 ```{r}
 # evaluate fit
@@ -449,7 +437,7 @@ rpart_fit <- predict(graduation_rpart)
 rf_fit <- predict(graduation_rf)
 ```
 
-16. Using `postResample` evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? If you like compare to the gression models of the previous section. 
+12. Using `postResample` evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? If you like compare to the regression models of the previous section. 
 
 ```{r}
 # evaluate fit
@@ -457,7 +445,7 @@ postResample(pred = rpart_fit, obs = criterion_train)
 postResample(pred = rf_fit, obs = criterion_train)
 ```
 
-16. Using `predict()` and `newdata = college_test`, save the predicted values of your models as `rpart_pred`, and `rf_pred`. 
+13. Using `predict()` and `newdata = college_test`, save the predicted values of your models as `rpart_pred`, and `rf_pred`. 
 
 ```{r}
 # store predicted values
@@ -465,7 +453,7 @@ rpart_pred <- predict(graduation_rpart, newdata = college_test)
 rf_pred <- predict(graduation_rf, newdata = college_test)
 ```
 
-17. Using `postResample` evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the tree models outperform the regularized regressions?
+14. Using `postResample` evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the tree models outperform the regularized regressions?
 
 ```{r}
 # evaluate fit
@@ -474,7 +462,7 @@ postResample(pred = rf_pred, obs = criterion_test)
 ```
 
 
-### Z - Challenges: Explore tuning parameter grids
+### X - Challenges: Explore tuning parameter grids
 
 1. The name `tuneGrid` already suggests that one may want to vary multiple tuning parameters at the same time. A handy function helping in this is `expand.grid()`, which will produce all compbinations of values of the vectors supplied as its arguments. Try, e.g., `expand.grid(a = c(1, 2), b = c(2, 3, 4))`. The template below shows you how you can use `expand.grid()` to specify multiple tuning parameters at the same time.    
 

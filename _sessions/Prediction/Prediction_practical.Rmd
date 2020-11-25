@@ -83,7 +83,7 @@ library(party)
 library(partykit)
 ```
 
-5. Using `trainControl()`, create `ctrl_none` object setting `method = "none"`.
+5. Using `trainControl()`, create again the `ctrl_none` object with `method = "none"`.
 
 ```{r, echo = TRUE, eval = FALSE}
 # Set training method to "none"
@@ -111,7 +111,7 @@ college_train <- read_csv(file = "1_Data/college_train.csv")
 college_test <- read_csv(file = "1_Data/college_test.csv")
 ```
 
-2. Print the datasets to get an idea of their contents. 
+2. Print the data sets to make sure everything's alright.
 
 ```{r}
 # Print data sets to the console
@@ -299,7 +299,6 @@ postResample(pred = rf_fit, obs = criterion_train)
 
 11. What do you make of these results? Which model had the best fit?
 
-
 ### D - Prediction
 
 1. Save the criterion values from the test data set as a new object called `criterion_test`.
@@ -374,7 +373,7 @@ postResample(pred = rf_pred, obs = criterion_test)
 # The random forest predictions are still the most accurate.
 ```
 
-6. Contemplate, if you had to use one of these three models in the real-world, which one would it be?
+6. If you had to use one of these three models in the real-world, which one would it be?
 
 <br>
 <p style="font-size:20px;background-color:#6ABA9A;color:white;padding-left:20px" align="left" width=100%>
@@ -419,7 +418,7 @@ house_test <- house_test %>%
 
 #### Regression
 
-2. Using `train()`, fit a regression model called `price_glm` predicting the house sale price (`price`) using all features in `house_train`. Specifically:
+1. Using `train()`, fit a regression model called `price_glm` predicting the house sale price (`price`) using all features in `house_train`. Specifically:
 
 - for the `form` argument, use `price ~ .`.
 - for the `data` argument, use  `house_train`.
@@ -434,14 +433,14 @@ price_glm <- train(form = price ~ .,
                    trControl = ctrl_none)
 ```
 
-3. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`. What do you find?
+2. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`. What do you find?
 
 ```{r}
 price_glm$finalModel
 summary(price_glm)
 ```
 
-4. Using `predict()`, save the fitted values of `price_glm` object as `glm_fit`.
+3. Using `predict()`, save the fitted values of `price_glm` object as `glm_fit`.
 
 ```{r}
 # Store fitted values
@@ -450,7 +449,7 @@ glm_fit <- predict(price_glm)
 
 #### Decision tree
 
-5. Using `train()`, fit a decision tree model called `price_rpart` predicting `price` using all features in `house_train`. Specifically:
+4. Using `train()`, fit a decision tree model called `price_rpart` predicting `price` using all features in `house_train`. Specifically:
 
 - for the `form` argument, use `price ~ .`.
 - for the `data` argument, use  `house_train`.
@@ -465,14 +464,14 @@ price_rpart <- train(form = price ~ .,
                      trControl = ctrl_none) 
 ```
 
-6. Explore your `price_rpart` object by looking at `price_rpart$finalModel` and plotting it with `plot(as.party(price_rpart$finalModel))`. What do you find?
+5. Explore your `price_rpart` object by looking at `price_rpart$finalModel` and plotting it with `plot(as.party(price_rpart$finalModel))`. What do you find?
 
 ```{r}
 price_rpart$finalModel
 plot(as.party(price_rpart$finalModel))
 ```
 
-7. Using `predict()` save the fitted values of `price_rpart` object as `rpart_fit`.
+6. Using `predict()` save the fitted values of `price_rpart` object as `rpart_fit`.
 
 ```{r}
 # Store fitted values
@@ -481,7 +480,7 @@ rpart_fit <- predict(price_rpart)
 
 #### Random Forests
 
-8. Using `train()`, fit a random forest model called `price_rf` predicting `price` using all features in `house_train`. Specifically:
+7. Using `train()`, fit a random forest model called `price_rf` predicting `price` using all features in `house_train`. Specifically:
 
 - for the `form` argument, use `price ~ .`.
 - for the `data` argument, use  `house_train` in the data argument.
@@ -497,7 +496,7 @@ price_rf <- train(form = price ~ .,
 ```
 
 
-9. Using `predict()` save the fitted values of `price_rf` object as `rf_fit`.
+8. Using `predict()` save the fitted values of `price_rf` object as `rf_fit`.
 
 ```{r}
 # store fitted values
@@ -506,14 +505,14 @@ rf_fit <- predict(price_rf)
 
 #### Assess accuracy
 
-10. Save the true training criterion values as a vector called `criterion_train`.
+9. Save the true training criterion values as a vector called `criterion_train`.
 
 ```{r}
 # store criterion
 criterion_train <- house_train$price
 ```
 
-11. Using `postResample()`, determine the fitting performance of each of your models separately. 
+10. Using `postResample()`, determine the fitting performance of each of your models separately. 
 
 ```{r}
 # Regression
@@ -526,9 +525,9 @@ postResample(pred = rpart_fit, obs = criterion_train)
 postResample(pred = rf_fit, obs = criterion_train)
 ```
 
-12. Which model had the best fit? Same model as for the graduation data?
+11. Which model had the best fit? Same model as for the graduation data?
 
-### F - Prediction
+### G - Prediction
 
 1. Save the criterion values from the test data set as a new vector called `criterion_test`.
 
@@ -575,7 +574,6 @@ postResample(pred = rf_pred, obs = criterion_test)
 ### X - Challenges: 
 
 1. For either dataset try to find feature sets that lead to the best possible prediction performance. 
-
 
 ## Examples
 

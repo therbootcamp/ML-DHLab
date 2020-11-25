@@ -210,7 +210,7 @@ logreg2 = logreg1 +
 
 ---
 
-# Which of these models is better? Why?
+# Which is better?
 
 ```{r, echo = FALSE, fig.width = 6, fig.height = 3, dpi = 300, out.width = "90%"}
 ggarrange(bad_raw, great_raw, ncol = 2, nrow = 1)
@@ -219,7 +219,7 @@ ggarrange(bad_raw, great_raw, ncol = 2, nrow = 1)
 
 ---
 
-# Which of these models is better? Why?
+# Which is better?
 
 ```{r, echo = FALSE, fig.width = 6, fig.height = 3, dpi = 300, out.width = "90%"}
 ggarrange(bad_err, great_err, ncol = 2, nrow = 1)
@@ -863,7 +863,7 @@ confusionMatrix(fit, truth)
 
 
 <ul>
-  <li class="m1"><span>Controls how <mono>caret</mono> fits an ML model.</span></li>
+  <li class="m1"><span>Controls how <mono>caret</mono> fits an ML model.</span></li><br>
   <li class="m2"><span>Until Session <b>Optimisierung</b> we use <highm>method = "none"</highm>.</span></li>
 </ul>
 
@@ -1091,16 +1091,6 @@ income_mod
   </span></li>
 </ul>
 
-```{r, echo = FALSE}
-Loans <- tibble::tibble(Default = c(0, 1, 0, 1, 1),
-              Age = c(45, 36, 76, 25, 36),
-             Gender = c("M", "F", "F", "M", "F"),
-             Cards = c(3, 2, 5, 2, 3),
-             Education = c(11, 14, 12, 17, 12)
-             )
-
-Loans
-```
 
 ]
 
@@ -1134,6 +1124,9 @@ load_mod <- train(form = factor(Default) ~ .,
   <li class="m1"><span><mono>train()</mono> returns a <mono>list</mono> with an object called <mono>finalModel</mono> containing the best fitting model.</span></li>
   <li class="m2"><span><mono>.$finalModel</mono> <high>extracts the model</high>, then explore using:</span></li>
 </ul>
+
+<br>
+
 
 <table style="cellspacing:0; cellpadding:0; border:none;">
 <tr>
@@ -1196,6 +1189,8 @@ names(eink_mod$finalModel)
   <li class="m2"><span><mono>.$finalModel</mono> <high>extracts the model</high>, then explore using:</span></li>
 </ul>
 
+<br>
+
 <table style="cellspacing:0; cellpadding:0; border:none;">
 <tr>
   <td>
@@ -1247,14 +1242,17 @@ eink_mod$finalModel$coefficients
 
 ---
 
-# <mono>.$finalModel</mono>
 
 .pull-left4[
+
+# <mono>.$finalModel</mono>
 
 <ul>
   <li class="m1"><span><mono>train()</mono> returns a <mono>list</mono> with an object called <mono>finalModel</mono> containing the best fitting model.</span></li>
   <li class="m2"><span><mono>.$finalModel</mono> <high>extracts the model</high>, then explore using:</span></li>
 </ul>
+
+<br>
 
 <table style="cellspacing:0; cellpadding:0; border:none;">
 <tr>
@@ -1286,6 +1284,8 @@ eink_mod$finalModel$coefficients
 ]
 
 .pull-right5[
+
+<br><br>
 
 ```{r, echo = F}
 options(width=70, max.print=6)
@@ -1319,7 +1319,7 @@ options(width=60, max.print=30)
 ```{r}
 # Extrahiere gefittete Werte
 glm_fits <- predict(object = eink_mod)
-glm_fits[1:20]
+glm_fits[1:8]
 ```
 
 ]
@@ -1344,6 +1344,7 @@ great_err + labs(title=element_blank(),subtitle = element_blank())
   <li class="m2"><span>Specify redicted values and the true values inside the function.</span></li>
 </ul>
 
+<br>
 
 ```{r}
 # evaluate
@@ -1363,7 +1364,7 @@ great_err + labs(title=element_blank(),subtitle = element_blank())
 
 ---
 
-.pull-left5[
+.pull-left45[
 
 <p style="padding-top:10px"></p>
 
@@ -1401,7 +1402,7 @@ basel$eyecor <- factor(basel$eyecor)
 # run glm model for classification
 eyecor_mod <- 
   train(form = eyecor ~ age + height,
-        data = basel,   # Training data
+        data = basel,      # Training data
         method = "glm",    # Regression
         trControl = ctrl)  # Control Parameters
 
@@ -1412,7 +1413,7 @@ res = confusionMatrix(predict(eyecor_mod),
 
 ]
 
-.pull-right4[
+.pull-right45[
 
 <br>
 

@@ -80,16 +80,15 @@ By the end of this practical you will know how to:
 ## Fitting practical
 ```
 
-
 3. Using `library()`, load the packages `tidyverse` and `caret`.
 
 ```{r, echo = TRUE, eval = TRUE}
-# Load packages necessary for this script
+# Load packages necessary for this practical
 library(tidyverse)
 library(caret)
 ```
 
-4. For this practical, you'll analyze a dataset of 388 U.S. Colleges. The data is stored in `college_train.csv`. Using the following template, load the dataset into R as `college_train`.
+4. In this practical, you'll analyze a dataset of 388 U.S. Colleges. The data is stored in `college_train.csv`. Using the following template, load the dataset into R as `college_train`.
 
 ```{r, echo = TRUE, eval = FALSE}
 # Load in college_train.csv data as college_train
@@ -119,7 +118,7 @@ college_train <- college_train %>%
 1. In `caret`, the computational nuances of training a model are defined using the `trainControl()` function. As this session focuses on the basics of fitting, set `method = "none"` for now and save the resulting object as `ctrl_none`. 
 
 ```{r echo = TRUE}
-# Set training resampling method to "none" to keep everything super simple (for now)
+# Set training resampling method to "none"
 ctrl_none <- trainControl(method = "none") 
 ```
 
@@ -149,7 +148,7 @@ graduation_glm <- train(form = Grad.Rate ~ PhD,
                         trControl = ctrl_none)
 ```
 
-2. Explore the fitted model using the `summary()` function, by setting the function's first argument to `graduation_glm`. How do you interpret the output and especially the estimated parameters?
+2. Explore the fitted model using the `summary()` function, by setting the function's first argument to `graduation_glm`. How do you interpret the output including the estimated parameters?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Show summary information from the regression model
@@ -175,7 +174,7 @@ glm_fit <- predict(graduation_glm)
 
 ### D - Evaluate performance
 
-1. Evaluate the model's performance by comparing your the fitted values of your model to the true values. Start by defining the vector `criterion` as the true graduation rates in the data.
+1. Evaluate the model's performance by comparing the fitted values of your model to the true values. Start by defining the vector `criterion` as the true graduation rates in the data.
 
 ```{r, echo = TRUE, eval = TRUE}
 # Define criterion as Grad.Rate
@@ -211,7 +210,7 @@ postResample(pred = glm_fit,
 
 ### E - Add more features
 
-So far you have only used one feature (`PhD`), to predict `Grad.Rate`. Try again, but now you'll use a total of three features: 
+So far you have only used one feature (`PhD`), to predict `Grad.Rate`. Try again, but now use a total of three features, namely: 
 
 - `PhD` - the percent of faculty with a PhD.
 - `Room.Board` - room and board costs.
@@ -251,7 +250,6 @@ summary(graduation_glm_three)
 ```
 
 3. Extract the fitted values of this new model using `predict()` and save them as a new object `glm_fit_three`.
-
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save new model fits
@@ -339,9 +337,9 @@ postResample(pred = glm_fit_all,   # Fitted values
 
 ### G - Factor as criterion
 
-Now it's time to do a classification task! Recall that in classification tasks, your are predicting a `factor`. In this task, you will predict whether or not a college is Private or Public, which is stored as the feature `Private`.
+Now it's time to do a classification task! Recall that in classification tasks, your are predicting a `factor`. In this task, you will predict whether or not a college is Private or Public, which is stored in the feature `Private`.
 
-1. Use `calss()` to make sure that the criterion is coded as a factor. If the output is `factor`, you can proceed.
+1. Use `calss()` to make sure that the `Private` is stores as a factor. If the output is `factor`, you can proceed.
 
 ```{r, echo = TRUE}
 # Look at the class of the feature Private
@@ -357,7 +355,7 @@ criterion <- college_train$Private
 
 ### H - Fit a classification model
 
-1. Using `train()`, create `private_glm`, a logistic regression model predicting the criterion `Private` using all other features. Specifically,...
+1. Using `train()`, create a logistic regression model called `private_glm` predicting the criterion `Private` using all other features. Specifically,...
 
 - set the `form` argument to `Private ~ .`.
 - set the `data` argument to the training data `college_train`.

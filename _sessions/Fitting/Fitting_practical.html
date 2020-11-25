@@ -224,11 +224,11 @@ summary {
 <ol start="3" style="list-style-type: decimal">
 <li>Using <code>library()</code>, load the packages <code>tidyverse</code> and <code>caret</code>.</li>
 </ol>
-<pre class="r"><code># Load packages necessary for this script
+<pre class="r"><code># Load packages necessary for this practical
 library(tidyverse)
 library(caret)</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>For this practical, you’ll analyze a dataset of 388 U.S. Colleges. The data is stored in <code>college_train.csv</code>. Using the following template, load the dataset into R as <code>college_train</code>.</li>
+<li>In this practical, you’ll analyze a dataset of 388 U.S. Colleges. The data is stored in <code>college_train.csv</code>. Using the following template, load the dataset into R as <code>college_train</code>.</li>
 </ol>
 <pre class="r"><code># Load in college_train.csv data as college_train
 college_train &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)</code></pre>
@@ -245,7 +245,7 @@ college_train &lt;- college_train %&gt;%
 <ol style="list-style-type: decimal">
 <li>In <code>caret</code>, the computational nuances of training a model are defined using the <code>trainControl()</code> function. As this session focuses on the basics of fitting, set <code>method = "none"</code> for now and save the resulting object as <code>ctrl_none</code>.</li>
 </ol>
-<pre class="r"><code># Set training resampling method to &quot;none&quot; to keep everything super simple (for now)
+<pre class="r"><code># Set training resampling method to &quot;none&quot;
 ctrl_none &lt;- trainControl(method = &quot;none&quot;) </code></pre>
 </div>
 <div id="c---fit-a-regression-model" class="section level3">
@@ -265,7 +265,7 @@ graduation_glm &lt;- train(form = XX ~ XX,
                         method = &quot;XX&quot;,
                         trControl = XX)</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Explore the fitted model using the <code>summary()</code> function, by setting the function’s first argument to <code>graduation_glm</code>. How do you interpret the output and especially the estimated parameters?</li>
+<li>Explore the fitted model using the <code>summary()</code> function, by setting the function’s first argument to <code>graduation_glm</code>. How do you interpret the output including the estimated parameters?</li>
 </ol>
 <pre class="r"><code># Show summary information from the regression model
 summary(XXX)</code></pre>
@@ -278,7 +278,7 @@ glm_fit &lt;- predict(XXX)</code></pre>
 <div id="d---evaluate-performance" class="section level3">
 <h3>D - Evaluate performance</h3>
 <ol style="list-style-type: decimal">
-<li>Evaluate the model’s performance by comparing your the fitted values of your model to the true values. Start by defining the vector <code>criterion</code> as the true graduation rates in the data.</li>
+<li>Evaluate the model’s performance by comparing the fitted values of your model to the true values. Start by defining the vector <code>criterion</code> as the true graduation rates in the data.</li>
 </ol>
 <pre class="r"><code># Define criterion as Grad.Rate
 criterion &lt;- college_train$Grad.Rate</code></pre>
@@ -299,7 +299,7 @@ postResample(pred = XXX,
 </div>
 <div id="e---add-more-features" class="section level3">
 <h3>E - Add more features</h3>
-<p>So far you have only used one feature (<code>PhD</code>), to predict <code>Grad.Rate</code>. Try again, but now you’ll use a total of three features:</p>
+<p>So far you have only used one feature (<code>PhD</code>), to predict <code>Grad.Rate</code>. Try again, but now use a total of three features, namely:</p>
 <ul>
 <li><code>PhD</code> - the percent of faculty with a PhD.</li>
 <li><code>Room.Board</code> - room and board costs.</li>
@@ -366,9 +366,9 @@ glm_fit_all &lt;- predict(XXX)</code></pre>
 </div>
 <div id="g---factor-as-criterion" class="section level3">
 <h3>G - Factor as criterion</h3>
-<p>Now it’s time to do a classification task! Recall that in classification tasks, your are predicting a <code>factor</code>. In this task, you will predict whether or not a college is Private or Public, which is stored as the feature <code>Private</code>.</p>
+<p>Now it’s time to do a classification task! Recall that in classification tasks, your are predicting a <code>factor</code>. In this task, you will predict whether or not a college is Private or Public, which is stored in the feature <code>Private</code>.</p>
 <ol style="list-style-type: decimal">
-<li>Use <code>calss()</code> to make sure that the criterion is coded as a factor. If the output is <code>factor</code>, you can proceed.</li>
+<li>Use <code>calss()</code> to make sure that the <code>Private</code> is stores as a factor. If the output is <code>factor</code>, you can proceed.</li>
 </ol>
 <pre class="r"><code># Look at the class of the feature Private
 class(college_train$Private)</code></pre>
@@ -381,7 +381,7 @@ criterion &lt;- college_train$Private</code></pre>
 <div id="h---fit-a-classification-model" class="section level3">
 <h3>H - Fit a classification model</h3>
 <ol style="list-style-type: decimal">
-<li>Using <code>train()</code>, create <code>private_glm</code>, a logistic regression model predicting the criterion <code>Private</code> using all other features. Specifically,…</li>
+<li>Using <code>train()</code>, create a logistic regression model called <code>private_glm</code> predicting the criterion <code>Private</code> using all other features. Specifically,…</li>
 </ol>
 <ul>
 <li>set the <code>form</code> argument to <code>Private ~ .</code>.</li>

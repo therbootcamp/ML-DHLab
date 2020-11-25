@@ -35,8 +35,8 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = TRUE, 
-                      eval = TRUE, 
+                      echo = FALSE, 
+                      eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -257,13 +257,9 @@ gap2007_scaled_dbscan <- dbscan(x = gap2007_scaled,
                                 eps = .5)
 ```
 
-2. Printe `gap2007_scaled_dbscan`. What does the outpute tell you?
+2. Printe `gap2007_scaled_dbscan`. What does the outpute tell you? Remember 0 means outlier. 
 
-...
-
-3. Was verrät euch der Output? Erinnert euch ein Cluster von 0 bedeutet Outlier.  
-
-4. Ein einzelner Cluster und 5 Outlier wurden identifiziert. Schaut euch das Ergenis an indem ihr wie oben das Element `cluster` extrahiert und dann die Daten mit eingefärbten Clustern plottet. Das `+ 1` ist notwendig, weil ein Wert von `0` keine Farbe bedeutet. 
+4. A single cluster and 5 outlier were identified. Visualize the solution using the same approach as above. The `+ 1` is necessary, because 0 implies no color. 
 
 ```{r, echo = T, eval = F}
 # extrahiere Elemente
@@ -281,7 +277,7 @@ clusters <- gap2007_scaled_dbscan$cluster
 plot(gap2007_scaled, col = clusters + 1)
 ```
 
-5. Lasse `dbscan()` erneut laufen, aber mit anderen Werten für `eps`. Versuche `eps = .3` und `eps = .1` und plotte jeweils das Ergebnis. Ändert sich was?
+5. Now run `dbscan()` again, however, this time using different values for `eps`. Try `eps = .3` and `eps = .1`. Both times plot the results the same way as before. Any changes? Any of the solutions reasonable?
 
 ```{r}
 # clustere mit DBSCAN
@@ -295,104 +291,102 @@ plot(gap2007_scaled, col = gap2007_scaled_dbscan.3$cluster + 1)
 plot(gap2007_scaled, col = gap2007_scaled_dbscan.1$cluster + 1)
 ```
 
-6. `dbscan` hat einen weiteren Parameter `minPts`, welcher bestimmt, wie viele Punkte in einem Abstand von `eps` liegen müssen, damit der Punkt ein Kernpunkt wird. Versuche ein paar verschiedene Werte und versuche zu verstehen was passiert.
+6. `dbscan()` has additional parameters. `minPts` determines the number of points within `eps` necessary for a point to be a core point. If you like, try different values to explore the effect of `minPts`.
 
 ### F - Gaussian Mixtures
 
-1. Zum Abschluss, verwende `Mclust()` aus dem `mclust` Paket um über Gaussian Mixture Modelle die Cluster zu bestimmen. Arbeite hier mit dem nicht-standardisierten Datensatz `gap2007`. Dies ist möglich, weil Gaussian Mixtures die Skalen der Variablen automatisch berücksichtigt. 
+1. Finally, use `Mclust` from the `clust` package to cluster the date using Gaussian mixtures. This time, you can work with the original data set `gap2007` as Gaussian mixtures are able to automatically account for the differences in scale. 
 
 ```{r, echo = TRUE, eval = FALSE}
-# clustere mit Gaussian mixtures
+# Gaussian mixtures
 gap2007_gm <- Mclust(XX)
 ```
 
 ```{r, error=TRUE}
-# clustere mit Gaussian mixtures
+# Gaussian mixtures
 gap2007_gm <- Mclust(gap2007)
 ```
 
-2. Printe das Objekt `gap2007_gm` um es zu inspizieren.
+2. Print the object `gap2007_gm`. What do you see?
 
-3. Der Output verrät relativ wenig, nur welche Elemente enthalten sind. Verwende `table(gap2007_gm$classification)` um einen Überblick über die Clusterzuweisungen zu erhalten. Wie viele Cluster wurden identifiziert?    
+3. The output of `gap2007_gm` reveals very little. It only shows which sub-objects it contains. Use `table(gap2007_gm$classification)` to gain an overview over the cluster assignments. How many clusters were identified and how many does each contain?
 
-4. Verwende das `classification` Element um wie üblich die Daten mit den Clusterzuweisungen zu plotten. 
+4. Now use the `classification` element to create a visualization of the cluster assignments. 
 
 ```{r}
 # plot
 plot(gap2007_scaled, col = gap2007_gm$classification)
 ```
 
-5. Führe nun alternativ `plot(gap2007_gm, what = 'classification')` aus, um den eigenen Plot des `mclust` Pakets zu sehen. 
+5. Now use ``plot(gap2007_gm, what = 'classification')` to create `mclust`'s own visualization.  
 
 ```{r}
-# plot
+# plot using mclust
 plot(gap2007_gm, what = 'classification')
 ```
 
-6. Versuche nachzuvollziehen was der `mclust` Plot euch zeigt. Erinnere dich, die Ellipsen sind Normalverteilungen, die jeweils eigene Skalen und Feature-Zusammenhänge berücksichtigen können.  
+6. Try to understand what the ellipses in the `mclust` plot reveal about the cluster. Remember they represent normal distributions with variances and co-variances, which reflect the correlations between the features.  
 
-7. Eine interessante Eigenschaft von Gaussian Mixtures ist, dass man direkt die Unsicherheit der Clusterzuweisung evaluieren kann. Führe `plot(gap2007_gm, what = 'uncertainty')` aus. Die Grössen der Punkte zeigen an, wie gross die Unsicherheit (oder Rivalität) in der Zuweisung der Punkte zu den Clustern war. 
+7. One desirable property of Gaussian mixtures is that they produce estimates of the uncertainty associated with assigning a data point to a particular cluster. Use  `plot(gap2007_gm, what = 'uncertainty')` visualize this. The size of the points reflects the degree of uncertainty a point being assigned to one particular cluster and not the others. 
 
 ```{r}
 # plot
 plot(gap2007_gm, what = 'uncertainty')
 ```
 
-### X - Challenges: Modellselektion Gaussian mixtures
+### X - Challenges: Modellselection
 
-1. Eine nützliche Eigenschaft der `Mclust()` Funktion ist, dass parallel verschieden komplexe Varianten des Modells mit verschiedenem *k* geschätzt werden und dass am Ende nicht nur das beste *k* ausgewählt wird, sondern die beste Kombination von *k* und Modell. Du erhälst einen Überblick über den Prozess mit `plot(gap2007_gm, what = 'BIC')`.
+1. A further useful property of Gaussian mixtures is that different implementations of varying complexity can be considered. `Mclust()` automatically considers a variety of implementations in addition to different values of *k*. You can gain an overview on the performance of these using `plot(gap2007_gm, what = 'BIC')`.
 
 ```{r}
 # plot
 plot(gap2007_gm, what = 'BIC')
 ```
 
-BIC ist das sogenannte Bayesian Information Criterion und dient der Auswahl eines Modells unter Berücksichtigung der Komplexität des Modells. In diesem Fall sind hohe Werte besser. In der Abbildung siehst du nun wie sich der BIC Wert über verschiedene *k* (Number of components) und Modelle (verschiedene Linien) entwickelt. 
+BIC is the Bayesian Information Criterion, which characterizes the model fit in relation to model complexity. In this case, higher BIC values indicate better performance. In the visualization you see the performance of 14 different implementations as a function of different values *k* (x-axis). 
 
-2. Verwende `plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))` um einen besseren Ausschnitt zu erhalten. Nun solltest du sehen können, dass das `EVV` Modell den besten BIC für 4 Komponenten erzielt. Entsprechend wurde dieses Modell ausgewählt. 
+2. Use `plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))` to get a better view on the critical region of the plot. Now you should be able to see that `EVV` for `k=4` shows the best performance overall.
 
 ```{r}
 # plot
 plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))
 ```
 
-3. Lasse dir mit `?mclustModelNames` die Erläuterung zu den Modellbezeichnungen anzeigen. Dort findest zu heraus, dass das Modell annimmt, dass das Volumen der einzelnen Cluster (hier die Fläche der Ellipsoide) gleich ist. Dies lässt sich auch in `plot(gap2007_gm, what = 'classification')` erkennen.  
+3. Use `?mclustModelNames` to see descriptions for each of the model. This reveals that `EEV` only makes the simplifying assumption of equal volume between the different ellipsoids. This is also what you see in `plot(gap2007_gm, what = 'classification')`.  
 
 ```{r}
 plot(gap2007_gm, what = 'classification')
 ```
 
-
-4. Verwende nun den Code unten um explizit nur bestimmte Gaussian Mixture Modelle zu verwenden. Verwende hierzu `modelNames = 'XX'` wobei 'XX' das Kürzel des jeweiligen Modells ist. Plotte im Anschluss die gefunden Lösungen. Probiere zunächst `EEI` aus. Danach spiele ein wenig herum.
+4. Now explore using the code below what happens if you tell the model to use a specific implementation of Gaussian mixtures. Replace the 'XX' in `modelNames = 'XX'` with one of the three letter codes denoting the different models. Then visualize the result. Begin with `'EEI'`.
 
 ```{r, echo = T, eval = F}
-# Wähle Gaussian Mixture Modell explizit aus
+# Try different implementation
 gap2007_gm <- Mclust(gap2007, modelNames = 'XX')
 plot(gap2007_gm, what = 'classification')
 ```
 
 ```{r}
-# Wähle Gaussian Mixture Modell explizit aus
+# Try different implementation
 gap2007_gm <- Mclust(gap2007, modelNames = 'EEI')
 plot(gap2007_gm, what = 'classification')
 ```
 
 
-### Y - Challenges: Neuer Datensatz
+### Y - Challenges: New data set
 
-1. Verwende die `read_csv()` Funktion um den Datensatz `credit.csv` als Objekt `credit` einzulesen.
+1. Use `read_csv()`to read in `credit.csv` as object `credit`.
 
 ```{r, echo = T, eval = T, message = F}
-# Lese credit.csv
+# Read credit.csv
 credit <- read_csv('1_Data/credit.csv')
 ```
 
-2. Printe den Datensatz und verwende `summary()` um einen weiteren Überblick über die Daten zu bekommen.
+2. Print the data set and familiarize yourself with its contents. 
 
-3. Verwende die bis hierin geübten Methoden um zu identifizieren, ob und wie viele Cluster sich im `credit` Datensatz befindet. Bzw. ob und wie sich Kreditkarten Kunden in Gruppen zusammenfassen lassen. Viel Spass!
+3. Use one or more of the clustering methods used above to identify clusters among credit card users. Have fun!
 
-
-## Beispiele
+## Examples
 
 ```{r, eval = FALSE, echo = TRUE}
 library(tidyverse) 
@@ -400,35 +394,35 @@ library(cstab)
 library(dbscan)
 library(mclust, mask.ok = F)
 
-# Beispieldatensatz
+# Example data
 data(mpg)
 
-# Verarbeitung des Datensatzes
+# Process data
 mpg <- mpg %>% select_if(is.numeric)
 mpg_stand <- mpg  %>% 
-  scale %>%         # Standardisieren
+  scale %>%         # standardize/scale data
   as_tibble()
 
 # k-means -----
 
-# Finde Cluster
+# Identify clusters
 mpg_km <- kmeans(mpg_stand, 
                  centers = 3)
 
-# Zeige Zentroide
+# Show centroids
 mpg_km$centers
 
 # k-selection -----
 
-# Zeige Binnenvarianz Verlauf
-km_verlauf <- purrr::map(2:20, kmeans, x = mpg_stand)
-binnenvarianz <- purrr::map_dbl(km_verlauf, 
+# Sow within-variance 
+km_development <- purrr::map(2:20, kmeans, x = mpg_stand)
+withinvar <- purrr::map_dbl(km_development, 
                                `[[`, i = 'tot.withinss')
 
-# Plotte die Binnenvarianz
-plot(binnenvarianz)
+# Visualize withinvar
+plot(withinvar)
 
-# Gap & Slope Statistik
+# Gap & Slope statistics
 k_est <- cDistance(as.matrix(mpg_stand), 
                    kseq = 2:20) 
 k_est$k__Gap
@@ -441,10 +435,10 @@ k_est$k_instab
   
 # DBSCAN -----
 
-# Finde Cluster
+# Identify clusters
 mpg_dbscan <- dbscan(mpg_stand, eps = 1)
 
-# Zeige Zentroide
+# Show centroids
 mpg %>% 
   mutate(cl = mpg_dbscan$cluster) %>%
   group_by(cl) %>% 
@@ -452,19 +446,19 @@ mpg %>%
 
 # Gaussian Mixtures -----
 
-# Finde Cluster
+# Identify clusters
 mpg_gm <- Mclust(mpg)
 
-# Zeige Zentroide
+# Show centroids
 mpg %>% 
   mutate(cl = mpg_gm$classification) %>%
   group_by(cl) %>% 
   summarize_all(mean)
 
-# Plotte Cluster
+# Visualize clusters
 plot(mpg_gm, what = 'classification')
 
-# Vergleiche Cluster -----
+# Compare clusters -----
 
 table(mpg_km$cluster, mpg_dbscan$cluster)
 table(mpg_km$cluster, mpg_gm$classification)
@@ -473,18 +467,19 @@ table(mpg_dbscan$cluster, mpg_gm$classification)
 ```
 
 
-## Datensätze
+## Data sets
 
-|Datei | Zeilen | Spalten | 
+|File | Rows | Columns | 
 |:----|:-----|:------|
 |[gap.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/_sessions/Unsupervised/1_Data/gap.csv) | 1692 | 6 | 
 |[credit.csv](https://raw.githubusercontent.com/therbootcamp/ML_2020Apr/master/_sessions/Unsupervised/1_Data/credit.csv) | 8636 | 8 | 
 
 #### gap.csv
 
-Der `gap` Datensatz basiert auf dem [Gapminder](https://www.gapminder.org/) Projekt und stammt aus dem R Paket [gapminder](https://cran.r-project.org/web/packages/gapminder/README.html).  
+The `gap` data set is based on the [Gapminder](https://www.gapminder.org/) project and has been extracted from the R package [gapminder](https://cran.r-project.org/web/packages/gapminder/README.html).
 
-|Variable | Beschreibung |
+
+|Feature | Description |
 |:-------------|:-------------------------------------|
 |Land| Name of country  |
 |Kontinent| Name of continent |
@@ -496,26 +491,23 @@ Der `gap` Datensatz basiert auf dem [Gapminder](https://www.gapminder.org/) Proj
 
 #### credit.csv
 
-Der `credit` Datensatz ist ein Ausschnitt des Öffentlich verfügbaren [*Credit Card Dataset*](https://www.kaggle.com/arjunbhasin2013/ccdata). Der Datensatz beinhaltet 8 Features, die einen Auschnitt des Verhaltens von 8636 Kreditkartenkunden beschreiben.  
+The `credit` data set is an excerpt of the publicly available [*Credit Card Dataset*](https://www.kaggle.com/arjunbhasin2013/ccdata). The data set contains 8 features, that describe the behavior of 8636 credit card custmers.  
 
 |Variable | Beschreibung |
 |:-------------|:-------------------------------------|
-|BALANCE| Verfügbares Guthaben  |
-|BALANCE_FREQUENCY| Änderungsfrequenz des Guthabens (1 = häufig, 0 = selten) |
-|PURCHASES| Summe der Einkäufe |
-|CREDITLIMIT| Kreditlimit der Karte |
-|ONEOFFPURCHASES| Betrag der grössten einmaligen Zahlung |
-|MINIMUM_PAYMENTS| Minimale Konto-Ausgleichszahlung  |
-|PRCFULLPAYMENT| Prozent vollständige Konto-Ausgleichszahlung  |
-|TENURE| Dauer des Kundenverhältnisses   |
+|BALANCE| Available credit  |
+|BALANCE_FREQUENCY| Frequency of balance changes of (1 = frequent, 0 = infrequent) |
+|PURCHASES| Sum of purchases |
+|CREDITLIMIT| Limit of credit card |
+|ONEOFFPURCHASES| Value of largest one-off purchase |
+|MINIMUM_PAYMENTS| Minimal credit card payment |
+|PRCFULLPAYMENT| Percent in-full credit card payments |
+|TENURE| Duration of credit card account  |
 
 
+## Functions
 
-
-
-## Funktionen
-
-### Paket
+### Package
 
 |Paket| Installation|
 |:------|:------|
@@ -524,27 +516,27 @@ Der `credit` Datensatz ist ein Ausschnitt des Öffentlich verfügbaren [*Credit 
 |`dbscan`|`install.packages("dbscan")`|
 |`mclust`|`install.packages("mclust")`|
 
-### Funktionen
+### Functions
 
 *Clustering*
 
-| Funktion| Paket | Beschreibung |
+| Function | Package | Description |
 |:---|:------|:---------------------------------------------|
-| `kmeans()`|`stats`| Clustere die Daten mit *k*-means | 
-| `dbscan()`|`dbscan`| Clustere die Daten mit DBSCAN | 
-| `Mclust()`|`mclust`| Clustere die Daten mit Gaussian Mixtures | 
+| `kmeans()`|`stats`| Cluster data with *k*-means | 
+| `dbscan()`|`dbscan`| Cluster data with DBSCAN | 
+| `Mclust()`|`mclust`| Cluster data with Gaussian mixtures | 
 
 *k-selection*
 
-| Funktion| Paket | Beschreibung |
+| Function | Package | Description |
 |:---|:------|:---------------------------------------------|
-| `cDistance()`|`cstab`| Identifiziere *k* mit distanzbasierten Methoden, z.B., der Gap Statistik.  | 
-| `cStability()`|`cstab`| Identifiziere *k* mit stabilitätsbasierten Methoden. | 
+| `cDistance()`|`cstab`| Identify *k* with distance-based methods, e.g., gap statistic.  | 
+| `cStability()`|`cstab`| Identify *k* with instability-based methods. | 
 
 
-## Materialien
+## Resources
 
-### Dokumentation
+### Documentation
 
-- Eine gutes [**Tutorial**](https://www.r-bloggers.com/the-complete-guide-to-clustering-analysis-k-means-and-hierarchical-clustering-by-hand-and-in-r/) über *k*-means und hierarchisches Clustering.
+- A good [**Tutorial**](https://www.r-bloggers.com/the-complete-guide-to-clustering-analysis-k-means-and-hierarchical-clustering-by-hand-and-in-r/) on *k*-means and hierarchical clustering.
 

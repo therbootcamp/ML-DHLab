@@ -212,13 +212,13 @@ lm variable importance
 
           Overall
 age       100.000
-food       43.847
-alcohol    26.201
-happiness  13.556
-tattoos     5.529
-datause     1.974
-children    1.610
-height      1.585
+food       43.214
+alcohol    23.970
+happiness  12.334
+tattoos     7.608
+height      4.016
+datause     2.181
+children    1.712
 ```
 
 ]
@@ -275,14 +275,14 @@ Outer resampling method: Bootstrapped (25 reps)
 Resampling performance over subset size:
 
  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD   MAESD Selected
-         3 0.371    0.861 0.291 0.0107     0.0109 0.00846         
-         4 0.367    0.865 0.286 0.0102     0.0104 0.00807        *
-         5 0.368    0.864 0.287 0.0103     0.0105 0.00830         
-        10 0.370    0.863 0.289 0.0106     0.0102 0.00830         
-        14 0.370    0.863 0.289 0.0106     0.0102 0.00838         
+         3 0.372    0.863 0.294 0.0108     0.0117 0.00909         
+         4 0.368    0.866 0.289 0.0111     0.0109 0.00919         
+         5 0.368    0.866 0.289 0.0109     0.0107 0.00919        *
+        10 0.370    0.864 0.291 0.0113     0.0118 0.00966         
+        14 0.371    0.864 0.291 0.0112     0.0119 0.00947         
 
-The top 4 variables (out of 4):
-   age, food, alcohol, happiness
+The top 5 variables (out of 5):
+   age, food, alcohol, happiness, tattoos
 ```
 
 ]
@@ -465,10 +465,6 @@ New York Times &lt;a href="https://www.nytimes.com/2017/10/09/science/stanford-s
 &lt;font style="font-size:10px"&gt;from &lt;a href="https://en.wikipedia.org/wiki/British_heavy_tanks_of_World_War_I#/media/File:Mark_I_series_tank.jpg"&gt;wikipedia.org&lt;/a&gt;&lt;/font&gt;
 &lt;/p&gt;
 
-
-
-
-
 ]
 
 ---
@@ -524,6 +520,76 @@ New York Times &lt;a href="https://www.nytimes.com/2017/10/09/science/stanford-s
 
 
 ]
+
+---
+
+# &lt;mono&gt;createDataPartition()&lt;/mono&gt;
+
+.pull-left4[
+
+&lt;ul&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Use &lt;mono&gt;createDataPartition()&lt;/mono&gt; to split the &lt;high&gt;data set&lt;/high&gt; in training  and test.&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;br&gt;
+
+&lt;table style="cellspacing:0; cellpadding:0; border:none;"&gt;
+  &lt;col width="30%"&gt;
+  &lt;col width="70%"&gt;
+&lt;tr&gt;
+  &lt;td bgcolor="white"&gt;
+    &lt;b&gt;Argument&lt;/b&gt;
+  &lt;/td&gt;
+  &lt;td bgcolor="white"&gt;
+    &lt;b&gt;Beschreibung&lt;/b&gt;
+  &lt;/td&gt;  
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td bgcolor="white"&gt;
+    &lt;mono&gt;y&lt;/mono&gt;
+  &lt;/td&gt;
+  &lt;td bgcolor="white"&gt;
+    The criterion. Important for a &lt;high&gt;balanced split&lt;/high&gt; of the data.  
+  &lt;/td&gt;  
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td bgcolor="white"&gt;
+    &lt;mono&gt;p&lt;/mono&gt;
+  &lt;/td&gt;
+  &lt;td bgcolor="white"&gt;
+    The &lt;high&gt;proportion of data&lt;/high&gt; of data assigned to training. Often &lt;mono&gt;.8&lt;/mono&gt; or &lt;mono&gt;.5&lt;/mono&gt;.    
+  &lt;/td&gt;  
+&lt;/tr&gt;
+&lt;/table&gt;
+
+
+]
+
+.pull-right5[
+
+
+```r
+# Important for reproducible results
+set.seed(100)
+
+# Index for training
+index &lt;- 
+  createDataPartition(y = basel$income,
+                             p = .8,
+                             list = FALSE)
+
+# Create training 
+basel_train &lt;- basel %&gt;% 
+  slice(index)
+
+# Create test
+basel_test &lt;- basel %&gt;% 
+  slice(-index)
+```
+
+
+]
+
 
 ---
 

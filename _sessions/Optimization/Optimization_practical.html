@@ -220,13 +220,13 @@ summary {
 ## Optimizing practical</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Save the script as a new file called <code>Optimization_practical.R</code> in the <code>2_Code</code> folder.</p></li>
-<li><p>Using <code>library()</code> load the packages <code>tidyverse</code>, <code>caret</code>, <code>party</code>, <code>partykit</code>..</p></li>
+<li><p>Using <code>library()</code> load the packages <code>tidyverse</code>, <code>caret</code>, <code>party</code>, <code>partykit</code>.</p></li>
 </ol>
 </div>
 <div id="b---load-the-graduation-data" class="section level3">
 <h3>B - Load the <code>graduation</code> data</h3>
 <ol style="list-style-type: decimal">
-<li>You will again begin by analyzing the graduation data. Read in the datasets <code>graduation_train.csv</code> and <code>graduation_test.csv</code> and convert all character to factors. Furthermore, the code below limits the number of training cases to 100 to emphasize the impact of the model tuning.</li>
+<li>You will again begin by analyzing the graduation data. Read in the data sets <code>graduation_train.csv</code> and <code>graduation_test.csv</code> and convert all character to factors.</li>
 </ol>
 <pre class="r"><code># Read college data
 college_train &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)
@@ -312,8 +312,8 @@ coef(graduation_ridge$finalModel,
 </div>
 <div id="lasso-regression" class="section level4">
 <h4>Lasso regression</h4>
-<ol start="9" style="list-style-type: decimal">
-<li>Now fit a lasso regression model predicting <code>Grad.Rate</code> as a function of all features. Set <code>alpha = 0</code> for the Lasso penalty and add <code>lambda = lambda_vec</code> as above.</li>
+<ol start="10" style="list-style-type: decimal">
+<li>Now fit a lasso regression model predicting <code>Grad.Rate</code> as a function of all features. Set <code>alpha = 1</code> for the Lasso penalty and add <code>lambda = lambda_vec</code> as above.</li>
 </ol>
 <pre class="r"><code># Lasso regression 
 graduation_lasso &lt;- train(form = XX ~ .,
@@ -323,27 +323,29 @@ graduation_lasso &lt;- train(form = XX ~ .,
                           preProcess = c(&quot;XX&quot;, &quot;XX&quot;),         # Standardise
                           tuneGrid = data.frame(alpha = XX,   # Lasso penalty
                                                 lambda = XX)) # Penalty weight</code></pre>
-<ol start="10" style="list-style-type: decimal">
+<ol start="11" style="list-style-type: decimal">
 <li><p>Print your <code>graduation_lasso</code> object. Which lambda was selected as best performing?</p></li>
 <li><p>Plot your <code>graduation_lasso</code> object. What do you see? Does this match the plot match the value identified in the previous task?</p></li>
 </ol>
 <pre class="r"><code># Plot model object
 plot(XX)</code></pre>
-<ol start="12" style="list-style-type: decimal">
+<ol start="13" style="list-style-type: decimal">
 <li>What were your final regression model coefficients for the best lambda value? Find them by running the following code.</li>
 </ol>
 <pre class="r"><code># Get coefficients from best lambda value
 coef(graduation_lasso$finalModel, 
      graduation_lasso$bestTune$lambda)</code></pre>
-<ol start="13" style="list-style-type: decimal">
-<li>How do these coefficients compare to what you found for the regular and ridge regression? Have some features between set to 0?</li>
+<ol start="14" style="list-style-type: decimal">
+<li>How do these coefficients compare to what you found for the regular and ridge regression? Have some features been set to 0?</li>
 </ol>
 </div>
 <div id="evaluate-performance" class="section level4">
 <h4>Evaluate performance</h4>
-<ol start="14" style="list-style-type: decimal">
-<li><p>Store the training data and test data criterion (<code>Grad.Rate</code>) as <code>criterion_train</code> and <code>criterion_test</code>.</p></li>
-<li><p>Using <code>predict()</code>, save the fitted values of your models as <code>glm_fit</code>, <code>ridge_fit</code>, and <code>lasso_fit</code>.</p></li>
+<ol start="15" style="list-style-type: decimal">
+<li>Store the training data and test data criterion (<code>Grad.Rate</code>) as <code>criterion_train</code> and <code>criterion_test</code>.</li>
+</ol>
+<p>s 16. Using <code>predict()</code>, save the fitted values of your models as <code>glm_fit</code>, <code>ridge_fit</code>, and <code>lasso_fit</code>.</p>
+<ol start="17" style="list-style-type: decimal">
 <li><p>Using <code>postResample</code> evaluate the fitting performance of your models. Which model has the best performance in fitting the training data?</p></li>
 <li><p>Using <code>predict()</code> and <code>newdata = college_test</code>, save the predicted values of your models as <code>glm_pred</code>, <code>ridge_pred</code>, and <code>lasso_pred</code>.</p></li>
 <li><p>Using <code>postResample</code> evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the regularized regressions outperform the unregularized one?</p></li>
@@ -396,14 +398,14 @@ graduation_rf &lt;- train(form = XX ~ .,
 <h4>Evaluate performance</h4>
 <ol start="11" style="list-style-type: decimal">
 <li><p>Using <code>predict()</code>, save the fitted values of your tree models as <code>rpart_fit</code> and <code>rf_fit</code>.</p></li>
-<li><p>Using <code>postResample</code> evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? If you like compare to the gression models of the previous section.</p></li>
+<li><p>Using <code>postResample</code> evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? If you like compare to the regression models of the previous section.</p></li>
 <li><p>Using <code>predict()</code> and <code>newdata = college_test</code>, save the predicted values of your models as <code>rpart_pred</code>, and <code>rf_pred</code>.</p></li>
 <li><p>Using <code>postResample</code> evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the tree models outperform the regularized regressions?</p></li>
 </ol>
 </div>
 </div>
-<div id="z---challenges-explore-tuning-parameter-grids" class="section level3">
-<h3>Z - Challenges: Explore tuning parameter grids</h3>
+<div id="x---challenges-explore-tuning-parameter-grids" class="section level3">
+<h3>X - Challenges: Explore tuning parameter grids</h3>
 <ol style="list-style-type: decimal">
 <li>The name <code>tuneGrid</code> already suggests that one may want to vary multiple tuning parameters at the same time. A handy function helping in this is <code>expand.grid()</code>, which will produce all compbinations of values of the vectors supplied as its arguments. Try, e.g., <code>expand.grid(a = c(1, 2), b = c(2, 3, 4))</code>. The template below shows you how you can use <code>expand.grid()</code> to specify multiple tuning parameters at the same time.</li>
 </ol>

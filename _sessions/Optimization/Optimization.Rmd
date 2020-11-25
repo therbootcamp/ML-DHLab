@@ -55,7 +55,7 @@ layout: true
 
 ```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
 # Code to knit slides
-basel <- readr::read_csv("../../1_Data/basel.csv")
+basel <- readr::read_csv("1_Data/baselers.csv")
 
 
 source("https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/_materials/code/baselrbootcamp_palettes.R")
