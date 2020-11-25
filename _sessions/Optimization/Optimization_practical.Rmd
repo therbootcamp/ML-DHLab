@@ -4,7 +4,7 @@ author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0
   <tr style='border:none'>
     <td style='display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none' nowrap>
       <font style='font-style:normal'>Machine Learning with R</font><br>
-      <a href='https://therbootcamp.github.io/ML_2019Oct/'>
+      <a href='https://therbootcamp.github.io/ML-DHLab/'>
         <i class='fas fa-clock' style='font-size:.9em;' ></i>
       </a>
       <a href='https://therbootcamp.github.io'>
@@ -17,7 +17,7 @@ author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0
         <i class='fab fa-linkedin' style='font-size: .9em;'></i>
       </a>
       <a href='https://therbootcamp.github.io'>
-        <font style='font-style:normal'>Basel R Bootcamp</font>
+        <font style='font-style:normal'>The R Bootcamp</font>
       </a>
     </td>
     <td style='width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none'>
@@ -35,8 +35,8 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = TRUE, 
-                      eval = TRUE, 
+                      echo = FALSE, 
+                      eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -48,14 +48,10 @@ set.seed(100)
 ```{r, message = FALSE, eval = TRUE, echo = FALSE}
 # Load datasets locally
 library(tidyverse)
-college_train <- read_csv("../../1_Data/college_train.csv")
-college_test <- read_csv("../../1_Data/college_test.csv")
-house_train <- read_csv("../../1_Data/house_train.csv")
-house_test <- read_csv("../../1_Data/house_test.csv")
-hitters_train <- read_csv("../../1_Data/hitters_train.csv") %>%
-  select(Salary, everything())
-hitters_test <- read_csv("../../1_Data/hitters_test.csv") %>%
-  select(Salary, everything())
+college_train <- read_csv("1_Data/college_train.csv")
+college_test <- read_csv("1_Data/college_test.csv")
+house_train <- read_csv("1_Data/house_train.csv")
+house_test <- read_csv("1_Data/house_test.csv")
 ```
 <p align="center">
 <img width="100%" src="image/rexthor.png" margin=0><br>
@@ -70,23 +66,27 @@ By the end of this practical you will know how to:
 
 1. Use cross-validation to select optimal model tuning parameters for decision trees and random forests.
 2. Compare 'standard' regression with lasso and ridge penalised regression.
-3. Use cross-validation to estimate future test accuracy.
 
 ## Tasks
 
-### Baseball player salaries
-
-In this practical, we will predict the `Salary` of baseball players from the `hitters_train` and `hitters_test` datasets. 
 
 ### A - Setup
 
-1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section are in your `1_Data` folder
+1. Open your `TheRBootcamp` R project. 
 
-2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Optimization_practical.R` in the `2_Code` folder.  
+2. Open a new R script. At the top of the script, using comments, write your name and the date. 
 
-3. Using `library()` load the set of packages for this practical listed in the packages section above.
+```{r, eval = FALSE, echo = TRUE}
+## NAME
+## DATE
+## Optimizing practical
+```
 
-```{r, echo = TRUE, eval = TRUE, message = FALSE}
+3. Save the script as a new file called `Optimization_practical.R` in the `2_Code` folder.  
+
+4. Using `library()` load the packages `tidyverse`, `caret`, `party`, `partykit`..
+
+```{r, eval = TRUE}
 # Load packages necessary for this script
 library(tidyverse)
 library(caret)
@@ -94,77 +94,25 @@ library(party)
 library(partykit)
 ```
 
-```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
-library(tidyverse)
-library(caret)
-library(party)
-library(partykit)
-```
+### B - Load the `graduation` data
 
-4. Run the code below to load each of the datasets listed in the `Datasets` section as new objects.
+1. You will again begin by analyzing the graduation data. Read in the datasets `graduation_train.csv` and `graduation_test.csv` and convert all character to factors. Furthermore, the code below limits the number of training cases to 100 to emphasize the impact of the model tuning. 
 
-```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# hitters data
-hitters_train <- read_csv(file = "1_Data/hitters_train.csv")
-hitters_test <- read_csv(file = "1_Data/hitters_test.csv")
-```
+```{r, echo = TRUE}
+# Read college data
+college_train <- read_csv(file = "1_Data/college_train.csv")
+college_test <- read_csv(file = "1_Data/college_test.csv")
 
-5. Take a look at the first few rows of each dataframe by printing them to the console.
-
-```{r, echo = TRUE, eval = FALSE}
-# Print dataframes to the console
-hitters_train
-hitters_test
-```
-
-6. Print the numbers of rows and columns of each dataset using the `dim()` function.
-
-```{r, echo = TRUE, eval = FALSE}
-# Print numbers of rows and columns
-dim(XXX)
-dim(XXX)
-```
-
-```{r}
-dim(hitters_train)
-dim(hitters_test)
-```
-
-7. Look at the names of the dataframes with the `names()` function.
-
-```{r, echo = TRUE, eval = FALSE}
-# Print the names of each dataframe
-names(XXX)
-names(XXX)
-```
-
-```{r}
-names(hitters_train)
-names(hitters_test)
-```
-
-8. Open each dataset in a new window using `View()`. Do they look ok?
-
-```{r, eval = FALSE, echo = TRUE}
-# Open each dataset in a window.
-View(XXX)
-View(XXX)
-```
-
-9. As always, we need to convert all character columns to factors before we start. Do this by running the following code.
-
-```{r}
-# Convert all character columns to factor
-hitters_train <- hitters_train %>%
-          mutate_if(is.character, factor)
-
-hitters_test <- hitters_test %>%
+# Convert all character features to factor
+college_train <- college_train %>%
+  mutate_if(is.character, factor) 
+college_test <- college_test %>%
           mutate_if(is.character, factor)
 ```
 
-### B - Setup `trainControl`
+### C - Setup `trainControl`
 
-1. Set up your training by specifying `ctrl_cv` as 10-fold cross-validation. Specifically,...
+1. Now, you finally make use of the train control object by specifying 10-fold cross-validation as the preferred optimization method in an object called `ctrl_cv`. Specifically:
 
 - set `method = "cv"` to specify cross validation.
 - set `number = 10` to specify 10 folds.
@@ -181,138 +129,100 @@ ctrl_cv <- trainControl(method = "cv",
                         number = 10) 
 ```
 
-### C - Regression (standard)
+### D - Regularized regression
 
-1. Fit a (standard) regression model predicting `Salary` as a function of all features. Specifically,...
+#### Standard regression
 
-- set the formula to `Salary ~ .`.
-- set the data to `hitters_train`.
-- set the method to `"glm"` for regular regression.
+1. Begin by fitting a standard regression model predicting `Grad.Rate` as a function of all other features. Specifically:
+
+- set the formula to `Grad.Rate ~ .`.
+- set the data to `college_train`.
+- set the method to `"glm"` for standard regression.
 - set the train control argument to `ctrl_cv`.
 
 ```{r, echo = TRUE, eval = FALSE}
-# Normal Regression --------------------------
-salary_glm <- train(form = XX ~ .,
-                    data = XX,
-                    method = "XX",
-                    trControl = XX)
+# Standard regression 
+graduation_glm <- train(form = XX ~ .,
+                        data = XX,
+                        method = "XX",
+                        trControl = XX)
 ```
 
 ```{r}
-# Normal Regression --------------------------
-salary_glm <- train(form = Salary ~ .,
-                   data = hitters_train,
+# Standard regression 
+graduation_glm <- train(form = Grad.Rate ~ .,
+                   data = college_train,
                    method = "glm",
                    trControl = ctrl_cv)
 ```
 
-2. Print your `salary_glm`. What do you see?
-
-```{r}
-salary_glm
-```
-
-3. Try plotting your `salary_glm` object. What happens? What does this error mean?
-
-```{r}
-# I get the following error:
-
-# Error in plot.train(salary_glm) : 
-#   There are no tuning parameters for this model.
-
-
-# The problem is that method = "glm" has no tuning parameters so there is nothing to plot!
-```
-
-4. Print your final model object with `salary_glm$finalModel`.
+2. What were your final regression model coefficients?
 
 ```{r, echo = TRUE}
-# Print final regression model
-salary_glm$finalModel
+# Show final model
+graduation_glm$finalModel
 ```
 
-5. Print your final regression model coefficients with `coef()`.
+#### Ridge regression
 
-```{r}
-# Print glm coefficients
-coef(salary_glm$finalModel)
-```
-
-### D - Ridge Regression
-
-It's time to fit an optimized regression model with a Ridge penalty!
-
-1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values spanning a wide range, from very close to 0 to 1,000.
+3. Before you can fit a regularized regression model like ridge regression, you need to determine a vector of lambda penalty values that the cross validation procedure will evaluate. Using the code below, create a vector called `lambda_vec` containing 100 values spanning a range from very close to `0` up to `100`.
 
 ```{r, echo = TRUE}
 # Vector of lambda values to try
-lambda_vec <- 10 ^ (seq(-4, 4, length = 100))
+lambda_vec <- 10 ^ (seq(-3, 2, length = 100))
 ```
 
-2. Fit a ridge regression model predicting `Salary` as a function of all features. Specifically,...
-
-- set the formula to `Salary ~ .`.
-- set the data to `hitters_train`.
-- set the method to `"glmnet"` for regularized regression.
-- set the train control argument to `ctrl_cv`.
-- set the `preProcess` argument to `c("center", "scale")` to make sure the variables are standarised when estimating the beta weights (this is good practice for ridge regression as otherwise the different scales of the variables impact the betas and thus the punishment would also depend on the scale).
-- set the tuneGrid argument such that alpha is 0 (for ridge regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below).
+4. Using `train()`, fit a ridge regression model predicting `Grad.Rate` as a function of all features. This time make use of the `tuneGrid`, which will take a `data.frame` specifying the sets of tuning parameters to consider during cross validation. In addition to `alpha = 0`, which specifies a ridge penalty, add `lambda = lambda_vec`. Also, don't forget to `"center"` and `"scale"` when using regularization.  
 
 ```{r, echo = TRUE, eval = FALSE}
-# Ridge Regression --------------------------
-salary_ridge <- train(form = XX ~ .,
-                      data = XX,
-                      method = "XX",
-                      trControl = XX,
-                      preProcess = c("XX", "XX"),  # Standardise
-                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
-                                             lambda = lambda_vec))
+# Ridge regression 
+graduation_ridge <- train(form = XX ~ .,
+                          data = XX,
+                          method = "XX",
+                          trControl = XX,
+                          preProcess = c("XX", "XX"),          # Standardize
+                          tuneGrid = data.frame(alpha = 0,     # Ridge penalty
+                                                lambda = XX))  # Penalty weight
 ```
 
 ```{r}
-# Ridge Regression --------------------------
-salary_ridge <- train(form = Salary ~ .,
-                      data = hitters_train,
-                      method = "glmnet",
-                      trControl = ctrl_cv,
-                      preProcess = c("center", "scale"),  # Standardise
-                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
-                                             lambda = lambda_vec))
+# Ridge regression
+graduation_ridge <- train(form = Grad.Rate ~ .,
+                          data = college_train,
+                          method = "glmnet",
+                          trControl = ctrl_cv,
+                          preProcess = c("center", "scale"),    # Standardise
+                          tuneGrid = data.frame(alpha = 0,      # Ridge penalty
+                                                lambda = lambda_vec)) # Penalty weight
+
 ```
 
-3. Print your `salary_ridge` object. What do you see?
+5. Print your `graduation_ridge` object. Which lambda was selected as best performing?
 
 ```{r}
-salary_ridge
+graduation_ridge
 ```
 
-4. Plot your `salary_ridge` object. What do you see? Which value of the regularization parameter seems to be the best?
+6. Plot your `graduation_ridge` object. What do you see? Does this match the plot match the value identified in the previous task?
 
 ```{r, echo = TRUE, eval = FALSE}
-# Plot salary_ridge object
+# Plot graduation_ridge object
 plot(XX)
 ```
 
 ```{r}
-plot(salary_ridge)
+plot(graduation_ridge)
 ```
 
-5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
-
-```{r, echo = TRUE}
-# Print best regularisation parameter
-salary_ridge$bestTune$lambda
-```
-
-6. What were your final regression model coefficients for the best lambda value? Find them by running the following code.
+7. What were your final regression model coefficients for the best lambda value? Find them by running the following code.
 
 ```{r, echo = TRUE}
 # Get coefficients from best lambda value
-coef(salary_ridge$finalModel, 
-     salary_ridge$bestTune$lambda)
+coef(graduation_ridge$finalModel, 
+     graduation_ridge$bestTune$lambda)
 ```
 
-7. How do these coefficients compare to what you found in regular regression? Are they similar? Different?
+8. How do these coefficients compare to what you found in regular regression? Are they similar? Could the differences have something to do with the applied scaling?
 
 ```{r}
 # Actually the look quite different! The reason why is that we have changed the scale using preProcess
@@ -320,83 +230,67 @@ coef(salary_ridge$finalModel,
 # If you want the coefficients on the original scale, you'd need to convert them, or run your training again without any processing. However, this can lead to problems finding the optimal Lambda value...
 ```
 
-### E - Lasso Regression
+3. Using `predict()` save the fitted values of `graduation_glm` object as `glm_fit`.
 
-It's time to fit an optimized regression model with a Lasso penalty!
-
-1. Before we can fit a lasso regression model, we again first specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 1,000.
-
-```{r, echo = TRUE}
-# Determine possible values of lambda
-lambda_vec <- 10 ^ seq(from = -4, to = 4, length = 100)
+```{r}
+# Save fitted value
+glm_fit <- predict(graduation_glm)
 ```
 
-2. Fit a lasso regression model predicting `Salary` as a function of all features. Specifically,...
 
-- set the formula to `Salary ~ .`.
-- set the data to `hitters_train`.
-- set the method to `"glmnet"` for regularized regression.
-- set the train control argument to `ctrl_cv`.
-- set the `preProcess` argument to `c("center", "scale")` to make sure the variables are standarised when estimating the beta weights (this is also good practice for lasso regression).
-- set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below).
+#### Lasso regression
+
+9. Now fit a lasso regression model predicting `Grad.Rate` as a function of all features. Set `alpha = 0` for the Lasso penalty and add `lambda = lambda_vec` as above. 
+
 
 ```{r, echo = TRUE, eval = FALSE}
-# Lasso Regression --------------------------
-salary_lasso <- train(form = XX ~ .,
-                      data = XX,
-                      method = "XX",
-                      trControl = XX,
-                      preProcess = c("XX", "XX"),  # Standardise
-                      tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
-                                            lambda = lambda_vec))
+# Lasso regression 
+graduation_lasso <- train(form = XX ~ .,
+                          data = XX,
+                          method = "XX",
+                          trControl = XX,
+                          preProcess = c("XX", "XX"),         # Standardise
+                          tuneGrid = data.frame(alpha = XX,   # Lasso penalty
+                                                lambda = XX)) # Penalty weight
 ```
 
 ```{r}
-# Fit a lasso regression
-salary_lasso <- train(form = Salary ~ .,
-                   data = hitters_train,
-                   method = "glmnet",
-                   trControl = ctrl_cv,
-                   preProcess = c("center", "scale"),
-                   tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
-                                          lambda = lambda_vec))
+# Lasso regression 
+graduation_lasso <- train(form = Grad.Rate ~ .,
+                          data = college_train,
+                          method = "glmnet",
+                          trControl = ctrl_cv,
+                          preProcess = c("center", "scale"),    # Standardise
+                          tuneGrid = data.frame(alpha = 1,     # Lasso penalty
+                                                 lambda = lambda_vec))
 ```
 
-3. Print your `salary_lasso` object. What do you see?
+10. Print your `graduation_lasso` object. Which lambda was selected as best performing?
 
 ```{r}
-salary_lasso
+graduation_lasso
 ```
 
-
-4. Plot your `salary_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
+11. Plot your `graduation_lasso` object. What do you see? Does this match the plot match the value identified in the previous task?
 
 ```{r, echo = TRUE, eval = FALSE}
-# Plot salary_lasso object
+# Plot model object
 plot(XX)
 ```
 
 ```{r}
-plot(salary_lasso)
+plot(graduation_lasso)
 ```
 
-
-5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
-
-```{r, echo = TRUE}
-# Print best regularisation parameter
-salary_lasso$bestTune$lambda
-```
-
-6. What were your final regression model coefficients for the best lambda value? Find them by running the following code.
+12. What were your final regression model coefficients for the best lambda value? Find them by running the following code.
 
 ```{r, echo = TRUE}
 # Get coefficients from best lambda value
-coef(salary_lasso$finalModel, 
-     salary_lasso$bestTune$lambda)
+coef(graduation_lasso$finalModel, 
+     graduation_lasso$bestTune$lambda)
 ```
 
-7. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
+13. How do these coefficients compare to what you found for the regular and ridge regression? Have some features between set to 0?
 
 ```{r}
 # Yep!
@@ -404,305 +298,202 @@ coef(salary_lasso$finalModel,
 # I see that many features are now removed!
 ```
 
-### F - Decision Tree
+#### Evaluate performance
 
-It's time to fit an optimized decision tree model!
-
-1. Before we can fit a decision tree, we need to specify which values of the complexity parameter `cp` we want to try. Using the code below, create a vector called `cp_vec` which contains 100 values between 0 and 1.
+14. Store the training data and test data criterion (`Grad.Rate`) as `criterion_train` and `criterion_test`. 
 
 ```{r}
-# Determine possible values of the complexity parameter cp
-cp_vec <- seq(from = 0, to = 1, length = 100)
+# store criteria
+criterion_train <- college_train$Grad.Rate
+criterion_test <- college_test$Grad.Rate
 ```
 
-2. Fit a decision tree model predicting `Salary` as a function of all features. Specifically,...
 
-- set the formula to `Salary ~ .`.
-- set the data to `hitters_train`.
-- set the method to `"rpart"` for decision trees.
-- set the train control argument to `ctrl_cv`,
-- set the tuneGrid argument with all `cp` values you specified in `cp_vec`.
+15. Using `predict()`, save the fitted values of your models as  `glm_fit`, `ridge_fit`, and `lasso_fit`. 
+
+```{r}
+# store fitted values
+glm_fit <- predict(graduation_glm)
+ridge_fit <- predict(graduation_ridge)
+lasso_fit <- predict(graduation_lasso)
+```
+
+16. Using `postResample` evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? 
+
+```{r}
+# evaluate fit
+postResample(pred = glm_fit, obs = criterion_train)
+postResample(pred = ridge_fit, obs = criterion_train)
+postResample(pred = lasso_fit, obs = criterion_train)
+```
+
+16. Using `predict()` and `newdata = college_test`, save the predicted values of your models as  `glm_pred`, `ridge_pred`, and `lasso_pred`. 
+
+```{r}
+# store predicted values
+glm_pred <- predict(graduation_glm, newdata = college_test)
+ridge_pred <- predict(graduation_ridge, newdata = college_test)
+lasso_pred <- predict(graduation_lasso, newdata = college_test)
+```
+
+17. Using `postResample` evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the regularized regressions outperform the unregularized one? 
+
+```{r}
+# evaluate fit
+postResample(pred = glm_pred, obs = criterion_test)
+postResample(pred = ridge_pred, obs = criterion_test)
+postResample(pred = lasso_pred, obs = criterion_test)
+```
+
+### E - Trees
+
+#### Decision tree
+
+1. It's time to see what parameter tuning can do for decision trees and random forests. To do this, first, determine a vector of possible values for the complexity parameter `cp` of decision trees. To this end, using the code below, create a vector called `cp_vec` which contains 100 values between 0 and .2.
+
+```{r}
+# Determine possible values for cp
+cp_vec <- seq(from = 0, to = .2, length = 100)
+```
+
+2. Using `train()`, fit a decision tree model called `graduation_rpart` predicting `Grad.Rate`by all features. Again, assign a data frame to `tuneGrid` specifying the possible tuning parameters, i.e., `cp = cp_vec`.
 
 ```{r, echo = TRUE, eval = FALSE}
-# Decision Tree --------------------------
-salary_rpart <- train(form = XX ~ .,
-                  data = XX,
-                  method = "XX",
-                  trControl = XX,
-                  tuneGrid = expand.grid(cp = cp_vec))
+# Decision tree
+graduation_rpart <- train(form = Grad.part ~ .,
+                          data = XX,
+                          method = "XX",
+                          trControl = XX,
+                          tuneGrid = data.frame(cp = XX))
 ```
 
 ```{r}
-# Decision Tree --------------------------
-salary_rpart <- train(form = Salary ~ .,
-                  data = hitters_train,
+# Decision tree
+graduation_rpart <- train(form = Grad.Rate ~ .,
+                  data = college_train,
                   method = "rpart",
                   trControl = ctrl_cv,
-                  tuneGrid = expand.grid(cp = cp_vec))
+                  tuneGrid = data.frame(cp = cp_vec))
 ```
 
-3. Print your `salary_rpart` object. What do you see?
+
+3. Print your `graduation_rpart` object. Which `cp` was selected as best performing?
 
 ```{r}
-salary_rpart
+graduation_rpart
 ```
 
-4. Plot your `salary_rpart` object. What do you see? Which value of the complexity parameter seems to be the best?
-
-```{r, echo = TRUE, eval = FALSE}
-# Plot salary_rpart object
-plot(XX)
-```
+4. Plot your `graduation_rpart` object. What do you see? Does this match the plot match the value identified in the previous task?
 
 ```{r}
-plot(salary_rpart)
+plot(graduation_rpart)
 ```
 
-5. Print the best value of `cp` by running the following code. Does this match what you saw in the plot above?
-
-```{r, echo = TRUE}
-# Print best regularisation parameter
-salary_rpart$bestTune$cp
-```
-
-6. Plot your final decision tree using the following code:
+5. Plot your final decision tree using the following code. Do you find the model sensible?
 
 ```{r, echo = TRUE}
 # Visualise your trees
-plot(as.party(salary_rpart$finalModel)) 
+plot(as.party(graduation_rpart$finalModel)) 
 ```
 
+6. How do the nodes in the tree compare to those in the ridge or lasso models?
 
-7. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
+#### Random forest
+
+7. Now onto fitting a random forest. Using the code below, create a vector called `mtry_vec` containing values from 1 to 5, the tuning parameter candidates for our random forest.
 
 ```{r}
-# Actually, the tree just has one root and no nodes! This is due to the optimal complexity parameter being so high.
+# mtry candidates
+mtry_vec <- 1:5
 ```
 
-
-### G - Random Forests
-
-It's time to fit an optimized random forest model!
-
-1. Before we can fit a random forest model, we need to specify which values of the diversity parameter `mtry` we want to try. Using the code below, create a vector called `mtry_vec` which is a sequence of numbers from 1 to 10.
-
-```{r}
-# Determine possible values of the random forest diversity parameter mtry
-mtry_vec <- 1:10
-```
-
-2. Fit a random forest model predicting `Salary` as a function of all features. Specifically,...
-
-- set the formula to `Salary ~ .`.
-- set the data to `hitters_train`.
-- set the method to `"rf"` for random forests.
-- set the train control argument to `ctrl_cv`.
-- set the tuneGrid argument such that mtry can take on the values you defined in `mtry_vec`.
+8. Fit a random forest model predicting `Grad.Rate` as a function of all features. Make sure to use `mtry = mtry_vec` within the data frame specifying the `tuneGrid`. This one might take a bit longer than usual. 
 
 ```{r, echo = TRUE, eval = FALSE}
-# Random Forest --------------------------
-salary_rf <- train(form = XX ~ .,
+# Random forest
+graduation_rf <- train(form = XX ~ .,
                    data = XX,
                    method = "XX",
                    trControl = XX,
-                   tuneGrid = expand.grid(mtry = mtry_vec))
+                   tuneGrid = data.frame(mtry = XX))
 ```
 
 ```{r}
-# Random Forest --------------------------
-salary_rf <- train(form = Salary ~ .,
-                   data = hitters_train,
+# Random forest
+graduation_rf <- train(form = Grad.Rate ~ .,
+                   data = college_train,
                    method = "rf",
                    trControl = ctrl_cv,
-                   tuneGrid = expand.grid(mtry = mtry_vec))
+                   tuneGrid = data.frame(mtry = mtry_vec))
 ```
 
-3. Print your `salary_rf` object. What do you see?
+9. Print your `graduation_rf` object. What do you see? Which `mtry` was selected as best performing?
 
 ```{r}
-salary_rf
+graduation_rf
 ```
 
-
-4. Plot your `salary_rf` object. What do you see? Which value of the regularization parameter seems to be the best?
-
-```{r, echo = TRUE, eval = FALSE}
-# Plot salary_rf object
-plot(XX)
-```
+10. Plot your `graduation_rf` object. What do you see? Does this match the plot match the value identified in the previous task?
 
 ```{r}
-plot(salary_rf)
+plot(graduation_rf)
 ```
 
+#### Evaluate performance
 
-5. Print the best value of `mtry` by running the following code. Does this match what you saw in the plot above?
-
-```{r, echo = TRUE}
-# Print best mtry parameter
-salary_rf$bestTune$mtry
-```
-
-### H - Estimate prediction accuracy from training folds
-
-1. Using `resamples()`, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; `glm = salary_glm`, ...). See below.
-
-```{r, eval = FALSE, echo = TRUE}
-# Summarise accuracy statistics across folds
-salary_resamples <- resamples(list(glm = XXX,
-                                   ridge = XXX, 
-                                   lasso = XXX, 
-                                   rpart = XXX, 
-                                   rf = XXX))
-```
+11. Using `predict()`, save the fitted values of your tree models as  `rpart_fit` and `rf_fit`. 
 
 ```{r}
-# Summarise accuracy statistics across folds
-salary_resamples <- resamples(list(glm = salary_glm,
-                                   ridge = salary_ridge, 
-                                   lasso = salary_lasso, 
-                                   dt = salary_rpart, 
-                                   rf = salary_rf))
+# store fitted values
+rpart_fit <- predict(graduation_rpart)
+rf_fit <- predict(graduation_rf)
 ```
 
-2. Look at the summary of your `salary_resamples` object with `summary(salary_resamples)`. What does this tell you? Which model do you expect to have the best prediction accuracy for the test data?
+16. Using `postResample` evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? If you like compare to the gression models of the previous section. 
 
 ```{r}
-# Print summaries of cross-validation accuracy 
-
-# I see below that the random forest model has the lowest mean MAE, so I
-#  would expect it to be the best model in the true test data
-summary(salary_resamples)
+# evaluate fit
+postResample(pred = rpart_fit, obs = criterion_train)
+postResample(pred = rf_fit, obs = criterion_train)
 ```
 
-### I - Calculate prediction accuracy
-
-1. Save the criterion value for the test data as a new vector called `criterion_test`.
-
-```{r, eval = FALSE, echo = TRUE}
-# Save salaries of players in test dataset as criterion_test
-criterion_test <- XXX$XXX
-```
+16. Using `predict()` and `newdata = college_test`, save the predicted values of your models as `rpart_pred`, and `rf_pred`. 
 
 ```{r}
-criterion_test <- hitters_test$Salary
+# store predicted values
+rpart_pred <- predict(graduation_rpart, newdata = college_test)
+rf_pred <- predict(graduation_rf, newdata = college_test)
 ```
 
-2. Using `predict()`, save the prediction of your regular regression model `salary_glm` for the `hitters_test` data as a new object called `glm_pred`. Specifically,...
-
-- set the first argument to `salary_glm`.
-- set the newdata argument to `hitters_test`.
-
-```{r, eval = FALSE, echo = TRUE}
-# Save the glm predicted salaries of hitters_test
-glm_pred <- predict(XXX, newdata = XXX)
-```
-
+17. Using `postResample` evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the tree models outperform the regularized regressions?
 
 ```{r}
-# Save predictions for glm
-glm_pred <- predict(salary_glm, newdata = hitters_test)
-```
-
-3. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `rpart_pred` and `rf_pred`.
-
-```{r, eval = FALSE, echo = TRUE}
-ridge_pred <- predict(XXX, newdata = XXX)
-lasso_pred <- predict(XXX, newdata = XXX)
-rpart_pred <- predict(XXX, newdata = XXX)
-rf_pred <- predict(XXX, newdata = XXX)
+# evaluate fit
+postResample(pred = rpart_pred, obs = criterion_test)
+postResample(pred = rf_pred, obs = criterion_test)
 ```
 
 
-```{r}
-# Save predictions from other models
-ridge_pred <- predict(salary_ridge, newdata = hitters_test)
-lasso_pred <- predict(salary_lasso, newdata = hitters_test)
-rpart_pred <- predict(salary_rpart, newdata = hitters_test)
-rf_pred <- predict(salary_rf, newdata = hitters_test)
+### Z - Challenges: Explore tuning parameter grids
+
+1. The name `tuneGrid` already suggests that one may want to vary multiple tuning parameters at the same time. A handy function helping in this is `expand.grid()`, which will produce all compbinations of values of the vectors supplied as its arguments. Try, e.g., `expand.grid(a = c(1, 2), b = c(2, 3, 4))`. The template below shows you how you can use `expand.grid()` to specify multiple tuning parameters at the same time.    
+
+```{r, echo  =TRUE, eval = FALSE}
+model <- train(form = XX ~ .,
+               data = XX,
+               method = "XX",
+               trControl = XX,
+               preProcess = c("XX", "XX"),         
+               tuneGrid = expand.grid(parameter_1 = XX,    
+                                      parameter_2 = XX)) 
 ```
 
-4. Using `postResample()`, calculate the aggregate prediction accuracy for each model using the template below. Specifically,...
+2. Run and evaluate a regularized regression that uses cross validation to not only identify the best value for `lambda` but also the best value for `alpha`, e.g., using `alpha = c(0, .5, 1)`. This way you can let the procedure decide whether to use ridge, lasso or both. 
 
-- set the pred argument to your model predictions (e.g.; `ridge_pred`).
-- set the `obs` argument to the true criterion values `criterion_test`).
+3. Run and evaluate a random forest while tuning not only `mtry` but also `ntree`, e.g., using `ntree = c(100,500,1000)`. Tip: avoid high values for `ntree` or `mtry`.
 
-```{r, eval = FALSE, echo = TRUE}
-# Calculate aggregate accuracy for a model
-postResample(pred = XXX, 
-             obs = XXX)
-```
+4. As done in the previous sessions try predicting `Private` rather than `Grad.Rate`. Note, this may require a different range of lambda values. You'll figure it out. 
 
-```{r}
-# Prediction error for normal regression
-postResample(pred = glm_pred, 
-             obs = hitters_test$Salary)
-
-# Prediction error for ridge regression
-postResample(pred = ridge_pred, 
-             obs = hitters_test$Salary)
-
-# Prediction error for lasso regression
-postResample(pred = lasso_pred, 
-             obs = hitters_test$Salary)
-
-# Prediction error for decision trees
-postResample(pred = rpart_pred, 
-             obs = hitters_test$Salary)
-
-# Prediction error for random forests
-postResample(pred = rf_pred, 
-             obs = hitters_test$Salary)
-
-```
-
-
-```{r, echo = FALSE}
-x <- postResample(pred = rf_pred, 
-             obs = hitters_test$Salary)
-```
-
-
-5. Which of your models had the best performance in the true test data?
-
-```{r}
-# Random forests had the lowest test MAE of
-postResample(pred = rf_pred, 
-             obs = hitters_test$Salary)[3]
-```
-
-
-6. How close were your models' true prediction error to the values you estimated in the previous section when you ran `resamples()`?
-
-```{r}
-# Depends on what you mean by 'close', but they are definitely higher (worse) in the test data
-```
-
-
-### Z - Challenges
-
-1. In addition to 'regular' 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models' performance? To test this, create a new training control object called `ctrl_cv_rep` as below. Then, train your models again using `ctrl_cv_rep` (instead of `ctrl_cv`), and evaluate their prediction performance. Do they improve? Do you get different optimal tuning values compared to your previous models?
-
-```{r}
-# Repeated cross validation.
-#  Folds = 10
-#  Repeats = 5
-ctrl_cv_rep <- trainControl(method = "repeatedcv",
-                            number = 10,
-                            repeats = 5)
-```
-
-2. Using the same procedure as above, compare models predicting the prices of houses in King County Washington using the `house_train` and `house_test` datasets. 
-
-3. When using lasso regression, do you find that the lasso sets any beta weights to exactly 0? If so, which ones?
-
-4. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
-
-5. Using the same procedure as above, compare models predicting the graduate rate of students from different colleges using the `college_train` and `college_test` datasets. 
-
-6. When using lasso regression, do you find that the lasso sets any beta weights to exactly 0? If so, which ones?
-
-7. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
 
 ## Examples
 
@@ -738,7 +529,6 @@ dim(data_train)   # Print dimensions
 names(data_train) # Print the names
 
 # Define criterion_train
-#   We'll use this later to evaluate model accuracy
 criterion_train <- data_train$price
 criterion_test <- data_test$price
 
@@ -749,8 +539,6 @@ ctrl_cv <- trainControl(method = "cv",
                         number = 10) 
 
 # Step 3: Train models: -----------------------------
-#   Criterion: hwy
-#   Features: year, cyl, displ
 
 # Normal Regression --------------------------
 price_glm <- train(form = price ~ carat + depth + table + x + y,
@@ -762,14 +550,8 @@ price_glm <- train(form = price ~ carat + depth + table + x + y,
 # Print key results
 price_glm
 
-# RMSE  Rsquared  MAE
-# 1506  0.86      921
-
 # Coefficients
 coef(price_glm$finalModel)
-
-# (Intercept)       carat       depth       table           x           y 
-#     21464.9     11040.4      -215.6       -94.2     -3681.6      2358.9 
 
 # Lasso --------------------------
 
@@ -781,28 +563,12 @@ price_lasso <- train(form = price ~ carat + depth + table + x + y,
                    method = "glmnet",
                    trControl = ctrl_cv,
                    preProcess = c("center", "scale"),  # Standardise
-                   tuneGrid = expand.grid(alpha = 1,  # Lasso
+                   tuneGrid = data.frame(alpha = 1,  # Lasso
                                           lambda = lambda_vec))
 
 
 # Print key results
 price_lasso
-
-# glmnet 
-# 
-# 5000 samples
-#    5 predictor
-# 
-# Pre-processing: centered (5), scaled (5) 
-# Resampling: Cross-Validated (10 fold) 
-# Summary of sample sizes: 4500, 4500, 4500, 4500, 4500, 4500, ... 
-# Resampling results across tuning parameters:
-# 
-#   lambda    RMSE  Rsquared  MAE 
-#   1.00e-03  1509  0.858      918
-#   1.15e-03  1509  0.858      918
-#   1.32e-03  1509  0.858      918
-#   1.52e-03  1509  0.858      918
 
 # Plot regularisation parameter versus error
 plot(price_lasso)
@@ -814,16 +580,6 @@ price_lasso$bestTune$lambda
 coef(price_lasso$finalModel, 
      price_lasso$bestTune$lambda)
 
-# 6 x 1 sparse Matrix of class "dgCMatrix"
-#                 1
-# (Intercept)  4001
-# carat        5179
-# depth        -300
-# table        -213
-# x           -3222
-# y            1755
-
-
 # Ridge --------------------------
 
 # Vector of lambda values to try
@@ -834,28 +590,11 @@ price_ridge <- train(form = price ~ carat + depth + table + x + y,
                      method = "glmnet",
                      trControl = ctrl_cv,
                      preProcess = c("center", "scale"),  # Standardise
-                     tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
+                     tuneGrid = data.frame(alpha = 0,     # Ridge penalty
                                             lambda = lambda_vec))
 
 # Print key results
 price_ridge
-
-# glmnet 
-# 
-# 5000 samples
-#    5 predictor
-# 
-# Pre-processing: centered (5), scaled (5) 
-# Resampling: Cross-Validated (10 fold) 
-# Summary of sample sizes: 4500, 4500, 4500, 4500, 4500, 4500, ... 
-# Resampling results across tuning parameters:
-# 
-#   lambda    RMSE  Rsquared  MAE 
-#   1.00e-03  1638  0.835     1137
-#   1.15e-03  1638  0.835     1137
-#   1.32e-03  1638  0.835     1137
-#   1.52e-03  1638  0.835     1137
-#   1.75e-03  1638  0.835     1137
 
 # Plot regularisation parameter versus error
 plot(price_ridge)
@@ -867,14 +606,6 @@ price_ridge$bestTune$lambda
 coef(price_ridge$finalModel, 
      price_ridge$bestTune$lambda)
 
-# 6 x 1 sparse Matrix of class "dgCMatrix"
-#                1
-# (Intercept) 4001
-# carat       2059
-# depth       -131
-# table       -168
-# x            716
-# y            797
 
 # Decision Trees --------------------------
 
@@ -885,7 +616,7 @@ price_rpart <- train(form = price ~ carat + depth + table + x + y,
                   data = data_train,
                   method = "rpart",
                   trControl = ctrl_cv,
-                  tuneGrid = expand.grid(cp = cp_vec))
+                  tuneGrid = data.frame(cp = cp_vec))
 
 # Print key results
 price_rpart
@@ -896,121 +627,6 @@ plot(price_rpart)
 # Print best complexity parameter
 price_rpart$bestTune$cp
 
-# [1] 0.00202
-
-# Step 3: Estimate prediction accuracy from folds ----
-
-# Get accuracy statistics across folds
-resamples_price <- resamples(list(ridge = price_ridge, 
-                                  lasso = price_lasso, 
-                                  glm = price_glm))
-
-# Print summary of accuracies
-summary(resamples_price)
-
-# MAE 
-#       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
-# ridge 1094    1100   1117 1137    1170 1217    0
-# lasso  869     887    929  918     944  960    0
-# glm    856     882    921  920     949  986    0
-# 
-# RMSE 
-#       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
-# ridge 1545    1580   1609 1638    1703 1772    0
-# lasso 1323    1479   1518 1509    1583 1593    0
-# glm   1350    1429   1526 1509    1582 1702    0
-# 
-# Rsquared 
-#        Min. 1st Qu. Median  Mean 3rd Qu.  Max. NA's
-# ridge 0.798   0.828  0.836 0.835   0.848 0.854    0
-# lasso 0.827   0.846  0.858 0.858   0.868 0.902    0
-# glm   0.819   0.849  0.863 0.860   0.870 0.888    0
-
-# Step 4: Measure prediction Accuracy -------------------
-
-# GLM ================================
-
-# Predictions
-glm_pred <- predict(price_glm, 
-                    newdata = data_test)
-
-# Calculate aggregate accuracy
-postResample(pred = glm_pred, 
-             obs = criterion_test)
-
-#     RMSE Rsquared      MAE 
-# 1654.017    0.832  944.854 
-
-# Ridge ================================
-
-# Predictions
-ridge_pred <- predict(price_ridge, 
-                      newdata = data_test)
-
-# Calculate aggregate accuracy
-postResample(pred = ridge_pred, 
-             obs = criterion_test)
-
-#     RMSE Rsquared      MAE 
-# 1650.541    0.832 1133.063 
-
-
-# Lasso ================================
-
-# Predictions
-lasso_pred <- predict(price_lasso, 
-                      newdata = data_test)
-
-# Calculate aggregate accuracy
-postResample(pred = lasso_pred, 
-             obs = criterion_test)
-
-#     RMSE Rsquared      MAE 
-# 1653.675    0.832  942.870 
-
-
-# Visualise Accuracy -------------------------
-
-# Tidy competition results
-accuracy <- tibble(criterion_test = criterion_test,
-                   Regression = glm_pred,
-                   Ridge = ridge_pred,
-                   Lasso = lasso_pred) %>%
-               gather(model, prediction, -criterion_test) %>%
-               # Add error measures
-               mutate(se = prediction - criterion_test,
-                      ae = abs(prediction - criterion_test))
-
-# Calculate summaries
-accuracy_agg <- accuracy %>%
-                  group_by(model) %>%
-                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
-
-# Plot A) Scatterplot of truth versus predictions
-ggplot(data = accuracy,
-       aes(x = criterion_test, y = prediction, col = model)) +
-  geom_point(alpha = .5) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(x = "True Prices",
-       y = "Predicted Prices",
-       title = "Predicting Diamond Prices",
-       subtitle = "Black line indicates perfect performance")
-
-# Plot B) Violin plot of absolute errors
-ggplot(data = accuracy, 
-       aes(x = model, y = ae, fill = model)) + 
-  geom_violin() + 
-  geom_jitter(width = .05, alpha = .2) +
-  labs(title = "Fitting Absolute Errors",
-       subtitle = "Numbers indicate means",
-       x = "Model",
-       y = "Absolute Error (Log Transformed)") +
-  guides(fill = FALSE) +
-  annotate(geom = "label", 
-           x = accuracy_agg$model, 
-           y = accuracy_agg$mae, 
-           label = round(accuracy_agg$mae, 2)) +
-  scale_y_continuous(trans='log')
 ```
 
 
@@ -1024,47 +640,17 @@ library(ggthemes)
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[hitters_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/hitters_train.csv)| 50 | 20|
-|[hitters_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/hitters_test.csv)| 213 | 20|
+|[college_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_train.csv)| 50 | 20|
+|[college_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_test.csv)| 213 | 20|
 |[college_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_train.csv)| 500 | 18|
 |[college_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_test.csv)| 277 | 18|
 |[house_train.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/house_train.csv)| 5000 | 21|
-|[house_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/hitters_test.csv)| 1000 | 21|
+|[house_test.csv](https://raw.githubusercontent.com/therbootcamp/ML_2019Oct/master/1_Data/college_test.csv)| 1000 | 21|
 
-
-- The `hitters_train` and `hitters_test` data are taken from the `Hitters` dataset in the `ISLR` package. They are data frames with observations of major league baseball players from the 1986 and 1987 seasons.
 
 - The `college_train` and `college_test` data are taken from the `College` dataset in the `ISLR` package. They contain statistics for a large number of US Colleges from the 1995 issue of US News and World Report.
 
-
 - The `house_train` and `house_test` data come from [https://www.kaggle.com/harlfoxem/housesalesprediction](https://www.kaggle.com/harlfoxem/housesalesprediction)
-
-
-#### Variable description of `hitters_train` and `hitters_test`
-
-| Name | Description |
-|:-------------|:-------------------------------------|
-| `Salary` | 1987 annual salary on opening day in thousands of dollars. |
-| `AtBat` | Number of times at bat in 1986.  |
-| `Hits` | Number of hits in 1986. |
-| `HmRun` | Number of home runs in 1986. |
-| `Runs` | Number of runs in 1986. |
-| `RBI` | Number of runs batted in in 1986. |
-| `Walks` | Number of walks in 1986. |
-| `Years` | Number of years in the major leagues. |
-| `CAtBat` | Number of times at bat during his career. |
-| `CHits` | Number of hits during his career. |
-| `CHmRun` | Number of home runs during his career. |
-| `CRuns` | Number of runs during his career. |
-| `CRBI` | Number of runs batted in during his career. |
-| `CWalks` | Number of walks during his career. |
-| `League` | A factor with levels A and N indicating player's league at the end of 1986. |
-| `Division` | A factor with levels E and W indicating player's division at the end of 1986. |
-| `PutOuts` | Number of put outs in 1986. |
-| `Assists` | Number of assists in 1986. |
-| `Errors` | Number of errors in 1986. |
-| `NewLeague` | A factor with levels A and N indicating player's league at the beginning of 1987. |
-
 
 
 #### Variable description of `college_train` and `college_test`
