@@ -80,7 +80,6 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 
 ```
 
-<br><br>
 
 # Unsupervised learning
 
@@ -112,7 +111,7 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 
 .pull-left35[
 
-# Zwei Kernbereiche des UL
+# Two domains of UL
 
 <ul>
   <li class="m1"><span><b>Dimensionality reduction</b></span></li>
@@ -204,7 +203,7 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 # Gap in 1952
 
 <ul>
-  <li class="m1"><span>In 1952, are there <high>Klassen von Ländern</high> concerning life expectancy and GDP per capita?</span></li><br>
+  <li class="m1"><span>In 1952, are there <high>classes of countries</high> concerning life expectancy and GDP per capita?</span></li><br>
   <li class="m2"><span>Algorithms:</span></li><br>
   <ul>
     <li><span><high><i>k</i>-means</high></span></li><br>
@@ -259,7 +258,7 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 # <i>k</i>-means
 
 <ul>
-  <li class="m1"><span>Maybe the most frequently employed algorithms for cluster analysis.</span></li><br>
+  <li class="m1"><span>Maybe the most <high>frequently employed</high> algorithms for cluster analysis.</span></li><br>
   <li class="m2"><span><b>Algorithm</b></span></li><br>
   <ol class="">
     <li><span>Random <high>start points</high> for cluster centroids.</span></li><br>
@@ -303,8 +302,8 @@ gap_kmeans$cluster
 # <i>k</i>-selection
 
 <ul>
-  <li class="m1"><span>There is <high>no correct <i>k</i></high>!.</span></li><br>
-  <li class="m2"><span>Comparing two aspects <high>reasonable <i>k</i></high> can be identified:</span></li>
+  <li class="m1"><span>There is <high>no correct <i>k</i></high>!</span></li><br>
+  <li class="m2"><span>Comparing two aspects a <high>reasonable <i>k</i></high> might be found:</span></li>
   <ul>
     <li><span><i>k</i> should be <high>as small as possible</high>.</span></li>
     <li><span>The <i>k</i> clusters should describe the data <high>as accurately as possible</high>.</span></li>
@@ -579,7 +578,7 @@ gap_dbscan
 
 .pull-left4[
 
-# Eigenschaften von DBSCAN
+# Properties of DBSCAN
 
 <ul>
   <li class="m1"><span><b>Advantages</b></span></li>
@@ -611,7 +610,7 @@ gap_dbscan
 
 .pull-left4[
 
-# Eigenschaften von DBSCAN
+# Properties of DBSCAN
 
 <ul>
   <li class="m1"><span><b>Advantages</b></span></li>

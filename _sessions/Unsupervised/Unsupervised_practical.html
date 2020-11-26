@@ -249,8 +249,8 @@ gap2007 &lt;- gap %&gt;%
 <pre class="r"><code># kmeans of gap in 2007
 gap2007_km &lt;- kmeans(x = XX, centers = XX) </code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Print <code>gap2007_km</code> and study the outputt.</p></li>
-<li><p>The first row of the ouput and the table <code>Cluster means</code> shows how many objects were assigned to each of the three clusters and where the centroids (cluster means) of these are located.</p></li>
+<li><p>Print <code>gap2007_km</code> and study the output.</p></li>
+<li><p>The first row of the output and the table <code>Cluster means</code> shows how many objects were assigned to each of the three clusters and where the centroids (cluster means) of these are located.</p></li>
 <li><p>At the bottom of the output is a list of names of objects contained in the clustering object. Use <code>gap2007_km$XX</code> to select the object <code>clusters</code>, as well as the elements <code>centers</code> and store them as <code>clusters</code> and <code>centers</code> respectively.</p></li>
 </ol>
 <pre class="r"><code># gap2007_km 
@@ -282,7 +282,7 @@ gap2007_scaled &lt;- gap2007 %&gt;%
 <div id="d---k-selection" class="section level3">
 <h3>D - <em>k</em>-selection</h3>
 <ol style="list-style-type: decimal">
-<li>It’s time to try to estimate how many clusters there might be in the data. Use the code below to create a vector of within-cluster variances for <code>kmeans</code> solutions associated with 2 to 20 clusters. The code uses the <code>gap2007_scaled</code> data.</li>
+<li>It’s time to estimate how many clusters there might be in the data. Use the code below to create a vector of within-cluster variances for <code>kmeans</code> solutions associated with 2 to 20 clusters. The code uses the <code>gap2007_scaled</code> data.</li>
 </ol>
 <pre class="r"><code># within-cluster variance development
 km_development &lt;- purrr::map(2:20, kmeans, x = gap2007_scaled)
@@ -307,45 +307,45 @@ k_est &lt;- cDistance(data = as.matrix(XX),
 <ol style="list-style-type: decimal">
 <li>Use <code>dbscan()</code> from the <code>dbscan</code> package to cluster the data. Again it is essential to work with <code>gap2007_scaled</code> as otherwise <code>eps</code> would describe an ellipse and not a circle. Set <code>eps</code> to <code>.5</code>.</li>
 </ol>
-<pre class="r"><code># clustering with DBSCAN
+<pre class="r"><code># cluster using DBSCAN
 gap2007_scaled_dbscan &lt;- dbscan(x = XX, 
                                 eps = XX)</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Printe <code>gap2007_scaled_dbscan</code>. What does the outpute tell you? Remember 0 means outlier.</p></li>
-<li><p>A single cluster and 5 outlier were identified. Visualize the solution using the same approach as above. The <code>+ 1</code> is necessary, because 0 implies no color.</p></li>
+<li><p>Print <code>gap2007_scaled_dbscan</code>. What does the outpute tell you? Remember 0 means outlier.</p></li>
+<li><p>A single cluster and 5 outliers were identified. Visualize the solution using the same approach as above. The <code>+ 1</code> is necessary as 0 implies no color.</p></li>
 </ol>
-<pre class="r"><code># extrahiere Elemente
+<pre class="r"><code># extract clusters
 clusters &lt;- gap2007_scaled_dbscan$XX
 
 # plot
 plot(XX, col = XX + 1)</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li><p>Now run <code>dbscan()</code> again, however, this time using different values for <code>eps</code>. Try <code>eps = .3</code> and <code>eps = .1</code>. Both times plot the results the same way as before. Any changes? Any of the solutions reasonable?</p></li>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Now run <code>dbscan()</code> again using different values for <code>eps</code>. Try <code>eps = .3</code> and <code>eps = .1</code>. Both times plot the results the same way as before. Any changes? Any of the solutions reasonable?</p></li>
 <li><p><code>dbscan()</code> has additional parameters. <code>minPts</code> determines the number of points within <code>eps</code> necessary for a point to be a core point. If you like, try different values to explore the effect of <code>minPts</code>.</p></li>
 </ol>
 </div>
 <div id="f---gaussian-mixtures" class="section level3">
 <h3>F - Gaussian Mixtures</h3>
 <ol style="list-style-type: decimal">
-<li>Finally, use <code>Mclust</code> from the <code>clust</code> package to cluster the date using Gaussian mixtures. This time, you can work with the original data set <code>gap2007</code> as Gaussian mixtures are able to automatically account for the differences in scale.</li>
+<li>Finally, use <code>Mclust</code> from the <code>mclust</code> package to cluster the date using Gaussian mixtures. This time, you can work with the original data set <code>gap2007</code> as Gaussian mixtures are able to account for the differences in scale.</li>
 </ol>
 <pre class="r"><code># Gaussian mixtures
 gap2007_gm &lt;- Mclust(XX)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Print the object <code>gap2007_gm</code>. What do you see?</p></li>
-<li><p>The output of <code>gap2007_gm</code> reveals very little. It only shows which sub-objects it contains. Use <code>table(gap2007_gm$classification)</code> to gain an overview over the cluster assignments. How many clusters were identified and how many does each contain?</p></li>
-<li><p>Now use the <code>classification</code> element to create a visualization of the cluster assignments.</p></li>
+<li><p>The output of <code>gap2007_gm</code> reveals very little. It only shows which objects it contains. Use <code>table(gap2007_gm$classification)</code> to gain an overview over the cluster assignments. How many clusters were identified and how many does each contain?</p></li>
+<li><p>Use the <code>classification</code> element to create a visualization of the cluster assignments.</p></li>
 <li><p>Now use `<code>plot(gap2007_gm, what = 'classification')</code> to create <code>mclust</code>’s own visualization.</p></li>
-<li><p>Try to understand what the ellipses in the <code>mclust</code> plot reveal about the cluster. Remember they represent normal distributions with variances and co-variances, which reflect the correlations between the features.</p></li>
-<li><p>One desirable property of Gaussian mixtures is that they produce estimates of the uncertainty associated with assigning a data point to a particular cluster. Use <code>plot(gap2007_gm, what = 'uncertainty')</code> visualize this. The size of the points reflects the degree of uncertainty a point being assigned to one particular cluster and not the others.</p></li>
+<li><p>Try to understand what the ellipses in the <code>mclust</code> plot reveal about the clusters. Remember they represent normal distributions with variances and co-variances reflecting the correlations between the features.</p></li>
+<li><p>One desirable property of Gaussian mixtures is that they produce estimates of the uncertainty associated with assigning a data point to a particular cluster. Use <code>plot(gap2007_gm, what = 'uncertainty')</code> to visualize this. The size of the points reflects the degree of uncertainty associated with a point being assigned to one particular cluster and not the others.</p></li>
 </ol>
 </div>
 <div id="x---challenges-modellselection" class="section level3">
 <h3>X - Challenges: Modellselection</h3>
 <ol style="list-style-type: decimal">
-<li>A further useful property of Gaussian mixtures is that different implementations of varying complexity can be considered. <code>Mclust()</code> automatically considers a variety of implementations in addition to different values of <em>k</em>. You can gain an overview on the performance of these using <code>plot(gap2007_gm, what = 'BIC')</code>.</li>
+<li>A further useful property of Gaussian mixtures is the existence of different implementations with different complexity. In fact, <code>Mclust()</code> already considers a variety of implementations in addition to different values of <em>k</em>. You can gain an overview on the performance of these using <code>plot(gap2007_gm, what = 'BIC')</code>.</li>
 </ol>
-<p>BIC is the Bayesian Information Criterion, which characterizes the model fit in relation to model complexity. In this case, higher BIC values indicate better performance. In the visualization you see the performance of 14 different implementations as a function of different values <em>k</em> (x-axis).</p>
+<p>BIC is the Bayesian Information Criterion and it characterizes the model fit in relation to model complexity. In this case, higher BIC values indicate better performance. In the visualization you see the performance of 14 different implementations as a function of different values <em>k</em> (x-axis).</p>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Use <code>plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))</code> to get a better view on the critical region of the plot. Now you should be able to see that <code>EVV</code> for <code>k=4</code> shows the best performance overall.</p></li>
 <li><p>Use <code>?mclustModelNames</code> to see descriptions for each of the model. This reveals that <code>EEV</code> only makes the simplifying assumption of equal volume between the different ellipsoids. This is also what you see in <code>plot(gap2007_gm, what = 'classification')</code>.</p></li>

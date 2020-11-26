@@ -47,7 +47,6 @@ layout: true
 
 
 
-&lt;br&gt;&lt;br&gt;
 
 # Unsupervised learning
 
@@ -79,7 +78,7 @@ layout: true
 
 .pull-left35[
 
-# Zwei Kernbereiche des UL
+# Two domains of UL
 
 &lt;ul&gt;
   &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Dimensionality reduction&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
@@ -171,7 +170,7 @@ layout: true
 # Gap in 1952
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;In 1952, are there &lt;high&gt;Klassen von Ländern&lt;/high&gt; concerning life expectancy and GDP per capita?&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;In 1952, are there &lt;high&gt;classes of countries&lt;/high&gt; concerning life expectancy and GDP per capita?&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;li class="m2"&gt;&lt;span&gt;Algorithms:&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;span&gt;&lt;high&gt;&lt;i&gt;k&lt;/i&gt;-means&lt;/high&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
@@ -226,7 +225,7 @@ layout: true
 # &lt;i&gt;k&lt;/i&gt;-means
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;Maybe the most frequently employed algorithms for cluster analysis.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;Maybe the most &lt;high&gt;frequently employed&lt;/high&gt; algorithms for cluster analysis.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;li class="m2"&gt;&lt;span&gt;&lt;b&gt;Algorithm&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
   &lt;ol class=""&gt;
     &lt;li&gt;&lt;span&gt;Random &lt;high&gt;start points&lt;/high&gt; for cluster centroids.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
@@ -265,13 +264,13 @@ gap_kmeans$cluster
 ```
 
 ```
-##   [1] 2 2 2 1 1 3 1 3 2 3 2 1 2 2 2 2 2 2 2 2 3 2
-##  [23] 2 1 2 2 2 2 2 1 2 1 1 3 3 1 2 1 2 1 2 2 2 1
-##  [45] 3 1 2 3 2 1 2 2 2 2 2 1 1 3 2 2 1 1 1 1 1 1
-##  [67] 1 2 2 2 2 1 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2
-##  [89] 2 3 3 1 2 2 3 2 2 2 2 1 2 1 1 1 1 1 2 2 1 2
-## [111] 1 2 2 1 1 2 1 1 2 2 2 3 3 2 2 2 2 2 1 2 2 2
-## [133] 3 3 1 3 2 2 2 2 2
+##   [1] 1 1 1 3 3 2 3 2 1 2 1 3 1 1 1 1 1 1 1 1 2 1
+##  [23] 1 3 1 1 1 1 1 3 1 3 3 2 2 3 1 3 1 3 1 1 1 3
+##  [45] 2 3 1 2 1 3 1 1 1 1 1 3 3 2 1 1 3 3 3 3 3 3
+##  [67] 3 1 1 1 1 3 1 1 1 1 1 1 1 1 1 3 1 3 1 1 1 1
+##  [89] 1 2 2 3 1 1 2 1 1 1 1 3 1 3 3 3 3 3 1 1 3 1
+## [111] 3 1 1 3 3 1 3 3 1 1 1 2 2 1 1 1 1 1 3 1 1 1
+## [133] 2 2 3 2 1 1 1 1 1
 ```
 
 
@@ -285,8 +284,8 @@ gap_kmeans$cluster
 # &lt;i&gt;k&lt;/i&gt;-selection
 
 &lt;ul&gt;
-  &lt;li class="m1"&gt;&lt;span&gt;There is &lt;high&gt;no correct &lt;i&gt;k&lt;/i&gt;&lt;/high&gt;!.&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
-  &lt;li class="m2"&gt;&lt;span&gt;Comparing two aspects &lt;high&gt;reasonable &lt;i&gt;k&lt;/i&gt;&lt;/high&gt; can be identified:&lt;/span&gt;&lt;/li&gt;
+  &lt;li class="m1"&gt;&lt;span&gt;There is &lt;high&gt;no correct &lt;i&gt;k&lt;/i&gt;&lt;/high&gt;!&lt;/span&gt;&lt;/li&gt;&lt;br&gt;
+  &lt;li class="m2"&gt;&lt;span&gt;Comparing two aspects a &lt;high&gt;reasonable &lt;i&gt;k&lt;/i&gt;&lt;/high&gt; might be found:&lt;/span&gt;&lt;/li&gt;
   &lt;ul&gt;
     &lt;li&gt;&lt;span&gt;&lt;i&gt;k&lt;/i&gt; should be &lt;high&gt;as small as possible&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
     &lt;li&gt;&lt;span&gt;The &lt;i&gt;k&lt;/i&gt; clusters should describe the data &lt;high&gt;as accurately as possible&lt;/high&gt;.&lt;/span&gt;&lt;/li&gt;
@@ -574,7 +573,7 @@ gap_dbscan
 
 .pull-left4[
 
-# Eigenschaften von DBSCAN
+# Properties of DBSCAN
 
 &lt;ul&gt;
   &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Advantages&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;
@@ -606,7 +605,7 @@ gap_dbscan
 
 .pull-left4[
 
-# Eigenschaften von DBSCAN
+# Properties of DBSCAN
 
 &lt;ul&gt;
   &lt;li class="m1"&gt;&lt;span&gt;&lt;b&gt;Advantages&lt;/b&gt;&lt;/span&gt;&lt;/li&gt;

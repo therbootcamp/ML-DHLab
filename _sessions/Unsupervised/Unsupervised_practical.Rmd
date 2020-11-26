@@ -124,14 +124,14 @@ gap2007_km <- kmeans(x = XX, centers = XX)
 gap2007_km <- kmeans(x = gap2007, centers = 3) 
 ```
 
-2. Print `gap2007_km` and study the outputt.
+2. Print `gap2007_km` and study the output.
 
 ```{r}
 # kmeans of gap in 2007
 gap2007_km
 ```
 
-3. The first row of the ouput and the table `Cluster means` shows how many objects were assigned to each of the three clusters and where the centroids (cluster means) of these are located.
+3. The first row of the output and the table `Cluster means` shows how many objects were assigned to each of the three clusters and where the centroids (cluster means) of these are located.
 
 4. At the bottom of the output is a list of names of objects contained in the clustering object.  Use `gap2007_km$XX` to select the object `clusters`, as well as the elements `centers` and store them as `clusters` and `centers` respectively.
 
@@ -190,7 +190,7 @@ points(centers, pch = 16, col = 1:3, cex = 2)
 
 ### D - *k*-selection
 
-1. It's time to try to estimate how many clusters there might be in the data. Use the code below to create a vector of within-cluster variances for `kmeans` solutions associated with 2 to 20 clusters. The code uses the `gap2007_scaled` data.
+1. It's time to estimate how many clusters there might be in the data. Use the code below to create a vector of within-cluster variances for `kmeans` solutions associated with 2 to 20 clusters. The code uses the `gap2007_scaled` data.
 
 ```{r, echo = T}
 # within-cluster variance development
@@ -246,23 +246,23 @@ Remember: There is no true *k*.
 1. Use `dbscan()` from the `dbscan` package to cluster the data. Again it is essential to work with `gap2007_scaled` as otherwise `eps` would describe an ellipse and not a circle. Set `eps` to `.5`. 
 
 ```{r, echo = TRUE, eval = FALSE}
-# clustering with DBSCAN
+# cluster using DBSCAN
 gap2007_scaled_dbscan <- dbscan(x = XX, 
                                 eps = XX)
 ```
 
 ```{r}
-# clustering with DBSCAN
+# cluster using DBSCAN
 gap2007_scaled_dbscan <- dbscan(x = gap2007_scaled, 
                                 eps = .5)
 ```
 
-2. Printe `gap2007_scaled_dbscan`. What does the outpute tell you? Remember 0 means outlier. 
+2. Print `gap2007_scaled_dbscan`. What does the outpute tell you? Remember 0 means outlier. 
 
-4. A single cluster and 5 outlier were identified. Visualize the solution using the same approach as above. The `+ 1` is necessary, because 0 implies no color. 
+3. A single cluster and 5 outliers were identified. Visualize the solution using the same approach as above. The `+ 1` is necessary as 0 implies no color. 
 
 ```{r, echo = T, eval = F}
-# extrahiere Elemente
+# extract clusters
 clusters <- gap2007_scaled_dbscan$XX
 
 # plot
@@ -270,17 +270,17 @@ plot(XX, col = XX + 1)
 ```
 
 ```{r}
-# extrahiere Elemente
+# extract clusters
 clusters <- gap2007_scaled_dbscan$cluster
 
 # plot
 plot(gap2007_scaled, col = clusters + 1)
 ```
 
-5. Now run `dbscan()` again, however, this time using different values for `eps`. Try `eps = .3` and `eps = .1`. Both times plot the results the same way as before. Any changes? Any of the solutions reasonable?
+4. Now run `dbscan()` again using different values for `eps`. Try `eps = .3` and `eps = .1`. Both times plot the results the same way as before. Any changes? Any of the solutions reasonable?
 
 ```{r}
-# clustere mit DBSCAN
+# cluster using DBSCAN
 gap2007_scaled_dbscan.3 <- dbscan(x = gap2007_scaled, eps = .3)
 gap2007_scaled_dbscan.1 <- dbscan(x = gap2007_scaled, eps = .1)
 
@@ -291,11 +291,11 @@ plot(gap2007_scaled, col = gap2007_scaled_dbscan.3$cluster + 1)
 plot(gap2007_scaled, col = gap2007_scaled_dbscan.1$cluster + 1)
 ```
 
-6. `dbscan()` has additional parameters. `minPts` determines the number of points within `eps` necessary for a point to be a core point. If you like, try different values to explore the effect of `minPts`.
+5. `dbscan()` has additional parameters. `minPts` determines the number of points within `eps` necessary for a point to be a core point. If you like, try different values to explore the effect of `minPts`.
 
 ### F - Gaussian Mixtures
 
-1. Finally, use `Mclust` from the `clust` package to cluster the date using Gaussian mixtures. This time, you can work with the original data set `gap2007` as Gaussian mixtures are able to automatically account for the differences in scale. 
+1. Finally, use `Mclust` from the `mclust` package to cluster the date using Gaussian mixtures. This time, you can work with the original data set `gap2007` as Gaussian mixtures are able to account for the differences in scale. 
 
 ```{r, echo = TRUE, eval = FALSE}
 # Gaussian mixtures
@@ -309,9 +309,9 @@ gap2007_gm <- Mclust(gap2007)
 
 2. Print the object `gap2007_gm`. What do you see?
 
-3. The output of `gap2007_gm` reveals very little. It only shows which sub-objects it contains. Use `table(gap2007_gm$classification)` to gain an overview over the cluster assignments. How many clusters were identified and how many does each contain?
+3. The output of `gap2007_gm` reveals very little. It only shows which objects it contains. Use `table(gap2007_gm$classification)` to gain an overview over the cluster assignments. How many clusters were identified and how many does each contain?
 
-4. Now use the `classification` element to create a visualization of the cluster assignments. 
+4. Use the `classification` element to create a visualization of the cluster assignments. 
 
 ```{r}
 # plot
@@ -325,9 +325,9 @@ plot(gap2007_scaled, col = gap2007_gm$classification)
 plot(gap2007_gm, what = 'classification')
 ```
 
-6. Try to understand what the ellipses in the `mclust` plot reveal about the cluster. Remember they represent normal distributions with variances and co-variances, which reflect the correlations between the features.  
+6. Try to understand what the ellipses in the `mclust` plot reveal about the clusters. Remember they represent normal distributions with variances and co-variances reflecting the correlations between the features.  
 
-7. One desirable property of Gaussian mixtures is that they produce estimates of the uncertainty associated with assigning a data point to a particular cluster. Use  `plot(gap2007_gm, what = 'uncertainty')` visualize this. The size of the points reflects the degree of uncertainty a point being assigned to one particular cluster and not the others. 
+7. One desirable property of Gaussian mixtures is that they produce estimates of the uncertainty associated with assigning a data point to a particular cluster. Use  `plot(gap2007_gm, what = 'uncertainty')` to visualize this. The size of the points reflects the degree of uncertainty associated with a point being assigned to one particular cluster and not the others. 
 
 ```{r}
 # plot
@@ -336,14 +336,14 @@ plot(gap2007_gm, what = 'uncertainty')
 
 ### X - Challenges: Modellselection
 
-1. A further useful property of Gaussian mixtures is that different implementations of varying complexity can be considered. `Mclust()` automatically considers a variety of implementations in addition to different values of *k*. You can gain an overview on the performance of these using `plot(gap2007_gm, what = 'BIC')`.
+1. A further useful property of Gaussian mixtures is the existence of different implementations with different complexity. In fact, `Mclust()` already considers a variety of implementations in addition to different values of *k*. You can gain an overview on the performance of these using `plot(gap2007_gm, what = 'BIC')`.
 
 ```{r}
 # plot
 plot(gap2007_gm, what = 'BIC')
 ```
 
-BIC is the Bayesian Information Criterion, which characterizes the model fit in relation to model complexity. In this case, higher BIC values indicate better performance. In the visualization you see the performance of 14 different implementations as a function of different values *k* (x-axis). 
+BIC is the Bayesian Information Criterion and it characterizes the model fit in relation to model complexity. In this case, higher BIC values indicate better performance. In the visualization you see the performance of 14 different implementations as a function of different values *k* (x-axis). 
 
 2. Use `plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))` to get a better view on the critical region of the plot. Now you should be able to see that `EVV` for `k=4` shows the best performance overall.
 
