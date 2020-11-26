@@ -92,6 +92,7 @@ var x = setInterval(function() {
 
 <br><br><br>
 
+## Competition
 
 ### A - Preliminaries
 
@@ -126,7 +127,7 @@ tweets <- tweets %>% mutate_if(is.character, as.factor)
 saveRDS(my_train,'1_Data/MYPSEUDONYM_train.RDS')
 ```
 
-4. Submit your `.RDS` file (containing your training object) via mail:
+4. Submit your `.RDS` file(s) containing your training object(s) via [**mail**](mailto:therbootcamp@gmail.com?subject=modelcompetition_dhlab):
 
 <div align = "center">
 <table>
@@ -140,14 +141,14 @@ saveRDS(my_train,'1_Data/MYPSEUDONYM_train.RDS')
   <td>Classification</td> 
   <td>tweets (`gender`)</td>
   <td>Accuracy</td>
-  <td>[**Submit candidate**](https://www.dropbox.com/request/03OHzgLFyAyRpXI9D1fW)</td>
+  <td>[**Submit candidate**](mailto:therbootcamp@gmail.com?subject=modelcompetition_dhlab)</td>
 </tr>
 </table>
 </div>
 
-5. Use any weapon in your arsenal (or `caret`'s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction `Accuracy`. Consult the [**course materials**](https://therbootcamp.github.io/ML_2019Oct/) for help. 
+5. Use any weapon in your arsenal (or `caret`'s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction `Accuracy`. Consult the [**course materials**](https://therbootcamp.github.io/ML-DHLab) for help. 
 
-6. In order for us to to be able to evaluate and compare the models, you must refrain from any manipulation (or engineering) of features other than those accessible via the `preProcess` argument in the `train()` function.
+6. In order for me to to be able to evaluate and compare the models, you must refrain from any manipulation (or engineering) of features other than those accessible via the `preProcess` argument in the `train()` function.
 
 ## Datasets
 
