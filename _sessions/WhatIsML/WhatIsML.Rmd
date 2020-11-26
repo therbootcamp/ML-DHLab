@@ -105,6 +105,33 @@ No Googling :)
 # Easy to confuse
 
 <ul>
+  <li class="m1"><span><b>AI</b></span></li><br>
+  <li class="m2"><span><b>Statistics</b></span></li><br>
+  <li class="m3"><span><b>Big Data</b></span></li><br>
+  <li class="m4"><span><b>Data Science</b></span></li>
+</ul>
+
+]
+
+
+.pull-right4[
+
+<br><br><br><br><br>
+
+<p align = "center">
+<img src="image/areas.png" height=390px><br>
+</p>
+
+]
+
+
+---
+
+.pull-left5[
+
+# Easy to confuse
+
+<ul>
   <li class="m1"><span><b>AI</b></span></li>
   <ul class="level">
     <li><span><high>Intelligence demonstrated by machines</high>, in contrast to the natural intelligence displayed by humans and animals.</span></li>
@@ -383,6 +410,11 @@ No Googling :)
 <font style="font-size:10px">from <a href="https://www.houseofbots.com/images/news/11493/cover.png">houseofbots.com</a></font>
 </p>
 
+---
+
+class: middle, center
+
+<h1><a href="https://raw.githubusercontent.com/therbootcamp/ML-DHLab/main/TheRBootcamp.zip">Project</a></h1>
 
 ---
 class: middle, center

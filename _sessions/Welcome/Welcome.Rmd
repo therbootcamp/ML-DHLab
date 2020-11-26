@@ -184,7 +184,7 @@ knitr::opts_chunk$set(fig.align = 'center')
 
 <ul>
   <li class="m1"><span>What is your name?</span></li>
-  <li class="m2"><span>What is your field/position?</span></li>
+  <li class="m2"><span>What is your work?</span></li>
   <li class="m3"><span>How experienced are you with R and other programming languages?</span></li>
   <li class="m4"><span>Do you have experience with ML and what would you like to use it for?</span></li>
   <li class="m5"><span>Coffee or tea?</span></li>
