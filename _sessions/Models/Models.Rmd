@@ -215,7 +215,7 @@ class: center, middle
 <br>
 
 <ul>
-  <li class="m1"><span><high>Deep learning</high> aka neural networks and, especially, <high>convolutional neural networks</high>, excel because they generate their features.</span></li><br>
+  <li class="m1"><span><high>Deep learning</high> aka neural networks and, especially, when using convolutional layers, excel because they generate their own features.</span></li><br>
   <li class="m2"><span>Neural networks are not the focus of <mono>caret</mono> and this course. Powerful implementations based on <high>Google's Tensorflow</high> library are provided by <mono>tensorflow</mono>.</span></li><br>
 </ul>
 

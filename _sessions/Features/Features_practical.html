@@ -235,7 +235,7 @@ nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)%
 </div>
 <div id="b---pima-indians-diabetes" class="section level3">
 <h3>B - Pima Indians Diabetes</h3>
-<p>In this section, you will explore feature selection for the Pima Indians Diabetes data set. The Pima are a group of Native Americans living in Arizona. A genetic predisposition allowed this group to survive normally to a diet poor of carbohydrates for years. In the recent years, because of a sudden shift from traditional agricultural crops to processed foods, together with a decline in physical activity, made them develop the highest prevalence of type 2 diabetes. For this reason they have been subject of many studies.</p>
+<p>In this section, you will explore feature selection for the Pima Indians Diabetes data set. The Pima are a group of Native Americans living in Arizona. A genetic predisposition allowed this group to live well with a diet poor of carbohydrates for years. In the recent years, however, because of a sudden shift from traditional agricultural crops to processed foods, together with a decline in physical activity, they developed a high prevalence of type 2 diabetes. For this reason they have been subject of many studies.</p>
 <ol style="list-style-type: decimal">
 <li>Print <code>pima_diabetes</code> to take a look and familiarize yourself with the data.</li>
 </ol>
@@ -283,7 +283,7 @@ nearZeroVar(XX_pred)</code></pre>
 <h4>Feature importance</h4>
 <p>As there were no problems with the features in the data set, you have retained all of them. In this section, you will carry out feature selection on the grounds of feature importance. To do this, you first have to fit a model on the basis of which feature importance can be determined. How about a simple logistic regression using <code>method = "glm"</code>?</p>
 <ol start="6" style="list-style-type: decimal">
-<li>Fit a <code>glm</code> model to the training data predicting ``.</li>
+<li>Fit a <code>glm</code> model to the training data predicting <code>diabetes</code>. Call the model <code>pima_glm</code>.</li>
 </ol>
 <pre class="r"><code># fit regression
 pima_glm &lt;- train(diabetes ~ .,
@@ -313,7 +313,7 @@ pima_glm4 &lt;- train(diabetes ~ XX + YY + ZZ + AA,
                 data = XX,
                 method = XX)</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li>For both models, the glm using all and the glm using just four features, predict the criterion in the test data and evaluate the prediction using <code>confusionMatrix()</code>. Which model model is better?</li>
+<li>For both models, the glm using all and the glm using just four features, predict the criterion in the test data and evaluate the prediction performance using <code>confusionMatrix()</code>. Which model model is better?</li>
 </ol>
 <pre class="r"><code># determine predictions for test data
 pima_glm_pred &lt;- predict(XX, newdata = XX)
@@ -324,13 +324,13 @@ confusionMatrix(XX, reference = XX)
 confusionMatrix(XX, reference = XX)</code></pre>
 <ol start="10" style="list-style-type: decimal">
 <li><p>You should have observed that the model with two fewer features is actually slightly better than the full model. Why do you think this is the case?</p></li>
-<li><p>Play around: Up the proportion dedicated to training or use a different model, e.g., <code>random forest</code>, and see whether things change.</p></li>
+<li><p>Play around: Increase the proportion of data dedicated to training or use a different model, e.g., <code>random forest</code>, and see whether things change.</p></li>
 </ol>
 </div>
 </div>
 <div id="c---murders" class="section level3">
 <h3>C - Murders</h3>
-<p>In this section, you will explore feature selection using a different data set. The data combines socio-economic data from the US ’90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FB. The gaol of this section is to use various socio-demographic variables to predict <code>murders</code> (the criterion in this section).</p>
+<p>Now explore feature selection using a different data set. The data used in this section combines socio-economic data from the US ’90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FB. The gaol is to predict <code>murders</code> (the criterion in this section).</p>
 <ol style="list-style-type: decimal">
 <li>Print <code>murders_crime</code> and familiarize yourself with the data.</li>
 </ol>
@@ -374,13 +374,13 @@ murders_glm_clean &lt;- train(murders ~ .,
                            method = &quot;glm&quot;,
                            trControl = trainControl(method = &#39;none&#39;))</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li>You probably have noticed warning messages. They could indicate that the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the performance on the hold-out set. Which set of features predicts better?</li>
+<li>You probably have noticed warning messages. They could indicate that the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead nonetheless and evaluate the performance on the hold-out set. Which set of features predicts better?</li>
 </ol>
 </div>
 <div id="data-compression-with-pca" class="section level4">
 <h4>Data compression with PCA</h4>
 <ol start="10" style="list-style-type: decimal">
-<li>Given the high features correlations, it could be sensible to compress the data using <code>principal component analysis</code> (PCA). Create a third glm model using the original, full training set and this time add <code>preProcess = c('pca')</code> and <code>preProcOptions = list(thresh = 0.8)</code> in <code>trControl</code>. These additional settings instruct R to extract new features from the data using PCA and to retain only as many features as are needed to capture 80% of the original variance.</li>
+<li>Given the high features correlations, it could be sensible to compress the data using <code>principal component analysis</code> (PCA). Create a third glm model using the original, full training set and this time add <code>preProcess = c('pca')</code> and <code>preProcOptions = list(thresh = 0.8)</code> in <code>trControl</code>. These additional settings instruct caret to extract new features from the data using PCA and to retain only as many features as are needed to capture 80% of the original variance.</li>
 </ol>
 <pre class="r"><code># fit glm with preprocessed features
 murders_glm_pca = train(murders ~ .,

@@ -108,7 +108,7 @@ nonviolent_crime <- read_csv(file = "1_Data/nonviolent_crime.csv")%>%
 
 ### B - Pima Indians Diabetes
 
-In this section, you will explore feature selection for the Pima Indians Diabetes data set. The Pima are a group of Native Americans living in Arizona. A genetic predisposition allowed this group to survive normally to a diet poor of carbohydrates for years. In the recent years, because of a sudden shift from traditional agricultural crops to processed foods, together with a decline in physical activity, made them develop the highest prevalence of type 2 diabetes. For this reason they have been subject of many studies. 
+In this section, you will explore feature selection for the Pima Indians Diabetes data set. The Pima are a group of Native Americans living in Arizona. A genetic predisposition allowed this group to live well with a diet poor of carbohydrates for years. In the recent years, however, because of a sudden shift from traditional agricultural crops to processed foods, together with a decline in physical activity, they developed a high prevalence of type 2 diabetes. For this reason they have been subject of many studies. 
 
 1. Print `pima_diabetes` to take a look and familiarize yourself with the data.
 
@@ -202,7 +202,7 @@ nearZeroVar(pima_train_pred)
 
 As there were no problems with the features in the data set, you have retained all of them. In this section, you will carry out feature selection on the grounds of feature importance. To do this, you first have to fit a model on the basis of which feature importance can be determined. How about a simple logistic regression using `method = "glm"`? 
 
-6. Fit a `glm` model to the training data predicting ``.
+6. Fit a `glm` model to the training data predicting `diabetes`. Call the model `pima_glm`. 
 
 ```{r, echo = TRUE, eval = FALSE}
 # fit regression
@@ -264,7 +264,7 @@ pima_glm4 <- train(diabetes ~ glucose + mass + pregnant + pressure,
                 method = "glm")
 ```
 
-9. For both models, the glm using all and the glm using just four features, predict the criterion in the test data and evaluate the prediction using `confusionMatrix()`. Which model model is better?
+9. For both models, the glm using all and the glm using just four features, predict the criterion in the test data and evaluate the prediction performance using `confusionMatrix()`. Which model model is better?
 
 ```{r, echo = TRUE, eval = FALSE}
 # determine predictions for test data
@@ -288,11 +288,11 @@ confusionMatrix(pima_glm4_pred, pima_test$diabetes)
 
 10. You should have observed that the model with two fewer features is actually slightly better than the full model. Why do you think this is the case?
 
-11. Play around: Up the proportion dedicated to training or use a different model, e.g., `random forest`, and see whether things change. 
+11. Play around: Increase the proportion of data dedicated to training or use a different model, e.g., `random forest`, and see whether things change. 
 
 ### C - Murders
 
-In this section, you will explore feature selection using a different data set. The data combines socio-economic data from the US '90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FB. The gaol of this section is to use various socio-demographic variables to predict `murders` (the criterion in this section).     
+Now explore feature selection using a different data set. The data used in this section combines socio-economic data from the US '90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FB. The gaol is to predict `murders` (the criterion in this section).   
 
 1. Print `murders_crime` and familiarize yourself with the data.
 
@@ -401,7 +401,7 @@ murders_glm_clean <- train(murders ~ .,
                            trControl = trainControl(method = 'none'))
 ```
 
-9. You probably have noticed warning messages. They could indicate that the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the performance on the hold-out set. Which set of features predicts better?
+9. You probably have noticed warning messages. They could indicate that the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead nonetheless and evaluate the performance on the hold-out set. Which set of features predicts better?
 
 ```{r}
 # determine predictions for test data
@@ -415,7 +415,7 @@ confusionMatrix(murders_clean_pred, murders_test$murders)
 
 #### Data compression with PCA
 
-10. Given the high features correlations, it could be sensible to compress the data using `principal component analysis` (PCA). Create a third glm model using the original, full training set and this time add `preProcess = c('pca')` and `preProcOptions = list(thresh = 0.8)` in `trControl`. These additional settings instruct R to extract new features from the data using PCA and to retain only as many features as are needed to capture 80% of the original variance. 
+10. Given the high features correlations, it could be sensible to compress the data using `principal component analysis` (PCA). Create a third glm model using the original, full training set and this time add `preProcess = c('pca')` and `preProcOptions = list(thresh = 0.8)` in `trControl`. These additional settings instruct caret to extract new features from the data using PCA and to retain only as many features as are needed to capture 80% of the original variance. 
 
 ```{r echo = TRUE}
 # fit glm with preprocessed features

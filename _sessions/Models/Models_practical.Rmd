@@ -6,7 +6,7 @@ author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0
     <td style='display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none' nowrap>
       <font style='font-style:normal'>Machine Learning with R</font>
       <br>
-      <a href='https://therbootcamp.github.io/ML_2019Oct/'>
+      <a href='https://therbootcamp.github.io/ML-DHLab/'>
         <i class='fas fa-clock' style='font-size:.9em;' ></i>
       </a>
       <a href='https://therbootcamp.github.io'>
@@ -19,7 +19,7 @@ author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0
         <i class='fab fa-linkedin' style='font-size: .9em;'></i>
       </a>
             <a href='https://therbootcamp.github.io'>
-        <font style='font-style:normal'>Basel R Bootcamp</font>
+        <font style='font-style:normal'>The R Bootcamp</font>
       </a>&nbsp;&nbsp;
     </td>
     <td style='width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none'>
@@ -53,7 +53,7 @@ knitr::include_graphics("image/twitter.gif")
 
 ## Overview
 
-Demonstrate your machine-learning-jedi-knight skills in this model competition. Predict `gender` from a tweeter's meta information and win lots of &#127851;&#127851;&#127851;.
+Demonstrate your machine-learning skills in this model competition by predicting `gender` from a tweeter's meta information.
 
 The competition will end in...
 
@@ -61,7 +61,7 @@ The competition will end in...
 
 <script>
 // Set the date we're counting down to
-var countDownDate = new Date("Oct 6, 2019 17:05:00").getTime();
+var countDownDate = new Date("Nov 27, 2020 17:05:00").getTime();
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -92,12 +92,6 @@ var x = setInterval(function() {
 
 <br><br><br>
 
-## Mission statement
-
-After his overpaid machine learning task force maneuvered itself into obsolescence having developed the perfect algorithm to predict the locations of future crime, Baschi Dürr, head of justice and homeland security department of Basel-Stadt, needed a new project for his machine learning task before Elisabeth Ackerman, president of the governing council, might withdraw his newly-earned funding. And he knew he had to act quickly. To finance a new set of Wegner Swivel Chairs ([what else!](https://twentytwentyone.com/product/pp-502-swivel-chair-pp-mobler)) for city hall's conference rooms, Elisabeth Ackerman and Dr. Eva Herzog, head of the city's financial department, had just announced that any expendable resources were to be invested in cryptocurrencies. Out of a lack of ideas, Baschi Dürr called up his American friends, who had previously given him such a great price on the American crime data set. He learned that they had recently begun to use machine learning for political education with impressive results ([truly outstanding!](https://www.theguardian.com/news/2018/may/06/cambridge-analytica-how-turn-clicks-into-votes-christopher-wylie)). They explained that, using machine learning, one could uncover a person's gender or personality to then send that person tailored political information. All too aware of the Swiss democracy's need for information, Baschi Dürr ordered his machine learning task force to congregate at once not to waste any time: Switzerland was not going to miss out on this amazing opportunity. America first, [Switzerland second](https://www.youtube.com/watch?v=reuJ8yVCgSM).
-
-(Names, characters, businesses, places, events, locales, and incidents are either the products of the author's imagination or used in a fictitious manner. Any resemblance to actual persons, living or dead, or actual events is purely coincidental.)
-
 
 ### A - Preliminaries
 
@@ -105,20 +99,7 @@ After his overpaid machine learning task force maneuvered itself into obsolescen
 
 2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Models_competition.R` in the `2_Code` folder.  
 
-3. Using `library()` load the set of packages for this practical listed in the packages section above.
-
-```{r, eval = FALSE, echo = TRUE}
-## NAME
-## DATE
-## Modeling competition
-
-library(tidyverse)
-library(caret)
-```
-
-```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
-library(tidyverse)
-```
+3. Load `caret` and `tidyverse`
 
 4. With the code below, load the `tweets` data set and change any character variables to factors.
 
@@ -136,18 +117,16 @@ tweets <- tweets %>% mutate_if(is.character, as.factor)
 
 1. The goal of the competition is to predict with maximal `Accuracy` whether a twitter user is `'female'` or `'male'`.
 
-2. Entering the competition grants you a chance to win lots of &#127851;&#127851;&#127851;.
+2. To enter the competition, you can submit <b>up to three</b> caret `train`-object (result of the `train()` function) containing your candidate model. 
 
-3. To enter the competition, you can submit <b>up to three</b> caret `train`-object (result of the `train()` function) containing your candidate model. 
-
-4. To submit the model, first save your model as an `.RDS`-file named `pseudonym_train.RDS`, with `pseudonym` replaced by a pseudonym of your choice. See the code below.
+3. To submit the model, first save your model as an `.RDS`-file named `pseudonym_train.RDS` using `saveRDS()`, with `MYPSEUDONYM` replaced by a pseudonym of your choice. See the code below.
 
 ```{r}
 # save train obect as .RDS
-saveRDS(my_train,'1_Data/mypseudonym_train.RDS')
+saveRDS(my_train,'1_Data/MYPSEUDONYM_train.RDS')
 ```
 
-5. Submit your `.RDS` file (containing your training object) via the following link:
+4. Submit your `.RDS` file (containing your training object) via mail:
 
 <div align = "center">
 <table>
@@ -166,9 +145,9 @@ saveRDS(my_train,'1_Data/mypseudonym_train.RDS')
 </table>
 </div>
 
-6. Use any weapon in your arsenal (or `caret`'s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction `Accuracy`. Consult the [**course materials**](https://therbootcamp.github.io/ML_2019Oct/) for help. 
+5. Use any weapon in your arsenal (or `caret`'s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction `Accuracy`. Consult the [**course materials**](https://therbootcamp.github.io/ML_2019Oct/) for help. 
 
-7. In order for us to to be able to evaluate and compare the models, you must refrain from any manipulation (or engineering) of features other than those accessible via the `preProcess` argument in the `train()` function.
+6. In order for us to to be able to evaluate and compare the models, you must refrain from any manipulation (or engineering) of features other than those accessible via the `preProcess` argument in the `train()` function.
 
 ## Datasets
 

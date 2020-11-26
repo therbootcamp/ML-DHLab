@@ -35,8 +35,8 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = TRUE, 
-                      eval = TRUE, 
+                      echo = FALSE, 
+                      eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -165,11 +165,11 @@ graduation_glm$finalModel
 
 #### Ridge regression
 
-3. Before you can fit a regularized regression model like ridge regression, you need to determine a vector of lambda penalty values that the cross validation procedure will evaluate. Using the code below, create a vector called `lambda_vec` containing 100 values spanning a range from very close to `0` up to `100`.
+3. Before you can fit a regularized regression model like ridge regression, you need to determine a vector of lambda penalty values that the cross validation procedure will evaluate. Using the code below, create a vector called `lambda_vec` containing 100 values spanning a range from very close to `0` up to `10`.
 
 ```{r, echo = TRUE}
 # Vector of lambda values to try
-lambda_vec <- 10 ^ (seq(-3, 2, length = 100))
+lambda_vec <- 10 ^ (seq(-3, 1, length = 100))
 ```
 
 4. Using `train()`, fit a ridge regression model predicting `Grad.Rate` as a function of all features. This time make use of the `tuneGrid`, which will take a `data.frame` specifying the sets of tuning parameters to consider during cross validation. In addition to `alpha = 0`, which specifies a ridge penalty, add `lambda = lambda_vec`. Also, don't forget to `"center"` and `"scale"` when using regularization.  
