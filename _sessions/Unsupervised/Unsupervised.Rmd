@@ -86,11 +86,6 @@ gap1952 = gapminder::gapminder %>% filter(country != 'Kuwait') %>%
 .pull-left45[
 
 <ul>
-  <li class="m1"><span>Ziel des Unsupervised learning ist die Identifikation <high>versteckter Muster</high> in den <high>Ähnlichkeiten</high> zwischen Cases oder Features.</span></li><br>
-  <li class="m2"><span>Man unterscheidet zwei Unterbereiche: <high>Clusteranalyse</high> und <high>Dimensionsreduktion</high>.</span></li><br>
-</ul>
-
-<ul>
   <li class="m1"><span>The gaol of Unsupervised learning is the identifikation of <high>hidden structure</high> in the <high>similarities</high> of cases or features.</span></li><br>
   <li class="m2"><span>There are two domains: <high>cluster analysis</high> and <high>dimensionality reduction</high>.</span></li><br>
 </ul>
