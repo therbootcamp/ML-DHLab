@@ -118,7 +118,7 @@ pima_diabetes
 
 #### Splitting
 
-2. Before you begin, you need to separate the hold-out (test) data set for later. Create `pima_train` and `pima_test` using the `createDataPartition()` function. Set `p = .15` to select (only) <b>15% of cases for the training set</b>. See code below.
+2. Before you begin, you need to separate the hold-out (test) data set for later. Create `pima_train` and `pima_test` using the `createDataPartition()` function. Set `p = .15` to select (only) <b>15% of cases for the training set</b>. The criterion is `diabetes`. See code below.
 
 ```{r, echo = TRUE, eval = FALSE}
 # seed
@@ -150,7 +150,7 @@ pima_test  <- pima_diabetes %>% slice(-train_index)
 
 OK, let's get to work and remove some features from the training data.
 
-3. First split the training data into a data frame holding the predictors and a vector holding the criterion using the template below.
+3. First split the training data into a data frame holding the predictors and a vector holding the criterion (`diabetes`) using the template below.
 
 ```{r, echo = TRUE, eval = FALSE}
 # Select predictors

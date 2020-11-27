@@ -242,7 +242,7 @@ nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)%
 <div id="splitting" class="section level4">
 <h4>Splitting</h4>
 <ol start="2" style="list-style-type: decimal">
-<li>Before you begin, you need to separate the hold-out (test) data set for later. Create <code>pima_train</code> and <code>pima_test</code> using the <code>createDataPartition()</code> function. Set <code>p = .15</code> to select (only) <b>15% of cases for the training set</b>. See code below.</li>
+<li>Before you begin, you need to separate the hold-out (test) data set for later. Create <code>pima_train</code> and <code>pima_test</code> using the <code>createDataPartition()</code> function. Set <code>p = .15</code> to select (only) <b>15% of cases for the training set</b>. The criterion is <code>diabetes</code>. See code below.</li>
 </ol>
 <pre class="r"><code># seed
 set.seed(100)
@@ -258,7 +258,7 @@ pima_test  &lt;- XX %&gt;% slice(-train_index)</code></pre>
 <h4>Remove unwanted features</h4>
 <p>OK, let’s get to work and remove some features from the training data.</p>
 <ol start="3" style="list-style-type: decimal">
-<li>First split the training data into a data frame holding the predictors and a vector holding the criterion using the template below.</li>
+<li>First split the training data into a data frame holding the predictors and a vector holding the criterion (<code>diabetes</code>) using the template below.</li>
 </ol>
 <pre class="r"><code># Select predictors
 pima_train_pred &lt;- pima_train %&gt;% select(-XX)

@@ -61,7 +61,7 @@ gap = gapminder::gapminder %>% filter(country != 'Kuwait')
 
 # {.tabset}
 
-## Überblick
+## Overview
 
 In this practical, you will learn how to apply cluster analysis to two data sets.
 
@@ -70,7 +70,7 @@ In the end, you will know how to:
 1. How to identify clusterings using different algorithms. 
 2. How to estimate the number of clusters for a given problem. 
 
-## Aufgaben
+## Tasks
 
 ### A - Setup
 
