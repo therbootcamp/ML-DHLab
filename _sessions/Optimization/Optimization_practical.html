@@ -222,6 +222,11 @@ summary {
 <li><p>Save the script as a new file called <code>Optimization_practical.R</code> in the <code>2_Code</code> folder.</p></li>
 <li><p>Using <code>library()</code> load the packages <code>tidyverse</code>, <code>caret</code>, <code>party</code>, <code>partykit</code>.</p></li>
 </ol>
+<pre class="r"><code># Load packages necessary for this script
+library(tidyverse)
+library(caret)
+library(party)
+library(partykit)</code></pre>
 </div>
 <div id="b---load-the-graduation-data" class="section level3">
 <h3>B - Load the <code>graduation</code> data</h3>
@@ -250,6 +255,9 @@ college_test &lt;- college_test %&gt;%
 <pre class="r"><code># Use 10-fold cross validation
 ctrl_cv &lt;- trainControl(method = &quot;XX&quot;, 
                         number = XX) </code></pre>
+<pre class="r"><code># Use 10-fold cross validation
+ctrl_cv &lt;- trainControl(method = &quot;cv&quot;, 
+                        number = 10) </code></pre>
 </div>
 <div id="d---regularized-regression" class="section level3">
 <h3>D - Regularized regression</h3>
@@ -269,11 +277,30 @@ graduation_glm &lt;- train(form = XX ~ .,
                         data = XX,
                         method = &quot;XX&quot;,
                         trControl = XX)</code></pre>
+<pre class="r"><code># Standard regression 
+graduation_glm &lt;- train(form = Grad.Rate ~ .,
+                   data = college_train,
+                   method = &quot;glm&quot;,
+                   trControl = ctrl_cv)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>What were your final regression model coefficients?</li>
 </ol>
 <pre class="r"><code># Show final model
 graduation_glm$finalModel</code></pre>
+<pre><code>
+Call:  NULL
+
+Coefficients:
+(Intercept)   PrivateYes         Apps       Accept       Enroll    Top10perc  
+  26.320597     2.075873     0.001243    -0.000965     0.006891    -0.100378  
+  Top25perc  F.Undergrad  P.Undergrad     Outstate   Room.Board        Books  
+   0.289288    -0.001247    -0.001296     0.001436     0.001294    -0.000276  
+   Personal          PhD     Terminal    S.F.Ratio  perc.alumni       Expend  
+  -0.001756     0.060658    -0.066585     0.330961     0.195720    -0.000369  
+
+Degrees of Freedom: 499 Total (i.e. Null);  482 Residual
+Null Deviance:      189000 
+Residual Deviance: 121000   AIC: 4200</code></pre>
 </div>
 <div id="ridge-regression" class="section level4">
 <h4>Ridge regression</h4>
@@ -293,22 +320,172 @@ graduation_ridge &lt;- train(form = XX ~ .,
                           preProcess = c(&quot;XX&quot;, &quot;XX&quot;),          # Standardize
                           tuneGrid = data.frame(alpha = 0,     # Ridge penalty
                                                 lambda = XX))  # Penalty weight</code></pre>
+<pre class="r"><code># Ridge regression
+graduation_ridge &lt;- train(form = Grad.Rate ~ .,
+                          data = college_train,
+                          method = &quot;glmnet&quot;,
+                          trControl = ctrl_cv,
+                          preProcess = c(&quot;center&quot;, &quot;scale&quot;),    # Standardise
+                          tuneGrid = data.frame(alpha = 0,      # Ridge penalty
+                                                lambda = lambda_vec)) # Penalty weight</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li><p>Print your <code>graduation_ridge</code> object. Which lambda was selected as best performing?</p></li>
-<li><p>Plot your <code>graduation_ridge</code> object. What do you see? Does this match the plot match the value identified in the previous task?</p></li>
+<li>Print your <code>graduation_ridge</code> object. Which lambda was selected as best performing?</li>
+</ol>
+<pre class="r"><code>graduation_ridge</code></pre>
+<pre><code>glmnet 
+
+500 samples
+ 17 predictor
+
+Pre-processing: centered (17), scaled (17) 
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 449, 449, 451, 451, 450, 449, ... 
+Resampling results across tuning parameters:
+
+  lambda    RMSE  Rsquared  MAE 
+   0.00100  16.1  0.330     12.8
+   0.00110  16.1  0.330     12.8
+   0.00120  16.1  0.330     12.8
+   0.00132  16.1  0.330     12.8
+   0.00145  16.1  0.330     12.8
+   0.00159  16.1  0.330     12.8
+   0.00175  16.1  0.330     12.8
+   0.00192  16.1  0.330     12.8
+   0.00210  16.1  0.330     12.8
+   0.00231  16.1  0.330     12.8
+   0.00254  16.1  0.330     12.8
+   0.00278  16.1  0.330     12.8
+   0.00305  16.1  0.330     12.8
+   0.00335  16.1  0.330     12.8
+   0.00368  16.1  0.330     12.8
+   0.00404  16.1  0.330     12.8
+   0.00443  16.1  0.330     12.8
+   0.00486  16.1  0.330     12.8
+   0.00534  16.1  0.330     12.8
+   0.00586  16.1  0.330     12.8
+   0.00643  16.1  0.330     12.8
+   0.00705  16.1  0.330     12.8
+   0.00774  16.1  0.330     12.8
+   0.00850  16.1  0.330     12.8
+   0.00933  16.1  0.330     12.8
+   0.01024  16.1  0.330     12.8
+   0.01123  16.1  0.330     12.8
+   0.01233  16.1  0.330     12.8
+   0.01353  16.1  0.330     12.8
+   0.01485  16.1  0.330     12.8
+   0.01630  16.1  0.330     12.8
+   0.01789  16.1  0.330     12.8
+   0.01963  16.1  0.330     12.8
+   0.02154  16.1  0.330     12.8
+   0.02364  16.1  0.330     12.8
+   0.02595  16.1  0.330     12.8
+   0.02848  16.1  0.330     12.8
+   0.03126  16.1  0.330     12.8
+   0.03430  16.1  0.330     12.8
+   0.03765  16.1  0.330     12.8
+   0.04132  16.1  0.330     12.8
+   0.04535  16.1  0.330     12.8
+   0.04977  16.1  0.330     12.8
+   0.05462  16.1  0.330     12.8
+   0.05995  16.1  0.330     12.8
+   0.06579  16.1  0.330     12.8
+   0.07221  16.1  0.330     12.8
+   0.07925  16.1  0.330     12.8
+   0.08697  16.1  0.330     12.8
+   0.09545  16.1  0.330     12.8
+   0.10476  16.1  0.330     12.8
+   0.11498  16.1  0.330     12.8
+   0.12619  16.1  0.330     12.8
+   0.13849  16.1  0.330     12.8
+   0.15199  16.1  0.330     12.8
+   0.16681  16.1  0.330     12.8
+   0.18307  16.1  0.330     12.8
+   0.20092  16.1  0.330     12.8
+   0.22051  16.1  0.330     12.8
+   0.24201  16.1  0.330     12.8
+   0.26561  16.1  0.330     12.8
+   0.29151  16.1  0.330     12.8
+   0.31993  16.1  0.330     12.8
+   0.35112  16.1  0.330     12.8
+   0.38535  16.1  0.330     12.8
+   0.42292  16.1  0.330     12.8
+   0.46416  16.1  0.330     12.8
+   0.50941  16.1  0.330     12.8
+   0.55908  16.1  0.330     12.8
+   0.61359  16.1  0.330     12.8
+   0.67342  16.1  0.330     12.8
+   0.73907  16.1  0.330     12.8
+   0.81113  16.1  0.330     12.8
+   0.89022  16.1  0.330     12.8
+   0.97701  16.1  0.330     12.8
+   1.07227  16.1  0.330     12.8
+   1.17681  16.1  0.330     12.8
+   1.29155  16.0  0.330     12.8
+   1.41747  16.0  0.330     12.8
+   1.55568  16.0  0.330     12.8
+   1.70735  16.0  0.330     12.8
+   1.87382  16.0  0.330     12.8
+   2.05651  16.0  0.330     12.8
+   2.25702  16.0  0.330     12.7
+   2.47708  16.0  0.330     12.8
+   2.71859  16.0  0.330     12.8
+   2.98365  16.0  0.330     12.8
+   3.27455  16.0  0.330     12.8
+   3.59381  16.0  0.330     12.8
+   3.94421  16.0  0.330     12.8
+   4.32876  16.0  0.330     12.8
+   4.75081  16.0  0.330     12.8
+   5.21401  16.0  0.330     12.8
+   5.72237  16.0  0.330     12.8
+   6.28029  16.0  0.329     12.8
+   6.89261  16.0  0.329     12.8
+   7.56463  16.0  0.329     12.8
+   8.30218  16.1  0.329     12.8
+   9.11163  16.1  0.328     12.9
+  10.00000  16.1  0.328     12.9
+
+Tuning parameter &#39;alpha&#39; was held constant at a value of 0
+RMSE was used to select the optimal model using the smallest value.
+The final values used for the model were alpha = 0 and lambda = 3.94.</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Plot your <code>graduation_ridge</code> object. What do you see? Does this match the plot match the value identified in the previous task?</li>
 </ol>
 <pre class="r"><code># Plot graduation_ridge object
 plot(XX)</code></pre>
+<pre class="r"><code>plot(graduation_ridge)</code></pre>
+<p><img src="Optimization_practical_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;" /></p>
 <ol start="7" style="list-style-type: decimal">
 <li>What were your final regression model coefficients for the best lambda value? Find them by running the following code.</li>
 </ol>
 <pre class="r"><code># Get coefficients from best lambda value
 coef(graduation_ridge$finalModel, 
      graduation_ridge$bestTune$lambda)</code></pre>
+<pre><code>18 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+                  1
+(Intercept) 65.3853
+PrivateYes   1.5221
+Apps         1.4296
+Accept       1.1152
+Enroll       0.6637
+Top10perc    1.0367
+Top25perc    3.0499
+F.Undergrad -0.9730
+P.Undergrad -1.8279
+Outstate     3.6625
+Room.Board   1.6135
+Books       -0.0918
+Personal    -1.2850
+PhD          0.6006
+Terminal    -0.0601
+S.F.Ratio    0.8763
+perc.alumni  2.2782
+Expend      -0.6340</code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li><p>How do these coefficients compare to what you found in regular regression? Are they similar? Could the differences have something to do with the applied scaling?</p></li>
 <li><p>Using <code>predict()</code> save the fitted values of <code>graduation_glm</code> object as <code>glm_fit</code>.</p></li>
 </ol>
+<pre class="r"><code># Save fitted value
+glm_fit &lt;- predict(graduation_glm)</code></pre>
 </div>
 <div id="lasso-regression" class="section level4">
 <h4>Lasso regression</h4>
@@ -323,18 +500,166 @@ graduation_lasso &lt;- train(form = XX ~ .,
                           preProcess = c(&quot;XX&quot;, &quot;XX&quot;),         # Standardise
                           tuneGrid = data.frame(alpha = XX,   # Lasso penalty
                                                 lambda = XX)) # Penalty weight</code></pre>
+<pre class="r"><code># Lasso regression 
+graduation_lasso &lt;- train(form = Grad.Rate ~ .,
+                          data = college_train,
+                          method = &quot;glmnet&quot;,
+                          trControl = ctrl_cv,
+                          preProcess = c(&quot;center&quot;, &quot;scale&quot;),   # Standardise
+                          tuneGrid = data.frame(alpha = 1,     # Lasso penalty
+                                                 lambda = lambda_vec)) # Penalty weight</code></pre>
 <ol start="11" style="list-style-type: decimal">
-<li><p>Print your <code>graduation_lasso</code> object. Which lambda was selected as best performing?</p></li>
-<li><p>Plot your <code>graduation_lasso</code> object. What do you see? Does this match the plot match the value identified in the previous task?</p></li>
+<li>Print your <code>graduation_lasso</code> object. Which lambda was selected as best performing?</li>
+</ol>
+<pre class="r"><code>graduation_lasso</code></pre>
+<pre><code>glmnet 
+
+500 samples
+ 17 predictor
+
+Pre-processing: centered (17), scaled (17) 
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 448, 449, 451, 448, 450, 451, ... 
+Resampling results across tuning parameters:
+
+  lambda    RMSE  Rsquared  MAE 
+   0.00100  16.1  0.3207    13.0
+   0.00110  16.1  0.3207    13.0
+   0.00120  16.1  0.3207    13.0
+   0.00132  16.1  0.3207    13.0
+   0.00145  16.1  0.3207    13.0
+   0.00159  16.1  0.3207    13.0
+   0.00175  16.1  0.3207    13.0
+   0.00192  16.1  0.3207    13.0
+   0.00210  16.1  0.3207    13.0
+   0.00231  16.1  0.3207    13.0
+   0.00254  16.1  0.3207    13.0
+   0.00278  16.1  0.3207    13.0
+   0.00305  16.1  0.3207    13.0
+   0.00335  16.1  0.3207    13.0
+   0.00368  16.1  0.3207    13.0
+   0.00404  16.1  0.3207    13.0
+   0.00443  16.1  0.3207    13.0
+   0.00486  16.1  0.3207    13.0
+   0.00534  16.1  0.3207    13.0
+   0.00586  16.1  0.3208    13.0
+   0.00643  16.1  0.3208    13.0
+   0.00705  16.1  0.3208    13.0
+   0.00774  16.1  0.3209    13.0
+   0.00850  16.1  0.3209    13.0
+   0.00933  16.1  0.3210    13.0
+   0.01024  16.1  0.3210    13.0
+   0.01123  16.1  0.3211    13.0
+   0.01233  16.1  0.3211    13.0
+   0.01353  16.1  0.3212    13.0
+   0.01485  16.1  0.3212    13.0
+   0.01630  16.1  0.3213    13.0
+   0.01789  16.1  0.3214    13.0
+   0.01963  16.1  0.3215    13.0
+   0.02154  16.1  0.3217    13.0
+   0.02364  16.1  0.3218    13.0
+   0.02595  16.1  0.3220    12.9
+   0.02848  16.1  0.3221    12.9
+   0.03126  16.1  0.3223    12.9
+   0.03430  16.1  0.3225    12.9
+   0.03765  16.1  0.3227    12.9
+   0.04132  16.1  0.3230    12.9
+   0.04535  16.1  0.3233    12.9
+   0.04977  16.1  0.3236    12.9
+   0.05462  16.1  0.3239    12.9
+   0.05995  16.1  0.3242    12.9
+   0.06579  16.1  0.3244    12.9
+   0.07221  16.1  0.3245    12.9
+   0.07925  16.1  0.3244    12.9
+   0.08697  16.1  0.3242    12.9
+   0.09545  16.1  0.3241    12.9
+   0.10476  16.1  0.3238    12.9
+   0.11498  16.1  0.3236    12.9
+   0.12619  16.1  0.3234    12.9
+   0.13849  16.1  0.3233    12.9
+   0.15199  16.1  0.3232    12.9
+   0.16681  16.1  0.3237    12.9
+   0.18307  16.1  0.3243    12.9
+   0.20092  16.1  0.3249    12.9
+   0.22051  16.0  0.3254    12.9
+   0.24201  16.0  0.3258    12.9
+   0.26561  16.0  0.3259    12.9
+   0.29151  16.0  0.3258    12.9
+   0.31993  16.0  0.3255    12.9
+   0.35112  16.0  0.3250    12.9
+   0.38535  16.0  0.3243    12.9
+   0.42292  16.1  0.3237    12.9
+   0.46416  16.1  0.3231    13.0
+   0.50941  16.1  0.3224    13.0
+   0.55908  16.1  0.3214    13.0
+   0.61359  16.1  0.3202    13.0
+   0.67342  16.1  0.3190    13.0
+   0.73907  16.1  0.3179    13.0
+   0.81113  16.1  0.3171    13.0
+   0.89022  16.1  0.3162    13.1
+   0.97701  16.2  0.3150    13.1
+   1.07227  16.2  0.3132    13.1
+   1.17681  16.2  0.3114    13.2
+   1.29155  16.2  0.3101    13.2
+   1.41747  16.3  0.3090    13.2
+   1.55568  16.3  0.3078    13.3
+   1.70735  16.3  0.3065    13.3
+   1.87382  16.4  0.3052    13.3
+   2.05651  16.4  0.3040    13.4
+   2.25702  16.4  0.3033    13.4
+   2.47708  16.5  0.3029    13.5
+   2.71859  16.5  0.3024    13.5
+   2.98365  16.6  0.3016    13.6
+   3.27455  16.7  0.3005    13.6
+   3.59381  16.8  0.2996    13.7
+   3.94421  16.9  0.2996    13.8
+   4.32876  17.0  0.2997    13.9
+   4.75081  17.1  0.2994    14.0
+   5.21401  17.3  0.2983    14.2
+   5.72237  17.5  0.2956    14.4
+   6.28029  17.8  0.2892    14.6
+   6.89261  18.1  0.2785    14.8
+   7.56463  18.4  0.2680    15.1
+   8.30218  18.7  0.2673    15.4
+   9.11163  19.1  0.2681    15.7
+  10.00000  19.4  0.0466    16.0
+
+Tuning parameter &#39;alpha&#39; was held constant at a value of 1
+RMSE was used to select the optimal model using the smallest value.
+The final values used for the model were alpha = 1 and lambda = 0.292.</code></pre>
+<ol start="12" style="list-style-type: decimal">
+<li>Plot your <code>graduation_lasso</code> object. What do you see? Does this match the plot match the value identified in the previous task?</li>
 </ol>
 <pre class="r"><code># Plot model object
 plot(XX)</code></pre>
+<pre class="r"><code>plot(graduation_lasso)</code></pre>
+<p><img src="Optimization_practical_files/figure-html/unnamed-chunk-22-1.png" width="576" style="display: block; margin: auto;" /></p>
 <ol start="13" style="list-style-type: decimal">
 <li>What were your final regression model coefficients for the best lambda value? Find them by running the following code.</li>
 </ol>
 <pre class="r"><code># Get coefficients from best lambda value
 coef(graduation_lasso$finalModel, 
      graduation_lasso$bestTune$lambda)</code></pre>
+<pre><code>18 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+                 1
+(Intercept) 65.385
+PrivateYes   0.781
+Apps         2.145
+Accept       .    
+Enroll       .    
+Top10perc    .    
+Top25perc    4.138
+F.Undergrad  .    
+P.Undergrad -1.874
+Outstate     5.393
+Room.Board   1.156
+Books        .    
+Personal    -1.172
+PhD          .    
+Terminal     .    
+S.F.Ratio    0.919
+perc.alumni  2.171
+Expend      -0.830</code></pre>
 <ol start="14" style="list-style-type: decimal">
 <li>How do these coefficients compare to what you found for the regular and ridge regression? Have some features been set to 0?</li>
 </ol>
@@ -344,12 +669,47 @@ coef(graduation_lasso$finalModel,
 <ol start="15" style="list-style-type: decimal">
 <li>Store the training data and test data criterion (<code>Grad.Rate</code>) as <code>criterion_train</code> and <code>criterion_test</code>.</li>
 </ol>
+<pre class="r"><code># store criteria
+criterion_train &lt;- college_train$Grad.Rate
+criterion_test &lt;- college_test$Grad.Rate</code></pre>
 <p>s 16. Using <code>predict()</code>, save the fitted values of your models as <code>glm_fit</code>, <code>ridge_fit</code>, and <code>lasso_fit</code>.</p>
+<pre class="r"><code># store fitted values
+glm_fit &lt;- predict(graduation_glm)
+ridge_fit &lt;- predict(graduation_ridge)
+lasso_fit &lt;- predict(graduation_lasso)</code></pre>
 <ol start="17" style="list-style-type: decimal">
-<li><p>Using <code>postResample</code> evaluate the fitting performance of your models. Which model has the best performance in fitting the training data?</p></li>
-<li><p>Using <code>predict()</code> and <code>newdata = college_test</code>, save the predicted values of your models as <code>glm_pred</code>, <code>ridge_pred</code>, and <code>lasso_pred</code>.</p></li>
-<li><p>Using <code>postResample</code> evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the regularized regressions outperform the unregularized one?</p></li>
+<li>Using <code>postResample</code> evaluate the fitting performance of your models. Which model has the best performance in fitting the training data?</li>
 </ol>
+<pre class="r"><code># evaluate fit
+postResample(pred = glm_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  15.559    0.359   12.443 </code></pre>
+<pre class="r"><code>postResample(pred = ridge_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  15.716    0.348   12.578 </code></pre>
+<pre class="r"><code>postResample(pred = lasso_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  15.689    0.349   12.589 </code></pre>
+<ol start="18" style="list-style-type: decimal">
+<li>Using <code>predict()</code> and <code>newdata = college_test</code>, save the predicted values of your models as <code>glm_pred</code>, <code>ridge_pred</code>, and <code>lasso_pred</code>.</li>
+</ol>
+<pre class="r"><code># store predicted values
+glm_pred &lt;- predict(graduation_glm, newdata = college_test)
+ridge_pred &lt;- predict(graduation_ridge, newdata = college_test)
+lasso_pred &lt;- predict(graduation_lasso, newdata = college_test)</code></pre>
+<ol start="19" style="list-style-type: decimal">
+<li>Using <code>postResample</code> evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the regularized regressions outperform the unregularized one?</li>
+</ol>
+<pre class="r"><code># evaluate fit
+postResample(pred = glm_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  16.412    0.305   13.204 </code></pre>
+<pre class="r"><code>postResample(pred = ridge_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  15.968    0.341   12.975 </code></pre>
+<pre class="r"><code>postResample(pred = lasso_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  16.166    0.323   13.050 </code></pre>
 </div>
 </div>
 <div id="e---trees" class="section level3">
@@ -357,8 +717,12 @@ coef(graduation_lasso$finalModel,
 <div id="decision-tree" class="section level4">
 <h4>Decision tree</h4>
 <ol style="list-style-type: decimal">
-<li><p>It’s time to see what parameter tuning can do for decision trees and random forests. To do this, first, determine a vector of possible values for the complexity parameter <code>cp</code> of decision trees. To this end, using the code below, create a vector called <code>cp_vec</code> which contains 100 values between 0 and .2.</p></li>
-<li><p>Using <code>train()</code>, fit a decision tree model called <code>graduation_rpart</code> predicting <code>Grad.Rate</code>by all features. Again, assign a data frame to <code>tuneGrid</code> specifying the possible tuning parameters, i.e., <code>cp = cp_vec</code>.</p></li>
+<li>It’s time to see what parameter tuning can do for decision trees and random forests. To do this, first, determine a vector of possible values for the complexity parameter <code>cp</code> of decision trees. To this end, using the code below, create a vector called <code>cp_vec</code> which contains 100 values between 0 and .2.</li>
+</ol>
+<pre class="r"><code># Determine possible values for cp
+cp_vec &lt;- seq(from = 0, to = .2, length = 100)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Using <code>train()</code>, fit a decision tree model called <code>graduation_rpart</code> predicting <code>Grad.Rate</code>by all features. Again, assign a data frame to <code>tuneGrid</code> specifying the possible tuning parameters, i.e., <code>cp = cp_vec</code>.</li>
 </ol>
 <pre class="r"><code># Decision tree
 graduation_rpart &lt;- train(form = Grad.part ~ .,
@@ -366,13 +730,141 @@ graduation_rpart &lt;- train(form = Grad.part ~ .,
                           method = &quot;XX&quot;,
                           trControl = XX,
                           tuneGrid = data.frame(cp = XX))</code></pre>
+<pre class="r"><code># Decision tree
+graduation_rpart &lt;- train(form = Grad.Rate ~ .,
+                  data = college_train,
+                  method = &quot;rpart&quot;,
+                  trControl = ctrl_cv,
+                  tuneGrid = data.frame(cp = cp_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Print your <code>graduation_rpart</code> object. Which <code>cp</code> was selected as best performing?</p></li>
-<li><p>Plot your <code>graduation_rpart</code> object. What do you see? Does this match the plot match the value identified in the previous task?</p></li>
-<li><p>Plot your final decision tree using the following code. Do you find the model sensible?</p></li>
+<li>Print your <code>graduation_rpart</code> object. Which <code>cp</code> was selected as best performing?</li>
+</ol>
+<pre class="r"><code>graduation_rpart</code></pre>
+<pre><code>CART 
+
+500 samples
+ 17 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 449, 450, 451, 449, 450, 451, ... 
+Resampling results across tuning parameters:
+
+  cp       RMSE  Rsquared  MAE 
+  0.00000  19.7  0.150     15.7
+  0.00202  19.7  0.152     15.7
+  0.00404  19.5  0.163     15.4
+  0.00606  19.5  0.152     15.4
+  0.00808  19.1  0.155     15.2
+  0.01010  18.8  0.160     15.1
+  0.01212  18.5  0.175     14.8
+  0.01414  18.1  0.195     14.5
+  0.01616  18.0  0.191     14.5
+  0.01818  17.7  0.205     14.4
+  0.02020  17.4  0.225     14.2
+  0.02222  17.2  0.237     14.0
+  0.02424  17.2  0.241     14.0
+  0.02626  17.2  0.240     14.0
+  0.02828  17.2  0.240     14.0
+  0.03030  17.1  0.246     13.9
+  0.03232  17.1  0.240     14.0
+  0.03434  17.3  0.224     14.1
+  0.03636  17.3  0.224     14.1
+  0.03838  17.5  0.211     14.3
+  0.04040  17.5  0.208     14.3
+  0.04242  17.5  0.205     14.2
+  0.04444  17.6  0.199     14.3
+  0.04646  17.7  0.191     14.4
+  0.04848  17.7  0.191     14.4
+  0.05051  17.6  0.200     14.2
+  0.05253  17.6  0.200     14.2
+  0.05455  17.6  0.200     14.2
+  0.05657  17.5  0.203     14.2
+  0.05859  17.5  0.203     14.2
+  0.06061  17.5  0.203     14.2
+  0.06263  17.5  0.203     14.2
+  0.06465  17.5  0.203     14.2
+  0.06667  17.5  0.203     14.2
+  0.06869  17.5  0.203     14.2
+  0.07071  17.5  0.203     14.2
+  0.07273  17.5  0.203     14.2
+  0.07475  17.5  0.203     14.2
+  0.07677  17.5  0.203     14.2
+  0.07879  17.5  0.203     14.2
+  0.08081  17.5  0.203     14.2
+  0.08283  17.5  0.203     14.2
+  0.08485  17.5  0.203     14.2
+  0.08687  17.5  0.203     14.2
+  0.08889  17.5  0.203     14.2
+  0.09091  17.5  0.203     14.2
+  0.09293  17.5  0.203     14.2
+  0.09495  17.5  0.203     14.2
+  0.09697  17.5  0.203     14.2
+  0.09899  17.5  0.203     14.2
+  0.10101  17.5  0.203     14.2
+  0.10303  17.5  0.203     14.2
+  0.10505  17.5  0.203     14.2
+  0.10707  17.5  0.203     14.2
+  0.10909  17.5  0.203     14.2
+  0.11111  17.5  0.203     14.2
+  0.11313  17.5  0.203     14.2
+  0.11515  17.5  0.203     14.2
+  0.11717  17.5  0.203     14.2
+  0.11919  17.5  0.203     14.2
+  0.12121  17.5  0.203     14.2
+  0.12323  17.5  0.203     14.2
+  0.12525  17.5  0.203     14.2
+  0.12727  17.5  0.203     14.2
+  0.12929  17.5  0.203     14.2
+  0.13131  17.5  0.203     14.2
+  0.13333  17.5  0.203     14.2
+  0.13535  17.5  0.203     14.2
+  0.13737  17.5  0.203     14.2
+  0.13939  17.5  0.203     14.2
+  0.14141  17.5  0.203     14.2
+  0.14343  17.5  0.203     14.2
+  0.14545  17.5  0.203     14.2
+  0.14747  17.5  0.203     14.2
+  0.14949  17.5  0.203     14.2
+  0.15152  17.5  0.203     14.2
+  0.15354  17.5  0.203     14.2
+  0.15556  17.5  0.203     14.2
+  0.15758  17.5  0.203     14.2
+  0.15960  17.5  0.203     14.2
+  0.16162  17.5  0.203     14.2
+  0.16364  17.5  0.203     14.2
+  0.16566  17.5  0.203     14.2
+  0.16768  17.5  0.203     14.2
+  0.16970  17.5  0.203     14.2
+  0.17172  17.5  0.203     14.2
+  0.17374  17.5  0.203     14.2
+  0.17576  17.5  0.203     14.2
+  0.17778  17.5  0.203     14.2
+  0.17980  17.5  0.203     14.2
+  0.18182  17.5  0.203     14.2
+  0.18384  17.5  0.203     14.2
+  0.18586  17.5  0.203     14.2
+  0.18788  17.5  0.203     14.2
+  0.18990  17.9  0.180     14.5
+  0.19192  17.9  0.180     14.5
+  0.19394  17.9  0.180     14.5
+  0.19596  17.9  0.180     14.5
+  0.19798  17.9  0.180     14.5
+  0.20000  18.4  0.149     14.9
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was cp = 0.0303.</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Plot your <code>graduation_rpart</code> object. What do you see? Does this match the plot match the value identified in the previous task?</li>
+</ol>
+<pre class="r"><code>plot(graduation_rpart)</code></pre>
+<p><img src="Optimization_practical_files/figure-html/unnamed-chunk-33-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Plot your final decision tree using the following code. Do you find the model sensible?</li>
 </ol>
 <pre class="r"><code># Visualise your trees
 plot(as.party(graduation_rpart$finalModel)) </code></pre>
+<p><img src="Optimization_practical_files/figure-html/unnamed-chunk-34-1.png" width="576" style="display: block; margin: auto;" /></p>
 <ol start="6" style="list-style-type: decimal">
 <li>How do the nodes in the tree compare to those in the ridge or lasso models?</li>
 </ol>
@@ -380,8 +872,12 @@ plot(as.party(graduation_rpart$finalModel)) </code></pre>
 <div id="random-forest" class="section level4">
 <h4>Random forest</h4>
 <ol start="7" style="list-style-type: decimal">
-<li><p>Now onto fitting a random forest. Using the code below, create a vector called <code>mtry_vec</code> containing values from 1 to 5, the tuning parameter candidates for our random forest.</p></li>
-<li><p>Fit a random forest model predicting <code>Grad.Rate</code> as a function of all features. Make sure to use <code>mtry = mtry_vec</code> within the data frame specifying the <code>tuneGrid</code>. This one might take a bit longer than usual.</p></li>
+<li>Now onto fitting a random forest. Using the code below, create a vector called <code>mtry_vec</code> containing values from 1 to 5, the tuning parameter candidates for our random forest.</li>
+</ol>
+<pre class="r"><code># mtry candidates
+mtry_vec &lt;- 1:5</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Fit a random forest model predicting <code>Grad.Rate</code> as a function of all features. Make sure to use <code>mtry = mtry_vec</code> within the data frame specifying the <code>tuneGrid</code>. This one might take a bit longer than usual.</li>
 </ol>
 <pre class="r"><code># Random forest
 graduation_rf &lt;- train(form = XX ~ .,
@@ -389,19 +885,75 @@ graduation_rf &lt;- train(form = XX ~ .,
                    method = &quot;XX&quot;,
                    trControl = XX,
                    tuneGrid = data.frame(mtry = XX))</code></pre>
+<pre class="r"><code># Random forest
+graduation_rf &lt;- train(form = Grad.Rate ~ .,
+                   data = college_train,
+                   method = &quot;rf&quot;,
+                   trControl = ctrl_cv,
+                   tuneGrid = data.frame(mtry = mtry_vec))</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li><p>Print your <code>graduation_rf</code> object. What do you see? Which <code>mtry</code> was selected as best performing?</p></li>
-<li><p>Plot your <code>graduation_rf</code> object. What do you see? Does this match the plot match the value identified in the previous task?</p></li>
+<li>Print your <code>graduation_rf</code> object. What do you see? Which <code>mtry</code> was selected as best performing?</li>
 </ol>
+<pre class="r"><code>graduation_rf</code></pre>
+<pre><code>Random Forest 
+
+500 samples
+ 17 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 449, 449, 450, 451, 450, 449, ... 
+Resampling results across tuning parameters:
+
+  mtry  RMSE  Rsquared  MAE 
+  1     16.2  0.316     13.2
+  2     16.2  0.313     13.1
+  3     16.2  0.316     13.1
+  4     16.1  0.318     13.0
+  5     16.3  0.308     13.1
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was mtry = 4.</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>Plot your <code>graduation_rf</code> object. What do you see? Does this match the plot match the value identified in the previous task?</li>
+</ol>
+<pre class="r"><code>plot(graduation_rf)</code></pre>
+<p><img src="Optimization_practical_files/figure-html/unnamed-chunk-39-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="evaluate-performance-1" class="section level4">
 <h4>Evaluate performance</h4>
 <ol start="11" style="list-style-type: decimal">
-<li><p>Using <code>predict()</code>, save the fitted values of your tree models as <code>rpart_fit</code> and <code>rf_fit</code>.</p></li>
-<li><p>Using <code>postResample</code> evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? If you like compare to the regression models of the previous section.</p></li>
-<li><p>Using <code>predict()</code> and <code>newdata = college_test</code>, save the predicted values of your models as <code>rpart_pred</code>, and <code>rf_pred</code>.</p></li>
-<li><p>Using <code>postResample</code> evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the tree models outperform the regularized regressions?</p></li>
+<li>Using <code>predict()</code>, save the fitted values of your tree models as <code>rpart_fit</code> and <code>rf_fit</code>.</li>
 </ol>
+<pre class="r"><code># store fitted values
+rpart_fit &lt;- predict(graduation_rpart)
+rf_fit &lt;- predict(graduation_rf)</code></pre>
+<ol start="12" style="list-style-type: decimal">
+<li>Using <code>postResample</code> evaluate the fitting performance of your models. Which model has the best performance in fitting the training data? If you like compare to the regression models of the previous section.</li>
+</ol>
+<pre class="r"><code># evaluate fit
+postResample(pred = rpart_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  16.358    0.291   13.268 </code></pre>
+<pre class="r"><code>postResample(pred = rf_fit, obs = criterion_train)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+   6.935    0.925    5.481 </code></pre>
+<ol start="13" style="list-style-type: decimal">
+<li>Using <code>predict()</code> and <code>newdata = college_test</code>, save the predicted values of your models as <code>rpart_pred</code>, and <code>rf_pred</code>.</li>
+</ol>
+<pre class="r"><code># store predicted values
+rpart_pred &lt;- predict(graduation_rpart, newdata = college_test)
+rf_pred &lt;- predict(graduation_rf, newdata = college_test)</code></pre>
+<ol start="14" style="list-style-type: decimal">
+<li>Using <code>postResample</code> evaluate the prediction performance of your models. Which model has the best performance in predicting the test data? Did the tree models outperform the regularized regressions?</li>
+</ol>
+<pre class="r"><code># evaluate fit
+postResample(pred = rpart_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  17.191    0.239   13.853 </code></pre>
+<pre class="r"><code>postResample(pred = rf_pred, obs = criterion_test)</code></pre>
+<pre><code>    RMSE Rsquared      MAE 
+  15.762    0.364   12.708 </code></pre>
 </div>
 </div>
 <div id="x---challenges-explore-tuning-parameter-grids" class="section level3">

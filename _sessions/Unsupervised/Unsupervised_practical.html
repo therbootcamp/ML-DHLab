@@ -248,25 +248,58 @@ gap2007 &lt;- gap %&gt;%
 </ol>
 <pre class="r"><code># kmeans of gap in 2007
 gap2007_km &lt;- kmeans(x = XX, centers = XX) </code></pre>
+<pre class="r"><code># kmeans of gap in 2007
+gap2007_km &lt;- kmeans(x = gap2007, centers = 3) </code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Print <code>gap2007_km</code> and study the output.</p></li>
+<li>Print <code>gap2007_km</code> and study the output.</li>
+</ol>
+<pre class="r"><code># kmeans of gap in 2007
+gap2007_km</code></pre>
+<pre><code>K-means clustering with 3 clusters of sizes 27, 80, 34
+
+Cluster means:
+  BIP pro Kopf Lebenserwartung
+1        34099            79.9
+2         2809            60.3
+3        13701            72.1
+
+Clustering vector:
+  [1] 2 2 2 2 3 1 1 1 2 1 2 2 2 3 3 3 2 2 2 2 1 2 2 3 2 2 2 2 2 3 2 3 3 3 1 2 2
+ [38] 2 2 2 3 2 2 1 1 3 2 1 2 1 2 2 2 2 2 1 3 1 2 2 3 2 1 1 1 2 1 2 2 2 3 3 2 2
+ [75] 3 2 2 3 2 2 3 3 2 3 2 2 2 2 2 1 1 2 2 2 1 3 2 3 2 2 2 3 3 3 2 3 2 2 3 2 3
+[112] 2 1 3 1 2 3 1 2 2 2 1 1 2 1 2 2 2 3 2 3 2 1 1 3 3 2 2 2 2 2
+
+Within cluster sum of squares by cluster:
+[1] 9.86e+08 3.76e+08 6.82e+08
+ (between_SS / total_SS =  90.7 %)
+
+Available components:
+
+[1] &quot;cluster&quot;      &quot;centers&quot;      &quot;totss&quot;        &quot;withinss&quot;     &quot;tot.withinss&quot;
+[6] &quot;betweenss&quot;    &quot;size&quot;         &quot;iter&quot;         &quot;ifault&quot;      </code></pre>
+<ol start="3" style="list-style-type: decimal">
 <li><p>The first row of the output and the table <code>Cluster means</code> shows how many objects were assigned to each of the three clusters and where the centroids (cluster means) of these are located.</p></li>
 <li><p>At the bottom of the output is a list of names of objects contained in the clustering object. Use <code>gap2007_km$XX</code> to select the object <code>clusters</code>, as well as the elements <code>centers</code> and store them as <code>clusters</code> and <code>centers</code> respectively.</p></li>
 </ol>
 <pre class="r"><code># gap2007_km 
 clusters &lt;- gap2007_km$XX
 centers &lt;- gap2007_km$XX</code></pre>
+<pre class="r"><code># gap2007_km 
+clusters &lt;- gap2007_km$cluster
+centers &lt;- gap2007_km$centers</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Use the code below to plot the data and cluster assignments.</li>
 </ol>
 <pre class="r"><code># kmeans of gap in 2007
 plot(gap2007, col = clusters)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;" /></p>
 <ol start="6" style="list-style-type: decimal">
 <li>Now use the code below to add the centroids.</li>
 </ol>
 <pre class="r"><code># kmeans of gap in 2007
 plot(gap2007, col = clusters)
 points(centers, pch = 16, col = 1:3, cex = 2)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;" /></p>
 <ol start="7" style="list-style-type: decimal">
 <li><p>Something’s off, right? Some points of the middle cluster actually seem to lie closer to the bottom-left cluster. This shouldn’t be the case. Any ideas how this has come about?</p></li>
 <li><p>The problem is that the features have different scales. The values of <code>BIP pro Kopf</code> are way larger than those in <code>Lebenserwartung</code> and, thus, a lot further away from each other. For that reason, <code>BIP pro Kopf</code> plays a much larger role for cluster assignments than <code>Lebenserwartung</code>. To fix this problem, run the code below, which scaled the features in <code>gap2007</code>.</p></li>
@@ -278,6 +311,17 @@ gap2007_scaled &lt;- gap2007 %&gt;%
 <ol start="9" style="list-style-type: decimal">
 <li>Now, run <code>kmeans()</code> for <code>gap2007_scaled</code> and plot the data and cluster assignments. All good now?</li>
 </ol>
+<pre class="r"><code># kmeans plot for gap in 2007 
+gap2007_scaled_km &lt;- kmeans(x = gap2007_scaled, centers = 3) 
+
+# extract elements
+clusters &lt;- gap2007_scaled_km$cluster
+centers &lt;- gap2007_scaled_km$centers
+
+# plot
+plot(gap2007_scaled, col = clusters)
+points(centers, pch = 16, col = 1:3, cex = 2)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="d---k-selection" class="section level3">
 <h3>D - <em>k</em>-selection</h3>
@@ -289,17 +333,49 @@ km_development &lt;- purrr::map(2:20, kmeans, x = gap2007_scaled)
 withinvar &lt;- purrr::map_dbl(km_development, 
                             `[[`, i = &#39;tot.withinss&#39;)</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Using <code>plot()</code> create a plot of the development of the <code>withinvar</code>.</p></li>
+<li>Using <code>plot()</code> create a plot of the development of the <code>withinvar</code>.</li>
+</ol>
+<pre class="r"><code># kmeans within-variance development
+plot(withinvar)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="3" style="list-style-type: decimal">
 <li><p>What does the plot tell you? Is there an elbow that would suggest a particular value of <em>k</em>?</p></li>
 <li><p>Several values of <em>k</em> seem plausible: 1, 3, or 7. Use <code>cDistance()</code> from the <code>cstab</code> package to estimate <em>k</em> with values from 2 to 20 (<code>2:20</code>) as candidates.</p></li>
 </ol>
 <pre class="r"><code># estimate k with cstab
 k_est &lt;- cDistance(data = as.matrix(XX),
                    kseq = XX:XX)</code></pre>
+<pre class="r"><code># estimate k with cstab
+k_est &lt;- cDistance(data = as.matrix(gap2007_scaled),
+                   kseq = 2:20)</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li><p>Extract <code>k_est$k_Gap</code> und <code>k_est$k_Slope</code>. Do the numbers seem reasonable?</p></li>
-<li><p>Now try <code>cStability()</code> and extract <code>k_instab</code>. Reasonable?</p></li>
+<li>Extract <code>k_est$k_Gap</code> und <code>k_est$k_Slope</code>. Do the numbers seem reasonable?</li>
 </ol>
+<pre class="r"><code># estimate k with cstab
+k_est$k_Gap</code></pre>
+<pre><code>[1] 14</code></pre>
+<pre class="r"><code>k_est$k_Slope</code></pre>
+<pre><code>[1] 3</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Now try <code>cStability()</code> and extract <code>k_instab</code>. Reasonable?</li>
+</ol>
+<pre class="r"><code># estimate k with cstab
+k_est &lt;- cStability(data = as.matrix(gap2007_scaled),
+                   kseq = 2:20)</code></pre>
+<pre><code>
+
+========
+================
+========================
+================================
+========================================
+================================================
+========================================================
+================================================================
+========================================================================
+================================================================================</code></pre>
+<pre class="r"><code>k_est$k_instab</code></pre>
+<pre><code>[1] 3</code></pre>
 <p>Remember: There is no true <em>k</em>.</p>
 </div>
 <div id="e---dbscan" class="section level3">
@@ -310,6 +386,9 @@ k_est &lt;- cDistance(data = as.matrix(XX),
 <pre class="r"><code># cluster using DBSCAN
 gap2007_scaled_dbscan &lt;- dbscan(x = XX, 
                                 eps = XX)</code></pre>
+<pre class="r"><code># cluster using DBSCAN
+gap2007_scaled_dbscan &lt;- dbscan(x = gap2007_scaled, 
+                                eps = .5)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Print <code>gap2007_scaled_dbscan</code>. What does the outpute tell you? Remember 0 means outlier.</p></li>
 <li><p>A single cluster and 5 outliers were identified. Visualize the solution using the same approach as above. The <code>+ 1</code> is necessary as 0 implies no color.</p></li>
@@ -319,9 +398,27 @@ clusters &lt;- gap2007_scaled_dbscan$XX
 
 # plot
 plot(XX, col = XX + 1)</code></pre>
+<pre class="r"><code># extract clusters
+clusters &lt;- gap2007_scaled_dbscan$cluster
+
+# plot
+plot(gap2007_scaled, col = clusters + 1)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;" /></p>
 <ol start="4" style="list-style-type: decimal">
-<li><p>Now run <code>dbscan()</code> again using different values for <code>eps</code>. Try <code>eps = .3</code> and <code>eps = .1</code>. Both times plot the results the same way as before. Any changes? Any of the solutions reasonable?</p></li>
-<li><p><code>dbscan()</code> has additional parameters. <code>minPts</code> determines the number of points within <code>eps</code> necessary for a point to be a core point. If you like, try different values to explore the effect of <code>minPts</code>.</p></li>
+<li>Now run <code>dbscan()</code> again using different values for <code>eps</code>. Try <code>eps = .3</code> and <code>eps = .1</code>. Both times plot the results the same way as before. Any changes? Any of the solutions reasonable?</li>
+</ol>
+<pre class="r"><code># cluster using DBSCAN
+gap2007_scaled_dbscan.3 &lt;- dbscan(x = gap2007_scaled, eps = .3)
+gap2007_scaled_dbscan.1 &lt;- dbscan(x = gap2007_scaled, eps = .1)
+
+# plot
+par(mfrow = c(1, 3))
+plot(gap2007_scaled, col = gap2007_scaled_dbscan$cluster + 1)
+plot(gap2007_scaled, col = gap2007_scaled_dbscan.3$cluster + 1)
+plot(gap2007_scaled, col = gap2007_scaled_dbscan.1$cluster + 1)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-24-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li><code>dbscan()</code> has additional parameters. <code>minPts</code> determines the number of points within <code>eps</code> necessary for a point to be a core point. If you like, try different values to explore the effect of <code>minPts</code>.</li>
 </ol>
 </div>
 <div id="f---gaussian-mixtures" class="section level3">
@@ -331,29 +428,60 @@ plot(XX, col = XX + 1)</code></pre>
 </ol>
 <pre class="r"><code># Gaussian mixtures
 gap2007_gm &lt;- Mclust(XX)</code></pre>
+<pre class="r"><code># Gaussian mixtures
+gap2007_gm &lt;- Mclust(gap2007)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Print the object <code>gap2007_gm</code>. What do you see?</p></li>
 <li><p>The output of <code>gap2007_gm</code> reveals very little. It only shows which objects it contains. Use <code>table(gap2007_gm$classification)</code> to gain an overview over the cluster assignments. How many clusters were identified and how many does each contain?</p></li>
 <li><p>Use the <code>classification</code> element to create a visualization of the cluster assignments.</p></li>
-<li><p>Now use `<code>plot(gap2007_gm, what = 'classification')</code> to create <code>mclust</code>’s own visualization.</p></li>
+</ol>
+<pre class="r"><code># plot
+plot(gap2007_scaled, col = gap2007_gm$classification)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-27-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Now use `<code>plot(gap2007_gm, what = 'classification')</code> to create <code>mclust</code>’s own visualization.</li>
+</ol>
+<pre class="r"><code># plot using mclust
+plot(gap2007_gm, what = &#39;classification&#39;)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-28-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="6" style="list-style-type: decimal">
 <li><p>Try to understand what the ellipses in the <code>mclust</code> plot reveal about the clusters. Remember they represent normal distributions with variances and co-variances reflecting the correlations between the features.</p></li>
 <li><p>One desirable property of Gaussian mixtures is that they produce estimates of the uncertainty associated with assigning a data point to a particular cluster. Use <code>plot(gap2007_gm, what = 'uncertainty')</code> to visualize this. The size of the points reflects the degree of uncertainty associated with a point being assigned to one particular cluster and not the others.</p></li>
 </ol>
+<pre class="r"><code># plot
+plot(gap2007_gm, what = &#39;uncertainty&#39;)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-29-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="x---challenges-modellselection" class="section level3">
 <h3>X - Challenges: Modellselection</h3>
 <ol style="list-style-type: decimal">
 <li>A further useful property of Gaussian mixtures is the existence of different implementations with different complexity. In fact, <code>Mclust()</code> already considers a variety of implementations in addition to different values of <em>k</em>. You can gain an overview on the performance of these using <code>plot(gap2007_gm, what = 'BIC')</code>.</li>
 </ol>
+<pre class="r"><code># plot
+plot(gap2007_gm, what = &#39;BIC&#39;)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-30-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>BIC is the Bayesian Information Criterion and it characterizes the model fit in relation to model complexity. In this case, higher BIC values indicate better performance. In the visualization you see the performance of 14 different implementations as a function of different values <em>k</em> (x-axis).</p>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Use <code>plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))</code> to get a better view on the critical region of the plot. Now you should be able to see that <code>EVV</code> for <code>k=4</code> shows the best performance overall.</p></li>
-<li><p>Use <code>?mclustModelNames</code> to see descriptions for each of the model. This reveals that <code>EEV</code> only makes the simplifying assumption of equal volume between the different ellipsoids. This is also what you see in <code>plot(gap2007_gm, what = 'classification')</code>.</p></li>
-<li><p>Now explore using the code below what happens if you tell the model to use a specific implementation of Gaussian mixtures. Replace the ‘XX’ in <code>modelNames = 'XX'</code> with one of the three letter codes denoting the different models. Then visualize the result. Begin with <code>'EEI'</code>.</p></li>
+<li>Use <code>plot(gap2007_gm, what = 'BIC', ylim = c(-4200, -3900))</code> to get a better view on the critical region of the plot. Now you should be able to see that <code>EVV</code> for <code>k=4</code> shows the best performance overall.</li>
+</ol>
+<pre class="r"><code># plot
+plot(gap2007_gm, what = &#39;BIC&#39;, ylim = c(-4200, -3900))</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-31-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Use <code>?mclustModelNames</code> to see descriptions for each of the model. This reveals that <code>EEV</code> only makes the simplifying assumption of equal volume between the different ellipsoids. This is also what you see in <code>plot(gap2007_gm, what = 'classification')</code>.</li>
+</ol>
+<pre class="r"><code>plot(gap2007_gm, what = &#39;classification&#39;)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-32-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Now explore using the code below what happens if you tell the model to use a specific implementation of Gaussian mixtures. Replace the ‘XX’ in <code>modelNames = 'XX'</code> with one of the three letter codes denoting the different models. Then visualize the result. Begin with <code>'EEI'</code>.</li>
 </ol>
 <pre class="r"><code># Try different implementation
 gap2007_gm &lt;- Mclust(gap2007, modelNames = &#39;XX&#39;)
 plot(gap2007_gm, what = &#39;classification&#39;)</code></pre>
+<pre class="r"><code># Try different implementation
+gap2007_gm &lt;- Mclust(gap2007, modelNames = &#39;EEI&#39;)
+plot(gap2007_gm, what = &#39;classification&#39;)</code></pre>
+<p><img src="Unsupervised_practical_files/figure-html/unnamed-chunk-34-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="y---challenges-new-data-set" class="section level3">
 <h3>Y - Challenges: New data set</h3>

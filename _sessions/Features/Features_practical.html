@@ -217,7 +217,12 @@ summary {
 <li><p>Open your <code>TheRBootcamp</code> R project.</p></li>
 <li><p>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Features_practical.R</code> in the <code>2_Code</code> folder.</p></li>
 <li><p>Using <code>library()</code> load <code>tidyverse</code> and <code>caret</code>.</p></li>
-<li><p>Using the code below load the data sets used in this practical and turn all character into factor.</p></li>
+</ol>
+<pre class="r"><code># Load packages
+library(tidyverse)
+library(caret)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Using the code below load the data sets used in this practical and turn all character into factor.</li>
 </ol>
 <pre class="r"><code># Pima Indians diabetes
 pima_diabetes &lt;- read_csv(file = &quot;1_Data/pima_diabetes.csv&quot;) %&gt;% 
@@ -239,6 +244,21 @@ nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)%
 <ol style="list-style-type: decimal">
 <li>Print <code>pima_diabetes</code> to take a look and familiarize yourself with the data.</li>
 </ol>
+<pre class="r"><code>pima_diabetes</code></pre>
+<pre><code># A tibble: 724 x 7
+   diabetes pregnant glucose pressure  mass pedigree   age
+   &lt;fct&gt;       &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+ 1 pos             6     148       72  33.6    0.627    50
+ 2 neg             1      85       66  26.6    0.351    31
+ 3 pos             8     183       64  23.3    0.672    32
+ 4 neg             1      89       66  28.1    0.167    21
+ 5 pos             0     137       40  43.1    2.29     33
+ 6 neg             5     116       74  25.6    0.201    30
+ 7 pos             3      78       50  31      0.248    26
+ 8 pos             2     197       70  30.5    0.158    53
+ 9 neg             4     110       92  37.6    0.191    30
+10 pos            10     168       74  38      0.537    34
+# … with 714 more rows</code></pre>
 <div id="splitting" class="section level4">
 <h4>Splitting</h4>
 <ol start="2" style="list-style-type: decimal">
@@ -253,6 +273,15 @@ train_index &lt;- createDataPartition(XX$XX, p = .15, list = FALSE)
 # train and test sets
 pima_train &lt;- XX %&gt;% slice(train_index)
 pima_test  &lt;- XX %&gt;% slice(-train_index)</code></pre>
+<pre class="r"><code># seed
+set.seed(100)
+
+# split index
+train_index &lt;- createDataPartition(pima_diabetes$diabetes, p = .15, list = FALSE)
+
+# train and test sets
+pima_train &lt;- pima_diabetes %&gt;% slice(train_index)
+pima_test  &lt;- pima_diabetes %&gt;% slice(-train_index)</code></pre>
 </div>
 <div id="remove-unwanted-features" class="section level4">
 <h4>Remove unwanted features</h4>
@@ -265,6 +294,11 @@ pima_train_pred &lt;- pima_train %&gt;% select(-XX)
 
 # Select criterion
 pima_train_crit &lt;- pima_train %&gt;% select(XX)</code></pre>
+<pre class="r"><code># Select predictors
+pima_train_pred &lt;- pima_train %&gt;% select(-diabetes)
+
+# Select criterion
+pima_train_crit &lt;- pima_train %&gt;% select(diabetes)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Although, use the template below to test whether there are any excessively correlated features using <code>cor()</code> and <code>findCorrelation()</code>. Are there any?</li>
 </ol>
@@ -273,11 +307,20 @@ corr_matrix &lt;- cor(XX_pred)
 
 # find excessively correlated variables
 findCorrelation(corr_matrix)</code></pre>
+<pre class="r"><code># determine correlation matrix
+corr_matrix &lt;- cor(pima_train_pred)
+
+# find excessively correlated variables
+findCorrelation(corr_matrix)</code></pre>
+<pre><code>integer(0)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Now, test if there are any near-zero variance features using the <code>nearZeroVar</code> function. Any of those?</li>
 </ol>
 <pre class="r"><code># find near zero variance predictors
 nearZeroVar(XX_pred)</code></pre>
+<pre class="r"><code># find near zero variance predictors
+nearZeroVar(pima_train_pred)</code></pre>
+<pre><code>integer(0)</code></pre>
 </div>
 <div id="feature-importance" class="section level4">
 <h4>Feature importance</h4>
@@ -290,6 +333,11 @@ pima_glm &lt;- train(diabetes ~ .,
                 data = XX,
                 method = XX,
                 trControl = trainControl(method = &#39;none&#39;))</code></pre>
+<pre class="r"><code># fit regression
+pima_glm &lt;- train(diabetes ~ .,
+                data = pima_train,
+                method = &quot;glm&quot;,
+                trControl = trainControl(method = &#39;none&#39;))</code></pre>
 <ol start="7" style="list-style-type: decimal">
 <li>Evaluate feature importance using <code>varImp()</code>. The function will show importance on a scale from 0 (least important feature) to 100 (most important feature). You can set <code>scale = TRUE</code> to see absolute importance measures scaled as <em>t</em>-values.</li>
 </ol>
@@ -301,6 +349,23 @@ varimp_glm
 
 # print variable importance
 plot(varimp_glm)</code></pre>
+<pre class="r"><code># determine variable importance
+varimp_glm &lt;- varImp(pima_glm)
+
+# print variable importance
+varimp_glm</code></pre>
+<pre><code>glm variable importance
+
+         Overall
+glucose    100.0
+mass        90.8
+pregnant    36.9
+pressure    35.1
+pedigree    33.8
+age          0.0</code></pre>
+<pre class="r"><code># print variable importance
+plot(varimp_glm)</code></pre>
+<p><img src="Features_practical_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="model-comparison" class="section level4">
 <h4>Model comparison</h4>
@@ -312,6 +377,10 @@ plot(varimp_glm)</code></pre>
 pima_glm4 &lt;- train(diabetes ~ XX + YY + ZZ + AA,
                 data = XX,
                 method = XX)</code></pre>
+<pre class="r"><code># fit glm with best four features
+pima_glm4 &lt;- train(diabetes ~ glucose + mass + pregnant + pressure,
+                data = pima_train,
+                method = &quot;glm&quot;)</code></pre>
 <ol start="9" style="list-style-type: decimal">
 <li>For both models, the glm using all and the glm using just four features, predict the criterion in the test data and evaluate the prediction performance using <code>confusionMatrix()</code>. Which model model is better?</li>
 </ol>
@@ -322,6 +391,67 @@ pima_glm4_pred &lt;- predict(XX, newdata = XX)
 # evaluate the results
 confusionMatrix(XX, reference = XX)
 confusionMatrix(XX, reference = XX)</code></pre>
+<pre class="r"><code># determine predictions for test data
+pima_glm_pred &lt;- predict(pima_glm, newdata = pima_test)
+pima_glm4_pred &lt;- predict(pima_glm4, newdata = pima_test)
+
+# evaluate the results
+confusionMatrix(pima_glm_pred, pima_test$diabetes)</code></pre>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction pos neg
+       pos 109  51
+       neg 102 352
+                                        
+               Accuracy : 0.751         
+                 95% CI : (0.715, 0.785)
+    No Information Rate : 0.656         
+    P-Value [Acc &gt; NIR] : 2.70e-07      
+                                        
+                  Kappa : 0.414         
+                                        
+ Mcnemar&#39;s Test P-Value : 5.29e-05      
+                                        
+            Sensitivity : 0.517         
+            Specificity : 0.873         
+         Pos Pred Value : 0.681         
+         Neg Pred Value : 0.775         
+             Prevalence : 0.344         
+         Detection Rate : 0.178         
+   Detection Prevalence : 0.261         
+      Balanced Accuracy : 0.695         
+                                        
+       &#39;Positive&#39; Class : pos           
+                                        </code></pre>
+<pre class="r"><code>confusionMatrix(pima_glm4_pred, pima_test$diabetes)</code></pre>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction pos neg
+       pos 113  44
+       neg  98 359
+                                        
+               Accuracy : 0.769         
+                 95% CI : (0.733, 0.802)
+    No Information Rate : 0.656         
+    P-Value [Acc &gt; NIR] : 9.36e-10      
+                                        
+                  Kappa : 0.454         
+                                        
+ Mcnemar&#39;s Test P-Value : 8.68e-06      
+                                        
+            Sensitivity : 0.536         
+            Specificity : 0.891         
+         Pos Pred Value : 0.720         
+         Neg Pred Value : 0.786         
+             Prevalence : 0.344         
+         Detection Rate : 0.184         
+   Detection Prevalence : 0.256         
+      Balanced Accuracy : 0.713         
+                                        
+       &#39;Positive&#39; Class : pos           
+                                        </code></pre>
 <ol start="10" style="list-style-type: decimal">
 <li><p>You should have observed that the model with two fewer features is actually slightly better than the full model. Why do you think this is the case?</p></li>
 <li><p>Play around: Increase the proportion of data dedicated to training or use a different model, e.g., <code>random forest</code>, and see whether things change.</p></li>
@@ -334,28 +464,106 @@ confusionMatrix(XX, reference = XX)</code></pre>
 <ol style="list-style-type: decimal">
 <li>Print <code>murders_crime</code> and familiarize yourself with the data.</li>
 </ol>
+<pre class="r"><code>murders_crime</code></pre>
+<pre><code># A tibble: 1,823 x 102
+   murders population householdsize racepctblack racePctWhite racePctAsian
+   &lt;fct&gt;        &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+ 1 yes          27591          2.63         0.17         94.8         1.6 
+ 2 yes          36830          2.6         42.4          53.7         0.54
+ 3 yes          23928          2.6         11.0          81.3         1.78
+ 4 no           15675          2.59         4.08         84.1         0.54
+ 5 yes          96086          3.19         8.54         59.8        17.2 
+ 6 no           48622          2.44         3.14         95.5         0.77
+ 7 no           10444          3.02         0.41         98.9         0.39
+ 8 yes         222103          2.49        11.4          82.4         3.77
+ 9 no           15535          2.35        14.9          84.6         0.32
+10 yes          24664          2.73        13.7          85.0         0.53
+# … with 1,813 more rows, and 96 more variables: racePctHisp &lt;dbl&gt;,
+#   agePct12t21 &lt;dbl&gt;, agePct12t29 &lt;dbl&gt;, agePct16t24 &lt;dbl&gt;, agePct65up &lt;dbl&gt;,
+#   numbUrban &lt;dbl&gt;, pctUrban &lt;dbl&gt;, medIncome &lt;dbl&gt;, pctWWage &lt;dbl&gt;,
+#   pctWFarmSelf &lt;dbl&gt;, pctWInvInc &lt;dbl&gt;, pctWSocSec &lt;dbl&gt;, pctWPubAsst &lt;dbl&gt;,
+#   pctWRetire &lt;dbl&gt;, medFamInc &lt;dbl&gt;, perCapInc &lt;dbl&gt;, whitePerCap &lt;dbl&gt;,
+#   blackPerCap &lt;dbl&gt;, indianPerCap &lt;dbl&gt;, AsianPerCap &lt;dbl&gt;, HispPerCap &lt;dbl&gt;,
+#   NumUnderPov &lt;dbl&gt;, PctPopUnderPov &lt;dbl&gt;, PctLess9thGrade &lt;dbl&gt;,
+#   PctNotHSGrad &lt;dbl&gt;, PctBSorMore &lt;dbl&gt;, PctUnemployed &lt;dbl&gt;,
+#   PctEmploy &lt;dbl&gt;, PctEmplManu &lt;dbl&gt;, PctEmplProfServ &lt;dbl&gt;,
+#   PctOccupManu &lt;dbl&gt;, PctOccupMgmtProf &lt;dbl&gt;, MalePctDivorce &lt;dbl&gt;,
+#   MalePctNevMarr &lt;dbl&gt;, FemalePctDiv &lt;dbl&gt;, TotalPctDiv &lt;dbl&gt;,
+#   PersPerFam &lt;dbl&gt;, PctFam2Par &lt;dbl&gt;, PctKids2Par &lt;dbl&gt;,
+#   PctYoungKids2Par &lt;dbl&gt;, PctTeen2Par &lt;dbl&gt;, PctWorkMomYoungKids &lt;dbl&gt;,
+#   PctWorkMom &lt;dbl&gt;, NumKidsBornNeverMar &lt;dbl&gt;, PctKidsBornNeverMar &lt;dbl&gt;,
+#   NumImmig &lt;dbl&gt;, PctImmigRecent &lt;dbl&gt;, PctImmigRec5 &lt;dbl&gt;,
+#   PctImmigRec8 &lt;dbl&gt;, PctImmigRec10 &lt;dbl&gt;, PctRecentImmig &lt;dbl&gt;,
+#   PctRecImmig5 &lt;dbl&gt;, PctRecImmig8 &lt;dbl&gt;, PctRecImmig10 &lt;dbl&gt;,
+#   PctSpeakEnglOnly &lt;dbl&gt;, PctNotSpeakEnglWell &lt;dbl&gt;, PctLargHouseFam &lt;dbl&gt;,
+#   PctLargHouseOccup &lt;dbl&gt;, PersPerOccupHous &lt;dbl&gt;, PersPerOwnOccHous &lt;dbl&gt;,
+#   PersPerRentOccHous &lt;dbl&gt;, PctPersOwnOccup &lt;dbl&gt;, PctPersDenseHous &lt;dbl&gt;,
+#   PctHousLess3BR &lt;dbl&gt;, MedNumBR &lt;dbl&gt;, HousVacant &lt;dbl&gt;, PctHousOccup &lt;dbl&gt;,
+#   PctHousOwnOcc &lt;dbl&gt;, PctVacantBoarded &lt;dbl&gt;, PctVacMore6Mos &lt;dbl&gt;,
+#   MedYrHousBuilt &lt;dbl&gt;, PctHousNoPhone &lt;dbl&gt;, PctWOFullPlumb &lt;dbl&gt;,
+#   OwnOccLowQuart &lt;dbl&gt;, OwnOccMedVal &lt;dbl&gt;, OwnOccHiQuart &lt;dbl&gt;,
+#   OwnOccQrange &lt;dbl&gt;, RentLowQ &lt;dbl&gt;, RentMedian &lt;dbl&gt;, RentHighQ &lt;dbl&gt;,
+#   RentQrange &lt;dbl&gt;, MedRent &lt;dbl&gt;, MedRentPctHousInc &lt;dbl&gt;,
+#   MedOwnCostPctInc &lt;dbl&gt;, MedOwnCostPctIncNoMtg &lt;dbl&gt;, NumInShelters &lt;dbl&gt;,
+#   NumStreet &lt;dbl&gt;, PctForeignBorn &lt;dbl&gt;, PctBornSameState &lt;dbl&gt;,
+#   PctSameHouse85 &lt;dbl&gt;, PctSameCity85 &lt;dbl&gt;, PctSameState85 &lt;dbl&gt;,
+#   LandArea &lt;dbl&gt;, PopDens &lt;dbl&gt;, PctUsePubTrans &lt;dbl&gt;,
+#   LemasPctOfficDrugUn &lt;dbl&gt;</code></pre>
 <div id="splitting-1" class="section level4">
 <h4>Splitting</h4>
 <ol start="2" style="list-style-type: decimal">
 <li>Create <code>murders_train</code> and <code>murders_test</code> using <code>createDataPartition()</code> with (only) <b>25% of cases going into the training set</b>.</li>
 </ol>
+<pre class="r"><code># split index
+train_index &lt;- createDataPartition(murders_crime$murders, p = .25, list = FALSE)
+
+# train and test sets
+murders_train &lt;- murders_crime %&gt;% slice(train_index)
+murders_test  &lt;- murders_crime %&gt;% slice(-train_index)</code></pre>
 </div>
 <div id="remove-unwanted-features-1" class="section level4">
 <h4>Remove unwanted features</h4>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Before removing unwanted features from the training set, split the training data into predictors and the criterion in the same way you have done this above.</p></li>
-<li><p>Test if there are any excessively correlated features using <code>cor()</code> and <code>findCorrelation()</code>. Are there any this time?</p></li>
-<li><p>Using the code below, remove the excessively correlated features from the training predictor set.</p></li>
+<li>Before removing unwanted features from the training set, split the training data into predictors and the criterion in the same way you have done this above.</li>
+</ol>
+<pre class="r"><code># Select predictors
+murders_train_pred &lt;- murders_train %&gt;% select(-murders)
+
+# Select criterion
+murders_train_crit &lt;- murders_train %&gt;% select(murders)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Test if there are any excessively correlated features using <code>cor()</code> and <code>findCorrelation()</code>. Are there any this time?</li>
+</ol>
+<pre class="r"><code># determine correlation matrix
+corr_matrix &lt;- cor(murders_train_pred)
+
+# find excessively correlated variables
+findCorrelation(corr_matrix)</code></pre>
+<pre><code> [1] 11 17 27 30 41 44 48 49 53 54 55 57 58 59 60 61 63 64 65 68 71 80 81 84 85
+[26] 87 93  7  8 14 13 20 21 31 38 43  1 62 42 67 51</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Using the code below, remove the excessively correlated features from the training predictor set.</li>
 </ol>
 <pre class="r"><code># remove features
 murders_train_pred &lt;- murders_train_pred %&gt;% select(- XX)</code></pre>
+<pre class="r"><code># remove features
+murders_train_pred &lt;- murders_train_pred %&gt;% 
+  select(-findCorrelation(corr_matrix))</code></pre>
 <ol start="6" style="list-style-type: decimal">
-<li><p>Test if there are any near-zero variance features. Any of those this time?</p></li>
-<li><p>You should have found that there were plenty of excessively correlated features but no near-zero variance features. Provided that you excluded the former, bind the reduced predictor set back together with the criterion into a new, clean version of the training set. See template below.</p></li>
+<li>Test if there are any near-zero variance features. Any of those this time?</li>
+</ol>
+<pre class="r"><code># find near zero variance predictors
+nearZeroVar(murders_train_pred)</code></pre>
+<pre><code>integer(0)</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>You should have found that there were plenty of excessively correlated features but no near-zero variance features. Provided that you excluded the former, bind the reduced predictor set back together with the criterion into a new, clean version of the training set. See template below.</li>
 </ol>
 <pre class="r"><code># clean training set
 murders_train_clean &lt;- XX %&gt;% 
   bind_cols(XX)</code></pre>
+<pre class="r"><code># combine clean predictor set with criterion
+murders_train_clean &lt;- murders_train_pred %&gt;% 
+  bind_cols(murders_train_crit)</code></pre>
 </div>
 <div id="model-comparison-1" class="section level4">
 <h4>Model comparison</h4>
@@ -373,9 +581,81 @@ murders_glm_clean &lt;- train(murders ~ .,
                            data = XX,
                            method = &quot;glm&quot;,
                            trControl = trainControl(method = &#39;none&#39;))</code></pre>
+<pre class="r"><code># fit glm
+murders_glm &lt;- train(murders ~ .,
+                     data = murders_train,
+                     method = &quot;glm&quot;,
+                     trControl = trainControl(method = &#39;none&#39;))
+
+# fit glm with clean data
+murders_glm_clean &lt;- train(murders ~ .,
+                           data = murders_train_clean,
+                           method = &quot;glm&quot;,
+                           trControl = trainControl(method = &#39;none&#39;))</code></pre>
 <ol start="9" style="list-style-type: decimal">
 <li>You probably have noticed warning messages. They could indicate that the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead nonetheless and evaluate the performance on the hold-out set. Which set of features predicts better?</li>
 </ol>
+<pre class="r"><code># determine predictions for test data
+murders_pred &lt;- predict(murders_glm, newdata = murders_test)
+murders_clean_pred &lt;- predict(murders_glm_clean, newdata = murders_test)
+
+# evaluate the results
+confusionMatrix(murders_pred, murders_test$murders)</code></pre>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction yes  no
+       yes 549 201
+       no  188 429
+                                        
+               Accuracy : 0.715         
+                 95% CI : (0.691, 0.739)
+    No Information Rate : 0.539         
+    P-Value [Acc &gt; NIR] : &lt;2e-16        
+                                        
+                  Kappa : 0.427         
+                                        
+ Mcnemar&#39;s Test P-Value : 0.543         
+                                        
+            Sensitivity : 0.745         
+            Specificity : 0.681         
+         Pos Pred Value : 0.732         
+         Neg Pred Value : 0.695         
+             Prevalence : 0.539         
+         Detection Rate : 0.402         
+   Detection Prevalence : 0.549         
+      Balanced Accuracy : 0.713         
+                                        
+       &#39;Positive&#39; Class : yes           
+                                        </code></pre>
+<pre class="r"><code>confusionMatrix(murders_clean_pred, murders_test$murders)</code></pre>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction yes  no
+       yes 548 193
+       no  189 437
+                                        
+               Accuracy : 0.721         
+                 95% CI : (0.696, 0.744)
+    No Information Rate : 0.539         
+    P-Value [Acc &gt; NIR] : &lt;2e-16        
+                                        
+                  Kappa : 0.437         
+                                        
+ Mcnemar&#39;s Test P-Value : 0.878         
+                                        
+            Sensitivity : 0.744         
+            Specificity : 0.694         
+         Pos Pred Value : 0.740         
+         Neg Pred Value : 0.698         
+             Prevalence : 0.539         
+         Detection Rate : 0.401         
+   Detection Prevalence : 0.542         
+      Balanced Accuracy : 0.719         
+                                        
+       &#39;Positive&#39; Class : yes           
+                                        </code></pre>
 </div>
 <div id="data-compression-with-pca" class="section level4">
 <h4>Data compression with PCA</h4>
@@ -390,15 +670,131 @@ murders_glm_pca = train(murders ~ .,
                         trControl = trainControl(method = &#39;none&#39;,
                                                  preProcOptions = list(thresh = 0.8)))</code></pre>
 <ol start="11" style="list-style-type: decimal">
-<li><p>Compare the prediction performance to the previous two models.</p></li>
-<li><p>Play around: Alter the amount of variance explained by the <code>PCA</code> (using <code>thresh</code>), increase the proportion dedicated to training, use a different model, e.g., <code>random forest</code>, and see whether things change.</p></li>
+<li>Compare the prediction performance to the previous two models.</li>
+</ol>
+<pre class="r"><code># determine predictions for test data
+murders_pca &lt;- predict(murders_glm_pca, newdata = murders_test)
+
+# evaluate the results
+confusionMatrix(murders_pca, murders_test$murders)</code></pre>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction yes  no
+       yes 553 144
+       no  184 486
+                                        
+               Accuracy : 0.76          
+                 95% CI : (0.737, 0.782)
+    No Information Rate : 0.539         
+    P-Value [Acc &gt; NIR] : &lt;2e-16        
+                                        
+                  Kappa : 0.519         
+                                        
+ Mcnemar&#39;s Test P-Value : 0.0313        
+                                        
+            Sensitivity : 0.750         
+            Specificity : 0.771         
+         Pos Pred Value : 0.793         
+         Neg Pred Value : 0.725         
+             Prevalence : 0.539         
+         Detection Rate : 0.405         
+   Detection Prevalence : 0.510         
+      Balanced Accuracy : 0.761         
+                                        
+       &#39;Positive&#39; Class : yes           
+                                        </code></pre>
+<ol start="12" style="list-style-type: decimal">
+<li>Play around: Alter the amount of variance explained by the <code>PCA</code> (using <code>thresh</code>), increase the proportion dedicated to training, use a different model, e.g., <code>random forest</code>, and see whether things change.</li>
 </ol>
 </div>
 <div id="feature-importance-1" class="section level4">
 <h4>Feature importance</h4>
 <ol start="13" style="list-style-type: decimal">
-<li><p>Now find out which features are actually most important for predicting murders. Using <code>varImp()</code>, evaluate the feature importance for each of the three models used in the previous section.</p></li>
-<li><p>Now that you know which features were most important, do you think you can come up with a set of features that reliably outperforms thew predictions based on the pca-generated feature set? Try it out!</p></li>
+<li>Now find out which features are actually most important for predicting murders. Using <code>varImp()</code>, evaluate the feature importance for each of the three models used in the previous section.</li>
+</ol>
+<pre class="r"><code># determine variable importance
+varimp_glm &lt;- varImp(murders_glm)
+varimp_glm_clean &lt;- varImp(murders_glm_clean)
+varimp_glm_pca &lt;- varImp(murders_glm_pca)
+
+# print variable importance
+varimp_glm</code></pre>
+<pre><code>glm variable importance
+
+  only 20 most important variables shown (out of 99)
+
+                      Overall
+MalePctNevMarr          100.0
+PctVacantBoarded         77.7
+OwnOccHiQuart            75.4
+NumKidsBornNeverMar      73.1
+population               72.9
+indianPerCap             70.0
+PctPopUnderPov           63.9
+PctLess9thGrade          62.8
+HispPerCap               62.2
+PctSpeakEnglOnly         61.9
+NumUnderPov              60.9
+PctVacMore6Mos           60.9
+RentMedian               60.3
+pctWWage                 59.6
+numbUrban                58.2
+MedOwnCostPctIncNoMtg    56.8
+pctUrban                 56.6
+NumStreet                54.3
+PctEmploy                53.4
+NumImmig                 52.7</code></pre>
+<pre class="r"><code>varimp_glm_clean</code></pre>
+<pre><code>glm variable importance
+
+  only 20 most important variables shown (out of 60)
+
+                      Overall
+LandArea                100.0
+MalePctNevMarr           58.8
+PctVacantBoarded         58.0
+HispPerCap               56.5
+NumStreet                55.4
+blackPerCap              52.2
+MedNumBR                 50.2
+PctVacMore6Mos           48.7
+agePct16t24              47.6
+AsianPerCap              45.8
+OwnOccQrange             43.5
+LemasPctOfficDrugUn      43.0
+racePctWhite             42.6
+indianPerCap             40.3
+PctUnemployed            36.6
+MedOwnCostPctIncNoMtg    34.6
+PctYoungKids2Par         33.8
+whitePerCap              32.4
+FemalePctDiv             30.6
+PctKidsBornNeverMar      30.5</code></pre>
+<pre class="r"><code>varimp_glm_pca</code></pre>
+<pre><code>glm variable importance
+
+     Overall
+PC1  100.000
+PC2   62.415
+PC3   58.250
+PC5   46.031
+PC4   45.273
+PC7   39.760
+PC8   30.465
+PC10   5.043
+PC11   3.375
+PC6    0.752
+PC9    0.000</code></pre>
+<pre class="r"><code># print variable importance
+plot(varimp_glm)</code></pre>
+<p><img src="Features_practical_files/figure-html/unnamed-chunk-35-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(varimp_glm_clean)</code></pre>
+<p><img src="Features_practical_files/figure-html/unnamed-chunk-35-2.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(varimp_glm_pca)</code></pre>
+<p><img src="Features_practical_files/figure-html/unnamed-chunk-35-3.png" width="576" style="display: block; margin: auto;" /></p>
+<ol start="14" style="list-style-type: decimal">
+<li>Now that you know which features were most important, do you think you can come up with a set of features that reliably outperforms thew predictions based on the pca-generated feature set? Try it out!</li>
 </ol>
 </div>
 </div>

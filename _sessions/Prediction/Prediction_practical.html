@@ -482,7 +482,7 @@ postResample(pred = rpart_fit, obs = criterion_train)</code></pre>
 <pre class="r"><code># Random forest accuracy
 postResample(pred = rf_fit, obs = criterion_train)</code></pre>
 <pre><code>    RMSE Rsquared      MAE 
-   6.910    0.927    5.480 </code></pre>
+   6.959    0.925    5.513 </code></pre>
 <ol start="11" style="list-style-type: decimal">
 <li>What do you make of these results? Which model had the best fit?</li>
 </ol>
@@ -538,7 +538,7 @@ postResample(pred = rpart_pred, obs = criterion_test)</code></pre>
 <pre class="r"><code># Random forests prediction performance
 postResample(pred = rf_pred, obs = criterion_test)</code></pre>
 <pre><code>    RMSE Rsquared      MAE 
-  15.725    0.368   12.704 </code></pre>
+  15.807    0.361   12.798 </code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>How does each model’s prediction performance compare to its fitting performance? Is it worse? Better? The same? What does the change tell you about the models?</li>
 </ol>
@@ -774,7 +774,7 @@ postResample(pred = rpart_fit, obs = criterion_train)</code></pre>
 <pre class="r"><code># Random Forests
 postResample(pred = rf_fit, obs = criterion_train)</code></pre>
 <pre><code>    RMSE Rsquared      MAE 
-6.61e+04 9.74e-01 3.42e+04 </code></pre>
+6.59e+04 9.75e-01 3.40e+04 </code></pre>
 <ol start="11" style="list-style-type: decimal">
 <li>Which model had the best fit? Same model as for the graduation data?</li>
 </ol>
@@ -815,7 +815,7 @@ postResample(pred = rpart_pred, obs = criterion_test)</code></pre>
 <pre class="r"><code># Random Forests
 postResample(pred = rf_pred, obs = criterion_test)</code></pre>
 <pre><code>    RMSE Rsquared      MAE 
-1.28e+05 8.74e-01 7.54e+04 </code></pre>
+1.27e+05 8.77e-01 7.49e+04 </code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li><p>How does each model’s prediction performance compare to its fitting performance? Is it worse? Better? The same? What does the change tell you about the models?</p></li>
 <li><p>Which of the three models has the best prediction performance?</p></li>
